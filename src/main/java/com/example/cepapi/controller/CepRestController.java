@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,8 +25,6 @@ public class CepRestController {
 
 	@Autowired
 	private CadastroServices cadastroServices;
-
-
 
 	@ResponseBody
 	@GetMapping("/{cep}")
@@ -93,7 +90,6 @@ public class CepRestController {
 		newPessoa.setBairro(pessoaAux.getBairro());
 		newPessoa.setLocalidade(pessoaAux.getLocalidade());
 		newPessoa.setUf(pessoaAux.getUf());
-		//return newPessoa = cadastroServices.update(newPessoa, id);
 		return this.cadastroServices.update(newPessoa, id);
 	}
 
