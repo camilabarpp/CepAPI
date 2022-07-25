@@ -23,7 +23,7 @@ public class CadastroServices {
     }
 
     //Método GEt por ID
-    public Pessoa findById(String id) {
+    public Pessoa findById(Long id) {
          return this.cadastroRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Material inexistente"));
@@ -31,7 +31,7 @@ public class CadastroServices {
     }
 
     //Method PUT
-    public Pessoa update(@RequestBody Pessoa newPessoa, @PathVariable String id) {
+    public Pessoa update(@RequestBody Pessoa newPessoa, @PathVariable Long id) {
         return cadastroRepository.findById(id)
                 .map(pessoa -> {
                     pessoa.setNome(newPessoa.getNome());
@@ -56,7 +56,7 @@ public class CadastroServices {
     }
 
     //Método DELETE
-    public void delete(String id) {
+    public void delete(Long id) {
         findById(id);
         this.cadastroRepository.deleteById(id);
     }
