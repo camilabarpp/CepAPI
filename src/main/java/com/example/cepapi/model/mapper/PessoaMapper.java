@@ -11,7 +11,12 @@ public class PessoaMapper {
                 .id(pessoaRequest.getId())
                 .nome(pessoaRequest.getNome())
                 .dataDeNascimento(pessoaRequest.getDataDeNascimento())
-                //.endereco(pessoaRequest.getEndereco())
+                .cep(pessoaRequest.getCep())
+                .logradouro(pessoaRequest.getLogradouro())
+                .numero(pessoaRequest.getNumero())
+                .bairro(pessoaRequest.getBairro())
+                .localidade(pessoaRequest.getLocalidade())
+                .uf(pessoaRequest.getUf())
                 .build();
     }
 
@@ -19,7 +24,12 @@ public class PessoaMapper {
         return PessoaResponse.builder()
                 .nome(pessoa.getNome())
                 .dataDeNascimento(pessoa.getDataDeNascimento())
-                //.endereco(pessoa.getEndereco())
+                .cep(pessoa.getCep())
+                .logradouro(pessoa.getLogradouro())
+                .numero(pessoa.getNumero())
+                .bairro(pessoa.getBairro())
+                .localidade(pessoa.getLocalidade())
+                .uf(pessoa.getUf())
                 .build();
     }
 }

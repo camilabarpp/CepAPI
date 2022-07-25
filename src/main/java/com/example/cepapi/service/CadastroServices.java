@@ -1,6 +1,5 @@
 package com.example.cepapi.service;
 
-import com.example.cepapi.model.Endereco;
 import com.example.cepapi.model.Pessoa;
 import com.example.cepapi.repository.CadastroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CadastroServices {
@@ -22,11 +22,12 @@ public class CadastroServices {
         return this.cadastroRepository.findAll();
     }
 
-    //Método GET por ID
-    public Pessoa findById(String id){
-        return this.cadastroRepository
+    //Método GEt por ID
+    public Pessoa findById(String id) {
+         return this.cadastroRepository
                 .findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cadastro inexistente!"));
+                .orElseThrow(() -> new IllegalArgumentException("Material inexistente"));
+        //adicionar a excessao
     }
 
     //Method PUT
@@ -35,6 +36,12 @@ public class CadastroServices {
                 .map(pessoa -> {
                     pessoa.setNome(newPessoa.getNome());
                     pessoa.setDataDeNascimento(newPessoa.getDataDeNascimento());
+                    pessoa.setCep(newPessoa.getCep());
+                    pessoa.setLogradouro(newPessoa.getLogradouro());
+                    pessoa.setNumero(newPessoa.getNumero());
+                    pessoa.setBairro(newPessoa.getBairro());
+                    pessoa.setLocalidade(newPessoa.getLocalidade());
+                    pessoa.setUf(newPessoa.getUf());
                     return cadastroRepository.save(pessoa);
                 })
                 .orElseGet(() -> {
@@ -48,7 +55,13 @@ public class CadastroServices {
         return this.cadastroRepository.insert(pessoa);
     }
 
-    public Endereco getCep(@PathVariable String cep) {
-        return new RestTemplate().getForEntity("https://viacep.com.br/ws/" + cep + "/json/", Endereco.class).getBody();
+    //Método DELETE
+    public void delete(String id) {
+        findById(id);
+        this.cadastroRepository.deleteById(id);
+    }
+
+    public Pessoa getCep(@PathVariable String cep) {
+        return new RestTemplate().getForEntity("https://viacep.com.br/ws/" + cep + "/json/", Pessoa.class).getBody();
     }
 }
