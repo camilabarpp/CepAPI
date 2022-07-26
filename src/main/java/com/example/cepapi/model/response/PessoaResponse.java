@@ -11,16 +11,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document
 public class PessoaResponse {
 
     private String nome;
     @JsonFormat(pattern = "dd/MM/yyyy")
     private String dataDeNascimento;
-    private String cep;
-    private String logradouro;
+    //private String cep;
+    //private String logradouro;
     private String numero;
-    private String bairro;
-    private String localidade;
-    private String uf;
+    //private String bairro;
+    //private String localidade;
+    //private String uf;
 }

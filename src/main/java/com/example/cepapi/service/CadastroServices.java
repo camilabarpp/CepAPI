@@ -1,6 +1,7 @@
 package com.example.cepapi.service;
 
 import com.example.cepapi.model.Pessoa;
+import com.example.cepapi.model.dto.EnderecoDTO;
 import com.example.cepapi.repository.CadastroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class CadastroServices {
     }
 
     //Method PUT
-    public Pessoa update(@RequestBody Pessoa newPessoa, @PathVariable String id) {
+    /*public Pessoa update(@RequestBody Pessoa newPessoa, @PathVariable String id) {
         return cadastroRepository.findById(id)
                 .map(pessoa -> {
                     pessoa.setNome(newPessoa.getNome());
@@ -46,7 +47,7 @@ public class CadastroServices {
                     newPessoa.setId(id);
                     return cadastroRepository.save(newPessoa);
                 });
-    }
+    }*/
 
     //Método POST
     public Pessoa create(Pessoa pessoa) {
@@ -59,7 +60,7 @@ public class CadastroServices {
         this.cadastroRepository.deleteById(id);
     }
 
-    public Pessoa getCep(@PathVariable String cep) {
-        return new RestTemplate().getForEntity("https://viacep.com.br/ws/" + cep + "/json/", Pessoa.class).getBody();
+    public EnderecoDTO consultaCep(@PathVariable String cep) {
+        return new RestTemplate().getForEntity("https://viacep.com.br/ws/" + cep + "/json/", EnderecoDTO.class).getBody();
     }
 }

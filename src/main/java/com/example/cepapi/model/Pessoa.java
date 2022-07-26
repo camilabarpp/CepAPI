@@ -1,5 +1,6 @@
 package com.example.cepapi.model;
 
+import com.example.cepapi.model.dto.EnderecoDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -26,11 +29,16 @@ public class Pessoa implements Serializable {
     private String nome;
     @JsonFormat(pattern = "dd/MM/yyyy")
     private String dataDeNascimento;
-    private String cep;
-    private String logradouro;
     private String numero;
-    private String bairro;
-    private String localidade;
-    private String uf;
 
+
+    private List<EnderecoDTO> enderecoDTOS = new ArrayList<>();
+
+    public List<EnderecoDTO> getEnderecoDTOS() {
+        return enderecoDTOS;
+    }
+
+    public void setEnderecoDTOS(List<EnderecoDTO> enderecoDTOS) {
+        this.enderecoDTOS = enderecoDTOS;
+    }
 }
