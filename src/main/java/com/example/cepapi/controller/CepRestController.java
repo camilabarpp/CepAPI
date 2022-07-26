@@ -1,6 +1,5 @@
 package com.example.cepapi.controller;
 
-import com.example.cepapi.model.dto.EnderecoDTO;
 import com.example.cepapi.model.Pessoa;
 import com.example.cepapi.service.CadastroServices;
 import com.google.gson.Gson;
@@ -26,7 +25,7 @@ public class CepRestController {
 
 	@ResponseBody
 	@GetMapping("/{cep}")
-	public ResponseEntity<EnderecoDTO> consultaCep(@PathVariable String cep) {
+	public ResponseEntity<Pessoa> consultaCep(@PathVariable String cep) {
 		return new ResponseEntity<>(cadastroServices.consultaCep(cep), HttpStatus.OK);
 	}
 
@@ -42,9 +41,9 @@ public class CepRestController {
 
 	@ResponseBody
 	@PostMapping("cadastrar")
-	public ResponseEntity<Pessoa> create(@RequestBody Pessoa newPessoa, EnderecoDTO enderecoDTO, String cep) throws Exception {
+	public ResponseEntity<Pessoa> create(@RequestBody Pessoa newPessoa, String cep) throws Exception {
 
-/*		URL url = new URL("https://viacep.com.br/ws/" + newPessoa.consultaCep() + "/json");
+		URL url = new URL("https://viacep.com.br/ws/" + newPessoa.getCep() + "/json");
 
 		URLConnection connection = url.openConnection();
 		InputStream is = connection.getInputStream();
@@ -57,27 +56,16 @@ public class CepRestController {
 		}
 
 		Pessoa pessoaAux = new Gson().fromJson(jsonCep.toString(), Pessoa.class);
-		newPessoa.setCep(pessoaAux.consultaCep());
+		newPessoa.setCep(pessoaAux.getCep());
 		newPessoa.setLogradouro(pessoaAux.getLogradouro());
 		newPessoa.setBairro(pessoaAux.getBairro());
 		newPessoa.setLocalidade(pessoaAux.getLocalidade());
 		newPessoa.setUf(pessoaAux.getUf());
 		newPessoa = cadastroServices.create(newPessoa);
-		return new ResponseEntity<>(newPessoa, HttpStatus.OK);*/
-		for (int i = 0; i < newPessoa.getEnderecoDTOS().size(); i++) {
-
-			enderecoDTO = cadastroServices.consultaCep(newPessoa.getEnderecoDTOS().get(i).getCep());
-
-			newPessoa.getEnderecoDTOS().get(i).setLogradouro(enderecoDTO.getLogradouro());
-			newPessoa.getEnderecoDTOS().get(i).setBairro(enderecoDTO.getBairro());
-			newPessoa.getEnderecoDTOS().get(i).setLocalidade(enderecoDTO.getLocalidade());
-			newPessoa.getEnderecoDTOS().get(i).setUf(enderecoDTO.getUf());
-		}
-
-		return new ResponseEntity<Pessoa>(newPessoa, HttpStatus.OK);
+		return new ResponseEntity<>(newPessoa, HttpStatus.OK);
 	}
 
-	/*@PutMapping("atualizar/{id}")
+	@PutMapping("atualizar/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	Pessoa update(@RequestBody Pessoa newPessoa, @PathVariable String id) throws Exception {
 		URL url2 = new URL("https://viacep.com.br/ws/" + newPessoa.getCep() + "/json");
@@ -104,7 +92,7 @@ public class CepRestController {
 	public ResponseEntity<Void> delete(@PathVariable String id) {
 		this.cadastroServices.delete(id);
 		return ResponseEntity.noContent().build();
-	}*/
+	}
 
 
 }

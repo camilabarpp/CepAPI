@@ -1,9 +1,7 @@
 package com.example.cepapi.service;
 
 import com.example.cepapi.model.Pessoa;
-import com.example.cepapi.model.dto.EnderecoDTO;
 import com.example.cepapi.repository.CadastroRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,8 +11,10 @@ import java.util.List;
 @Service
 public class CadastroServices {
 
-    @Autowired
-    private CadastroRepository cadastroRepository;
+    private final CadastroRepository cadastroRepository;
+    public CadastroServices(CadastroRepository cadastroRepository) {
+        this.cadastroRepository = cadastroRepository;
+    }
 
     //Método GET todos
     public List<Pessoa> findAll() {
@@ -30,7 +30,7 @@ public class CadastroServices {
     }
 
     //Method PUT
-    /*public Pessoa update(@RequestBody Pessoa newPessoa, @PathVariable String id) {
+    public Pessoa update(@RequestBody Pessoa newPessoa, @PathVariable String id) {
         return cadastroRepository.findById(id)
                 .map(pessoa -> {
                     pessoa.setNome(newPessoa.getNome());
@@ -47,7 +47,7 @@ public class CadastroServices {
                     newPessoa.setId(id);
                     return cadastroRepository.save(newPessoa);
                 });
-    }*/
+    }
 
     //Método POST
     public Pessoa create(Pessoa pessoa) {
@@ -60,7 +60,7 @@ public class CadastroServices {
         this.cadastroRepository.deleteById(id);
     }
 
-    public EnderecoDTO consultaCep(@PathVariable String cep) {
-        return new RestTemplate().getForEntity("https://viacep.com.br/ws/" + cep + "/json/", EnderecoDTO.class).getBody();
+    public Pessoa consultaCep(@PathVariable String cep) {
+        return new RestTemplate().getForEntity("https://viacep.com.br/ws/" + cep + "/json/", Pessoa.class).getBody();
     }
 }

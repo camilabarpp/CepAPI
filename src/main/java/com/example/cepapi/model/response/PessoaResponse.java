@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Builder
@@ -16,10 +15,10 @@ public class PessoaResponse {
     private String nome;
     @JsonFormat(pattern = "dd/MM/yyyy")
     private String dataDeNascimento;
-    //private String cep;
-    //private String logradouro;
+    private String cep;
+    private String logradouro;
     private String numero;
-    //private String bairro;
-    //private String localidade;
-    //private String uf;
+    private String bairro;
+    private String localidade;
+    private String uf;
 }
