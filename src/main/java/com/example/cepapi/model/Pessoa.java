@@ -8,29 +8,36 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Document(collection = "CepAPI")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Pessoa implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Pessoa {
 
     @Id
     private String id;
+    @NotNull
+    @NotBlank
     private String nome;
     @JsonFormat(pattern = "dd/MM/yyyy")
     private String dataDeNascimento;
+    @NotNull
+    @NotBlank
     private String cep;
     private String logradouro;
     private String numero;
     private String bairro;
     private String localidade;
     private String uf;
+
 
 }

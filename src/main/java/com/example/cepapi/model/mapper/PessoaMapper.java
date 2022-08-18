@@ -3,25 +3,27 @@ package com.example.cepapi.model.mapper;
 import com.example.cepapi.model.Pessoa;
 import com.example.cepapi.model.request.PessoaRequest;
 import com.example.cepapi.model.response.PessoaResponse;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class PessoaMapper {
 
     public static Pessoa requestPessoa(PessoaRequest pessoaRequest) {
         return Pessoa.builder()
-                .id(pessoaRequest.getId())
                 .nome(pessoaRequest.getNome())
                 .dataDeNascimento(pessoaRequest.getDataDeNascimento())
                 .cep(pessoaRequest.getCep())
-                .logradouro(pessoaRequest.getLogradouro())
+                .localidade(pessoaRequest.getLocalidade())
                 .numero(pessoaRequest.getNumero())
                 .bairro(pessoaRequest.getBairro())
-                .localidade(pessoaRequest.getLocalidade())
+                .logradouro(pessoaRequest.getLogradouro())
                 .uf(pessoaRequest.getUf())
                 .build();
     }
 
     public static PessoaResponse pessoaResponse(Pessoa pessoa) {
         return PessoaResponse.builder()
+                .id(pessoa.getId())
                 .nome(pessoa.getNome())
                 .dataDeNascimento(pessoa.getDataDeNascimento())
                 .cep(pessoa.getCep())
@@ -30,6 +32,18 @@ public class PessoaMapper {
                 .bairro(pessoa.getBairro())
                 .localidade(pessoa.getLocalidade())
                 .uf(pessoa.getUf())
+                .build();
+    }
+
+    public static Pessoa toEntity(PessoaResponse pessoaResponse){
+        return Pessoa.builder()
+                .nome(pessoaResponse.getNome())
+                .dataDeNascimento(pessoaResponse.getDataDeNascimento())
+                .logradouro(pessoaResponse.getLogradouro())
+                .numero(pessoaResponse.getNumero())
+                .bairro(pessoaResponse.getBairro())
+                .localidade(pessoaResponse.getLocalidade())
+                .uf(pessoaResponse.getUf())
                 .build();
     }
 }
