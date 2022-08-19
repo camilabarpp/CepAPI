@@ -1,93 +1,73 @@
 package com.example.cepapi.controller;
 
-import com.example.cepapi.integration.resttemplate.CepClient;
 import com.example.cepapi.model.request.PessoaRequest;
 import com.example.cepapi.model.response.PessoaResponse;
 import com.example.cepapi.service.CadastroServices;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import io.swagger.annotations.ApiOperation;
 
-import javax.validation.Valid;
-
 import static org.springframework.http.HttpStatus.*;
 
 
 @Slf4j
 @RestController
-@RequestMapping("")
+@RequestMapping("city/")
 @AllArgsConstructor
 public class PessoaController {
-	private final CadastroServices cadastroServices;
-	private CepClient cepClient;
-
-	@ResponseBody
-	@GetMapping("/{cep}")
-	public PessoaResponse consultaCep(@PathVariable String cep) {
-		return cepClient.consultaCep(cep);
-	}
+	CadastroServices services;
 
 	@GetMapping("")
-	@ResponseStatus(OK)
-	@ApiOperation(value = "Returns a list of people")
+	@ApiOperation(value = "Returns a list of cities")
 	public List<PessoaResponse> findAll(){
-		return this.cadastroServices.findAll();
+		return services.findAll();
 	}
 
 	@GetMapping("buscarid/{id}")
-	@ApiOperation(value = "Returns an person by id")
+	@ApiOperation(value = "Returns a city by id")
 	public PessoaResponse findById(@PathVariable String id) {
-		return cadastroServices.findById(id);
+		return services.findById(id);
 	}
 
-
-	@PostMapping("/cadastrar")
+/*	@PostMapping("/cadastrar")
 	@ResponseBody
 	@ResponseStatus(CREATED)
-	public PessoaResponse create2(@RequestBody @NotNull PessoaRequest pessoaRequest) {
-		var cepPesquisado = cepClient.consultaCep(pessoaRequest.getCep());
-		integration(pessoaRequest, cepPesquisado);
-		return cadastroServices.create(pessoaRequest);
-	}
-
-
-/*	@PutMapping("atualizar/{id}")
-	@ResponseStatus(HttpStatus.CREATED)
-	@ApiOperation(value = "Change an employee by id")
-	public PessoaResponse update(
-			@RequestBody PessoaRequest pessoaRequest ,
-			@PathVariable String id){
-		return this.cadastroServices.update(pessoaRequest, id);
+	@ApiOperation(value = "Create a city")
+	public PessoaResponse create(@RequestBody @NotNull PessoaRequest pessoaRequest) {
+		return facade.create(pessoaRequest);
 	}*/
+
+	@PutMapping("atualizar/{id}")
+	@ResponseStatus(CREATED)
+	@ApiOperation(value = "Change a city by id")
+	public PessoaResponse update(@RequestBody PessoaRequest pessoaRequest , @PathVariable String id){
+		return services.update(pessoaRequest, id);
+	}
 
 	@DeleteMapping("/deletar/{id}")
 	@ResponseStatus(NO_CONTENT)
-	@ApiOperation(value = "Delete a person by ID")
+	@ApiOperation(value = "Delete a city by ID")
 	public void delete(@PathVariable String id){
-		this.cadastroServices.delete(id);
+		services.delete(id);
 	}
 
 
-	@DeleteMapping("/delete")
+	@DeleteMapping("/deleteIds")
 	@ResponseStatus(NO_CONTENT)
-	@ApiOperation(value = "Delete a list of employees")
-	public void deletePeolpleByIDs(@RequestParam List<String> ids){
-		cadastroServices.deletePeolpleByIDs(ids);
+	@ApiOperation(value = "Delete a list of cities")
+	public void deleteByIDs(@RequestParam List<String> ids){
+		services.deleteByIDs(ids);
 	}
 
-	private static void integration(PessoaRequest pessoaRequest, PessoaResponse cepPesquisado) {
-		pessoaRequest.setCep(cepPesquisado.getCep());
-		pessoaRequest.setLogradouro(cepPesquisado.getLogradouro());
-		pessoaRequest.setBairro(cepPesquisado.getBairro());
-		pessoaRequest.setLocalidade(cepPesquisado.getLocalidade());
-		pessoaRequest.setUf(cepPesquisado.getUf());
+	@DeleteMapping("/deleteAll")
+	@ResponseStatus(NO_CONTENT)
+	@ApiOperation(value = "Delete all cities")
+	public void deleteByIDs(){
+		services.deleteAll();
 	}
 
 }
