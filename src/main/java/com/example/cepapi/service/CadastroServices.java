@@ -1,52 +1,82 @@
 package com.example.cepapi.service;
 
+import com.example.cepapi.configuration.ApiNotFoundException;
+import com.example.cepapi.integration.resttemplate.CepClient;
+import com.example.cepapi.model.Pessoa;
+import com.example.cepapi.model.mapper.PessoaMapper;
 import com.example.cepapi.model.request.PessoaRequest;
 import com.example.cepapi.model.response.PessoaResponse;
 import com.example.cepapi.repository.CadastroRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+
+import static com.example.cepapi.model.mapper.PessoaMapper.*;
 
 @Service
 @AllArgsConstructor
 public class CadastroServices {
-    private CadastroRepository repository;
+
+    private final CadastroRepository cadastroRepository;
+
+    private CepClient client;
 
     //Método GET todos
     public List<PessoaResponse> findAll(){
-        return repository.findAll();
+        return cadastroRepository.findAll().stream()
+                .map(PessoaMapper::pessoaResponse)
+                .toList();
     }
 
     //Método GEt por ID
     public PessoaResponse findById(String id) {
-        return repository.findById(id);
+        Pessoa pessoa = cadastroRepository.findById(id)
+                .orElseThrow(() -> new ApiNotFoundException("ID Not Found: " + id));
+        return pessoaResponse(pessoa);
     }
 
     //Method PUT
-    public PessoaResponse update(@RequestBody PessoaRequest pessoaRequest, @PathVariable String id) {
-        return repository.update(pessoaRequest, id);
+    public PessoaResponse update(PessoaRequest pessoaRequest,String id) {
+        var consultaCep = client.consultaCep(pessoaRequest.getCep());
+
+        Pessoa found = cadastroRepository.findById(id).orElseThrow(
+                () -> new ApiNotFoundException("ID Not Found: " + id));
+        found.setNome(pessoaRequest.getNome());
+        found.setDataDeNascimento(pessoaRequest.getDataDeNascimento());
+        found.setCep(consultaCep.getCep());
+        found.setLogradouro(consultaCep.getLogradouro());
+        found.setNumero(pessoaRequest.getNumero());
+        found.setBairro(consultaCep.getBairro());
+        found.setLocalidade(consultaCep.getLocalidade());
+        found.setUf(consultaCep.getUf());
+        Pessoa saved = cadastroRepository.save(found);
+        return pessoaResponse(saved);
     }
 
-/*    //Método POST
-    public PessoaResponse create(PessoaRequest pessoaRequest) {
-        return facade.create(pessoaRequest);
-    }*/
+        //Método POST
+    public PessoaResponse create(PessoaRequest pessoaRequest) { //Está funcionando corretamente
+        var cepPesquisado = client.consultaCep(pessoaRequest.getCep());
+        integration(pessoaRequest, cepPesquisado);
+        return pessoaResponse(cadastroRepository.insert((requestPessoa(pessoaRequest))));
+    }
 
     //Método DELETE
     public void delete(String id) {
-        repository.delete(id);
+        cadastroRepository.findById(id)
+                .orElseThrow(() -> new ApiNotFoundException("ID Not Found: " + id));
+        cadastroRepository.deleteById(id);
     }
 
-    //Método DELETE ids
-    public void deleteByIDs(List<String> ids) {
-        repository.deleteByIDs(ids);
+    public void deletePeolpleByIDs(List<String> ids) {
+        cadastroRepository.deleteAllById(ids);
     }
 
-    public void deleteAll() {
-        repository.deleteAll();
+    private static void integration(PessoaRequest pessoaRequest, PessoaResponse cepPesquisado) {
+        pessoaRequest.setCep(cepPesquisado.getCep());
+        pessoaRequest.setLogradouro(cepPesquisado.getLogradouro());
+        pessoaRequest.setBairro(cepPesquisado.getBairro());
+        pessoaRequest.setLocalidade(cepPesquisado.getLocalidade());
+        pessoaRequest.setUf(cepPesquisado.getUf());
     }
-
 }
