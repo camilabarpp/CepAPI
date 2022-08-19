@@ -4,10 +4,13 @@ import com.example.cepapi.configuration.errorresponse.ErrorResponse;
 import com.example.cepapi.configuration.errorobject.ErrorObject;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.DefaultResponseErrorHandler;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -31,9 +34,9 @@ public class ApiExceptionHandler extends DefaultResponseErrorHandler {
                 .build();
     }
 
-    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    @ResponseStatus (METHOD_NOT_ALLOWED)
-    public ErrorResponse methodArgumentNotValidException(HttpRequestMethodNotSupportedException exception) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus (BAD_REQUEST)
+    public ErrorResponse methodArgumentNotValidException(MethodArgumentNotValidException exception) {
         return ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .error(List.of(ErrorObject.builder()
@@ -43,19 +46,6 @@ public class ApiExceptionHandler extends DefaultResponseErrorHandler {
                         .build()))
                 .build();
     }
-    @ExceptionHandler(IOException.class)
-    @ResponseStatus (INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleException(Exception e) {
-        return ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .error(List.of(ErrorObject.builder()
-                        .message(e.getMessage())
-                        .field(INTERNAL_SERVER_ERROR.name())
-                        .parameter(e.getClass().getSimpleName())
-                        .build()))
-                .build();
-    }
-
     //Erro para valores nulos
     @ExceptionHandler(NullPointerException.class)
     @ResponseStatus(INTERNAL_SERVER_ERROR)
@@ -69,7 +59,6 @@ public class ApiExceptionHandler extends DefaultResponseErrorHandler {
                         .build()))
                 .build();
     }
-
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(BAD_REQUEST)
     public ErrorResponse httpMessageNotReadableException(HttpMessageNotReadableException e) {
@@ -83,4 +72,55 @@ public class ApiExceptionHandler extends DefaultResponseErrorHandler {
                 .build();
     }
 
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus (METHOD_NOT_ALLOWED)
+    public ErrorResponse methodArgumentNotValidException(HttpRequestMethodNotSupportedException exception) {
+        return ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .error(List.of(ErrorObject.builder()
+                        .message(exception.getMessage())
+                        .field(METHOD_NOT_ALLOWED.name())
+                        .parameter(exception.getClass().getSimpleName())
+                        .build()))
+                .build();
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    @ResponseStatus (BAD_REQUEST)
+    public ErrorResponse handleException(ResponseStatusException e) {
+        return ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .error(List.of(ErrorObject.builder()
+                        .message(e.getMessage())
+                        .field(BAD_REQUEST.name())
+                        .parameter(e.getClass().getSimpleName())
+                        .build()))
+                .build();
+    }
+
+    @ExceptionHandler(HttpClientErrorException.class)
+    @ResponseStatus (NOT_FOUND)
+    public ErrorResponse notFound(HttpClientErrorException e) {
+        return ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .error(List.of(ErrorObject.builder()
+                        .message(e.getMessage())
+                        .field(NOT_FOUND.name())
+                        .parameter(e.getClass().getSimpleName())
+                        .build()))
+                .build();
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus (INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleException(Exception e) {
+        return ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .error(List.of(ErrorObject.builder()
+                        .message(e.getMessage())
+                        .field(INTERNAL_SERVER_ERROR.name())
+                        .parameter(e.getClass().getSimpleName())
+                        .build()))
+                .build();
+    }
 }
