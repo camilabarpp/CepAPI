@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.DefaultResponseErrorHandler;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -17,19 +18,6 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 public class ApiExceptionHandler extends DefaultResponseErrorHandler {
-
-    @ExceptionHandler(ApiNotFoundException.class)
-    @ResponseStatus (NOT_FOUND)
-    public ErrorResponse handleApiRequestExceptionNotFound(ApiNotFoundException e) {
-        return  ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .error(List.of(ErrorObject.builder()
-                        .message(e.getMessage())
-                        .field(NOT_FOUND.name())
-                        .parameter(e.getClass().getSimpleName())
-                        .build()))
-                .build();
-    }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseStatus (METHOD_NOT_ALLOWED)
@@ -77,6 +65,32 @@ public class ApiExceptionHandler extends DefaultResponseErrorHandler {
                 .timestamp(LocalDateTime.now())
                 .error(List.of(ErrorObject.builder()
                         .message("Ímpossível ler o corpo da requisição!")
+                        .field(BAD_REQUEST.name())
+                        .parameter(e.getClass().getSimpleName())
+                        .build()))
+                .build();
+    }
+
+    @ExceptionHandler(ApiNotFoundException.class)
+    @ResponseStatus (BAD_REQUEST)
+    public ErrorResponse handleApiRequestExceptionNotFound(ApiNotFoundException e) {
+        return  ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .error(List.of(ErrorObject.builder()
+                        .message(e.getMessage())
+                        .field(BAD_REQUEST.name())
+                        .parameter(e.getClass().getSimpleName())
+                        .build()))
+                .build();
+    }
+
+    @ExceptionHandler(HttpClientErrorException.class)
+    @ResponseStatus(BAD_REQUEST)
+    public ErrorResponse apiNotFoundException(HttpClientErrorException e) {
+        return ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .error(List.of(ErrorObject.builder()
+                        .message("Please,insert a CEP")
                         .field(BAD_REQUEST.name())
                         .parameter(e.getClass().getSimpleName())
                         .build()))

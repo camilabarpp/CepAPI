@@ -3,14 +3,19 @@ package com.example.cepapi.service;
 import com.example.cepapi.configuration.ApiNotFoundException;
 import com.example.cepapi.integration.resttemplate.CepClient;
 import com.example.cepapi.model.pessoa.Pessoa;
+import com.example.cepapi.model.pessoa.cep.CepEntity;
 import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.repository.CadastroRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.pessoaResponse;
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
 
 @Service
 @AllArgsConstructor
