@@ -1,31 +1,11 @@
 package com.example.cepapi.controller;
 
-import com.example.cepapi.configuration.ApiNotFoundException;
-import com.example.cepapi.model.request.PessoaRequest;
-import com.example.cepapi.model.response.PessoaResponse;
 import com.example.cepapi.service.CadastroServices;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.function.Executable;
 import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.Rule;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.doNothing;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PessoaControllerTest {

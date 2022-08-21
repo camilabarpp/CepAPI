@@ -1,4 +1,4 @@
-package com.example.cepapi.model.request;
+package com.example.cepapi.model.pessoa.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

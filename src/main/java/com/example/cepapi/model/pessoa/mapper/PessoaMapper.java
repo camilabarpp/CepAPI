@@ -1,8 +1,8 @@
-package com.example.cepapi.model.mapper;
+package com.example.cepapi.model.pessoa.mapper;
 
-import com.example.cepapi.model.Pessoa;
-import com.example.cepapi.model.request.PessoaRequest;
-import com.example.cepapi.model.response.PessoaResponse;
+import com.example.cepapi.model.pessoa.Pessoa;
+import com.example.cepapi.model.pessoa.request.PessoaRequest;
+import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

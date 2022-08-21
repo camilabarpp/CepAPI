@@ -1,8 +1,7 @@
 package com.example.cepapi.controller;
 
-import com.example.cepapi.integration.resttemplate.CepClient;
-import com.example.cepapi.model.request.PessoaRequest;
-import com.example.cepapi.model.response.PessoaResponse;
+import com.example.cepapi.model.pessoa.request.PessoaRequest;
+import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.service.CadastroServices;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;

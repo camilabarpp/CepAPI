@@ -1,4 +1,4 @@
-package com.example.cepapi.model;
+package com.example.cepapi.model.pessoa;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

@@ -1,4 +1,4 @@
-package com.example.cepapi.model.response;
+package com.example.cepapi.model.pessoa.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
