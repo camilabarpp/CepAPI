@@ -75,6 +75,10 @@ public class CadastroServices {
         cadastroRepository.deleteAllById(ids);
     }
 
+    public void deleteAll(){
+        cadastroRepository.deleteAll();
+    }
+
     private static void integration(PessoaRequest pessoaRequest, PessoaResponse cepPesquisado) {
         pessoaRequest.setCep(cepPesquisado.getCep());
         pessoaRequest.setLogradouro(cepPesquisado.getLogradouro());
