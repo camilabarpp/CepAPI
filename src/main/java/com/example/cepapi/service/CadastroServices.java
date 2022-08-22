@@ -1,26 +1,24 @@
 package com.example.cepapi.service;
 
 import com.example.cepapi.configuration.ApiNotFoundException;
-import com.example.cepapi.integration.resttemplate.CepIntegration;
+import com.example.cepapi.integration.resttemplate.cep.CepIntegration;
+import com.example.cepapi.model.cep.CepEntity;
+import com.example.cepapi.model.cep.CepMapper;
 import com.example.cepapi.model.pessoa.Pessoa;
-import com.example.cepapi.model.pessoa.cep.CepEntity;
-import com.example.cepapi.model.pessoa.cep.response.CepResponse;
 import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.repository.CadastroRepository;
 import com.example.cepapi.repository.CepRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-import static com.example.cepapi.model.pessoa.cep.CepMapper.entityToResponse;
-import static com.example.cepapi.model.pessoa.cep.CepMapper.toProductEntity;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.*;
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.pessoaResponse;
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
 
 @Service
 @RequiredArgsConstructor
@@ -34,37 +32,23 @@ public class CadastroServices {
     @Autowired
     private CepService cepService;
     @Autowired
-    private CepIntegration integration;
+    private CepIntegration cepIntegration;
 
-    public void inserir(PessoaRequest cliente) {
-        String cep = cliente.getEndereco().getCep();
-        CepEntity endereco = cepRepository.findById((cep)).orElseGet(() -> {
-            CepEntity novoEndereco = integration.consultarCep(cep);
-            cepRepository.save(novoEndereco);
-            return novoEndereco;
-        });
-        cliente.setEndereco(endereco);
-        cadastroRepository.save(requestPessoa(cliente));
+    public void create(PessoaRequest pessoaRequest) {
+        pesquisarCepESalvarNoBanco(pessoaRequest);
+    }
+
+    //Method PUT
+    public void update(PessoaRequest pessoaRequest, String id) {
+        Optional<Pessoa> requestBd = cadastroRepository.findById(id);
+        if (requestBd.isPresent()) {
+            pesquisarCepESalvarNoBanco(pessoaRequest);
+        }
     }
 
 
-/*    private static void integration(PessoaRequest pessoaRequest, CepEntity cepPesquisado) {
-        pessoaRequest.setEndereco(cepPesquisado.getCep());
-        pessoaRequest.setCepEntity(cepPesquisado.getLogradouro());
-        pessoaRequest.setBairro(cepPesquisado.getBairro());
-        pessoaRequest.setLocalidade(cepPesquisado.getLocalidade());
-        pessoaRequest.setUf(cepPesquisado.getUf());
-    }*/
-
-    //Método POST
-/*    public PessoaResponse create(PessoaRequest pessoaRequest) { //Está funcionando corretamente
-        var cepPesquisado = client.consultaCep(pessoaRequest.getCep());
-        integration(pessoaRequest, cepPesquisado);
-        return pessoaResponse(cadastroRepository.insert((requestPessoa(pessoaRequest))));
-    }*/
-
     //Método GET todos
-    public List<PessoaResponse> findAll(){
+    public List<PessoaResponse> findAll() {
         return cadastroRepository.findAll().stream()
                 .map(PessoaMapper::pessoaResponse)
                 .toList();
@@ -96,7 +80,6 @@ public class CadastroServices {
     }*/
 
 
-
     //Método DELETE
     public void delete(String id) {
         cadastroRepository.findById(id)
@@ -108,15 +91,18 @@ public class CadastroServices {
         cadastroRepository.deleteAllById(ids);
     }
 
-    public void deleteAll(){
+    public void deleteAll() {
         cadastroRepository.deleteAll();
     }
 
-/*    private static void integration(PessoaRequest pessoaRequest, PessoaResponse cepPesquisado) {
-        pessoaRequest.setCep(cepPesquisado.getCep());
-        pessoaRequest.setLogradouro(cepPesquisado.getLogradouro());
-        pessoaRequest.setBairro(cepPesquisado.getBairro());
-        pessoaRequest.setLocalidade(cepPesquisado.getLocalidade());
-        pessoaRequest.setUf(cepPesquisado.getUf());
-    }*/
+    private void pesquisarCepESalvarNoBanco(PessoaRequest pessoaRequest) {
+        String cep = pessoaRequest.getEndereco().getCep();
+        CepEntity endereco = cepRepository.findById((cep)).orElseGet(() -> {
+            CepEntity novoEndereco = CepMapper.entityToResponse(cepIntegration.consultarCep(cep));
+            cepRepository.save(novoEndereco);
+            return novoEndereco;
+        });
+        pessoaRequest.setEndereco(endereco);
+        cadastroRepository.save(requestPessoa(pessoaRequest));
+    }
 }

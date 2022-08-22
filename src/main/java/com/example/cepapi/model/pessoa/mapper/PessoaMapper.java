@@ -10,6 +10,7 @@ public class PessoaMapper {
 
     public static Pessoa requestPessoa(PessoaRequest pessoaRequest) {
         return Pessoa.builder()
+                .id(pessoaRequest.getId())
                 .nome(pessoaRequest.getNome())
                 .dataDeNascimento(pessoaRequest.getDataDeNascimento())
                 .endereco(pessoaRequest.getEndereco())
@@ -18,7 +19,6 @@ public class PessoaMapper {
 
     public static PessoaResponse pessoaResponse(Pessoa pessoa) {
         return PessoaResponse.builder()
-                .id(pessoa.getId())
                 .nome(pessoa.getNome())
                 .dataDeNascimento(pessoa.getDataDeNascimento())
                 .endereco(pessoa.getEndereco())
@@ -38,11 +38,6 @@ public class PessoaMapper {
                 .nome(pessoaRequest.getNome())
                 .dataDeNascimento(pessoaRequest.getDataDeNascimento())
                 .endereco(pessoaRequest.getEndereco())
-/*                .logradouro(pessoaResponse.getLogradouro())
-                .numero(pessoaResponse.getNumero())
-                .bairro(pessoaResponse.getBairro())
-                .localidade(pessoaResponse.getLocalidade())
-                .uf(pessoaResponse.getUf())*/
                 .build();
     }
 }

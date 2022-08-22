@@ -1,4 +1,4 @@
-package com.example.cepapi.integration.resttemplate.walmart.model;
+package com.example.cepapi.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

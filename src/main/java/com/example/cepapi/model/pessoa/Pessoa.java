@@ -1,6 +1,6 @@
 package com.example.cepapi.model.pessoa;
 
-import com.example.cepapi.model.pessoa.cep.CepEntity;
+import com.example.cepapi.model.cep.CepEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +28,6 @@ public class Pessoa {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private String dataDeNascimento;
     private CepEntity endereco;
-
     public CepEntity getEndereco() {
         return endereco;
     }
@@ -36,4 +35,5 @@ public class Pessoa {
     public void setEndereco(CepEntity endereco) {
         this.endereco = endereco;
     }
+
 }

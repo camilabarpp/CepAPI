@@ -1,22 +1,19 @@
-package com.example.cepapi.model.pessoa.cep;
+package com.example.cepapi.model.cep.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("CEP")
-public class CepEntity {
+public class CepRequest {
     @Id
     private String cep;
     private String logradouro;
-    private String numero;
     private String bairro;
     private String localidade;
     private String uf;

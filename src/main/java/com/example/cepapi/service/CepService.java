@@ -1,9 +1,11 @@
 package com.example.cepapi.service;
 
 import com.example.cepapi.configuration.ApiNotFoundException;
-import com.example.cepapi.integration.resttemplate.CepIntegration;
-import com.example.cepapi.model.pessoa.cep.CepMapper;
-import com.example.cepapi.model.pessoa.cep.response.CepResponse;
+import com.example.cepapi.integration.resttemplate.cep.CepIntegration;
+import com.example.cepapi.model.cep.CepMapper;
+import com.example.cepapi.model.cep.request.CepRequest;
+import com.example.cepapi.model.cep.response.CepResponse;
+import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.repository.CepRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,11 +20,10 @@ public class CepService {
 
     private CepRepository repository;
     public CepResponse consultaCep(String cep) {
-        return Optional.ofNullable(integration.consultaCep(cep))
-                .map(CepMapper::toIntResponse)
-                .map(repository::save)
-                .map(CepMapper::toProductEntity)
-                .orElseThrow(() -> new ApiNotFoundException("Please,insert a CEP"));
+        var cepResponseIntegration = integration.consultarCep(cep);
+        var entity = CepMapper.entityToResponse(cepResponseIntegration);
+        var entitySaved = repository.save(entity);
+        return CepMapper.toProductEntity(entitySaved);
     }
 
 }

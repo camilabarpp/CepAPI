@@ -1,4 +1,4 @@
-package com.example.cepapi.model.pessoa.cep;
+package com.example.cepapi.model.cep;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

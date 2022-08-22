@@ -1,4 +1,4 @@
-package com.example.cepapi.model.pessoa.cep.response;
+package com.example.cepapi.model.cep.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -21,8 +21,6 @@ public class CepResponse {
     private String cep;
     @JsonProperty("logradouro")
     private String logradouro;
-    @JsonProperty("numero")
-    private String numero;
     @JsonProperty("bairro")
     private String bairro;
     @JsonProperty("localidade")

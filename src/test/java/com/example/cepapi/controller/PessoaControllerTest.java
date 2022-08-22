@@ -11,7 +11,7 @@ import org.junit.Rule;
 public class PessoaControllerTest {
 
     @InjectMocks
-    private PessoaController pessoaController;
+    private CadastroController pessoaController;
 
     @Mock
     private CadastroServices cadastroServices;

@@ -1,23 +1,10 @@
-package com.example.cepapi.model.pessoa.cep;
+package com.example.cepapi.model.cep;
 
-import com.example.cepapi.integration.resttemplate.walmart.model.DataIntegrationResponse;
-import com.example.cepapi.model.pessoa.cep.response.CepResponse;
+import com.example.cepapi.model.cep.response.CepResponse;
 
 public class CepMapper {
 
-    public static CepEntity toIntResponse(DataIntegrationResponse response) {
-        var product = response.getData().getProduct();
-
-        return CepEntity.builder()
-                .cep(product.getCep())
-                .logradouro(product.getLogradouro())
-                .bairro(product.getBairro())
-                .localidade(product.getLocalidade())
-                .uf(product.getUf())
-                .build();
-    }
-
-    public static CepEntity entityToResponse(CepResponse response) {
+   public static CepEntity entityToResponse(CepResponse response) {
         //var product = response.getData().getProduct();
         return CepEntity.builder()
                 .cep(response.getCep())

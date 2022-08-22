@@ -1,6 +1,6 @@
 package com.example.cepapi.model.pessoa.request;
 
-import com.example.cepapi.model.pessoa.cep.CepEntity;
+import com.example.cepapi.model.cep.CepEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,4 +30,8 @@ public class PessoaRequest {
 
     public void setEndereco(CepEntity endereco) {
         this.endereco = endereco;
-    }}
+    }
+
+
+}
+

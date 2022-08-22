@@ -19,7 +19,7 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 @RequestMapping("")
 @AllArgsConstructor
-public class PessoaController {
+public class CadastroController {
 	private final CadastroServices cadastroServices;
 
 	@GetMapping("")
@@ -35,26 +35,25 @@ public class PessoaController {
 		return cadastroServices.findById(id);
 	}
 
-	@PostMapping
-	public ResponseEntity<PessoaResponse> inserir(@RequestBody PessoaRequest cliente) {
-		cadastroServices.inserir(cliente);
-		return ResponseEntity.ok(PessoaMapper.toRequest(cliente));
-	}
-/*	@PostMapping("/cadastrar")
+	@PostMapping("/cadastrar")
 	@ResponseBody
 	@ResponseStatus(CREATED)
-	public PessoaResponse create2(@RequestBody @NotNull PessoaRequest pessoaRequest) {
-
-		return cadastroServices.create(pessoaRequest);
+	@ApiOperation(value = "Create a person")
+	public ResponseEntity<PessoaResponse> create(@RequestBody PessoaRequest cliente) {
+		cadastroServices.create(cliente);
+		return ResponseEntity.ok(PessoaMapper.toRequest(cliente));
 	}
 
+/*
 
 	@PutMapping("atualizar/{id}")
-	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseStatus(CREATED)
 	@ApiOperation(value = "Change an employee by id")
 	public PessoaResponse update(@RequestBody PessoaRequest pessoaRequest , @PathVariable String id){
-		return this.cadastroServices.update(pessoaRequest, id);
-	}*/
+		this.cadastroServices.update(pessoaRequest, id);
+		return PessoaResponse;
+	}
+*/
 
 	@DeleteMapping("/deletar/{id}")
 	@ResponseStatus(NO_CONTENT)
