@@ -1,5 +1,7 @@
 package com.example.cepapi.model.pessoa.response;
 
+import com.example.cepapi.model.pessoa.cep.CepEntity;
+import com.example.cepapi.model.pessoa.cep.request.CepRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -15,9 +17,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PessoaResponse {
-
-    @NotNull
-    @NotBlank
     @JsonProperty("id")
     private String id;
     @JsonProperty("nome")
@@ -25,6 +24,6 @@ public class PessoaResponse {
     @JsonFormat(pattern = "dd/MM/yyyy")
     @JsonProperty("dataDeNascimento")
     private String dataDeNascimento;
-
-
+    @JsonProperty("endereco")
+    private CepEntity endereco;
 }

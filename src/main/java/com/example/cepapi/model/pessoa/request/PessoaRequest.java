@@ -22,12 +22,12 @@ public class PessoaRequest {
     private String nome;
     @JsonFormat(pattern = "dd/MM/yyyy")
     private String dataDeNascimento;
-    private CepEntity cepEntity;
+    private CepEntity endereco;
 
     public CepEntity getEndereco() {
-        return cepEntity;
+        return endereco;
     }
 
-    public void setEndereco(CepEntity cepEntity) {
-        this.cepEntity = cepEntity;
+    public void setEndereco(CepEntity endereco) {
+        this.endereco = endereco;
     }}

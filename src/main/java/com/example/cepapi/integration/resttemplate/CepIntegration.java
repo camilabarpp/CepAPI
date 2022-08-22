@@ -1,6 +1,7 @@
 package com.example.cepapi.integration.resttemplate;
 
 import com.example.cepapi.integration.resttemplate.walmart.model.DataIntegrationResponse;
+import com.example.cepapi.model.pessoa.cep.CepEntity;
 import com.example.cepapi.model.pessoa.cep.response.CepResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,8 +18,8 @@ public class CepIntegration {
         return restTemplate.getForObject("https://viacep.com.br/ws/".concat(cep) + "/json", DataIntegrationResponse.class);
     }
 
-    public CepResponse consultarCep(String cep){
-        return restTemplate.getForObject("https://viacep.com.br/ws/".concat(cep) + "/json", CepResponse.class);
+    public CepEntity consultarCep(String cep){
+        return restTemplate.getForObject("https://viacep.com.br/ws/".concat(cep) + "/json", CepEntity.class);
     }
 }
 //TODO: INTEGRAR OUTRA APLICAÇÃO -

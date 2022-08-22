@@ -19,7 +19,6 @@ public class CepMapper {
 
     public static CepEntity entityToResponse(CepResponse response) {
         //var product = response.getData().getProduct();
-
         return CepEntity.builder()
                 .cep(response.getCep())
                 .logradouro(response.getLogradouro())

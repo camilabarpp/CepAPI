@@ -11,46 +11,42 @@ import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.repository.CadastroRepository;
 import com.example.cepapi.repository.CepRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import static com.example.cepapi.model.pessoa.cep.CepMapper.entityToResponse;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.pessoaResponse;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
+import static com.example.cepapi.model.pessoa.cep.CepMapper.toProductEntity;
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.*;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CadastroServices {
 
+    @Autowired
     private CadastroRepository cadastroRepository;
-
+    @Autowired
     private CepRepository cepRepository;
 
+    @Autowired
     private CepService cepService;
-
+    @Autowired
     private CepIntegration integration;
 
-    public PessoaResponse inserir(PessoaRequest request) {
-       preencherCliente(request);
-       return PessoaMapper.toRequest(request);
+    public void inserir(PessoaRequest cliente) {
+        String cep = cliente.getEndereco().getCep();
+        CepEntity endereco = cepRepository.findById((cep)).orElseGet(() -> {
+            CepEntity novoEndereco = integration.consultarCep(cep);
+            cepRepository.save(novoEndereco);
+            return novoEndereco;
+        });
+        cliente.setEndereco(endereco);
+        cadastroRepository.save(requestPessoa(cliente));
     }
 
-    private PessoaResponse preencherCliente(PessoaRequest pessoaRequest) {
-        String cep = pessoaRequest.getEndereco().getCep();
-        CepEntity endereco = cepRepository.findById((cep)).orElseGet(() -> {
-            CepResponse novoEndereco = integration.consultarCep(cep);
-            cepRepository.save(entityToResponse(novoEndereco));
-            pessoaRequest.getEndereco().setCep(novoEndereco.getCep());
-            pessoaRequest.getEndereco().setLogradouro(novoEndereco.getLogradouro());
-            pessoaRequest.getEndereco().setBairro(novoEndereco.getBairro());
-            pessoaRequest.getEndereco().setLocalidade(novoEndereco.getLocalidade());
-            pessoaRequest.getEndereco().setUf(novoEndereco.getUf());
-            return entityToResponse(novoEndereco);
-        });
-        pessoaRequest.setEndereco(endereco);
-        return pessoaResponse(cadastroRepository.insert((requestPessoa(pessoaRequest))));
-    }
 
 /*    private static void integration(PessoaRequest pessoaRequest, CepEntity cepPesquisado) {
         pessoaRequest.setEndereco(cepPesquisado.getCep());

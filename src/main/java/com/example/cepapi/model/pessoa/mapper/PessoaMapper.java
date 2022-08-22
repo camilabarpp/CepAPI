@@ -12,12 +12,7 @@ public class PessoaMapper {
         return Pessoa.builder()
                 .nome(pessoaRequest.getNome())
                 .dataDeNascimento(pessoaRequest.getDataDeNascimento())
-/*                .cep(pessoaRequest.getCep())
-                .localidade(pessoaRequest.getLocalidade())
-                .numero(pessoaRequest.getNumero())
-                .bairro(pessoaRequest.getBairro())
-                .logradouro(pessoaRequest.getLogradouro())
-                .uf(pessoaRequest.getUf())*/
+                .endereco(pessoaRequest.getEndereco())
                 .build();
     }
 
@@ -26,12 +21,7 @@ public class PessoaMapper {
                 .id(pessoa.getId())
                 .nome(pessoa.getNome())
                 .dataDeNascimento(pessoa.getDataDeNascimento())
-/*                .cep(pessoa.getCep())
-                .logradouro(pessoa.getLogradouro())
-                .numero(pessoa.getNumero())
-                .bairro(pessoa.getBairro())
-                .localidade(pessoa.getLocalidade())
-                .uf(pessoa.getUf())*/
+                .endereco(pessoa.getEndereco())
                 .build();
     }
 
@@ -39,11 +29,7 @@ public class PessoaMapper {
         return Pessoa.builder()
                 .nome(pessoaResponse.getNome())
                 .dataDeNascimento(pessoaResponse.getDataDeNascimento())
-/*                .logradouro(pessoaResponse.getLogradouro())
-                .numero(pessoaResponse.getNumero())
-                .bairro(pessoaResponse.getBairro())
-                .localidade(pessoaResponse.getLocalidade())
-                .uf(pessoaResponse.getUf())*/
+                .endereco(pessoaResponse.getEndereco())
                 .build();
     }
 
@@ -51,6 +37,7 @@ public class PessoaMapper {
         return PessoaResponse.builder()
                 .nome(pessoaRequest.getNome())
                 .dataDeNascimento(pessoaRequest.getDataDeNascimento())
+                .endereco(pessoaRequest.getEndereco())
 /*                .logradouro(pessoaResponse.getLogradouro())
                 .numero(pessoaResponse.getNumero())
                 .bairro(pessoaResponse.getBairro())

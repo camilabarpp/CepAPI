@@ -1,13 +1,12 @@
 package com.example.cepapi.controller;
 
+import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.service.CadastroServices;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +36,9 @@ public class PessoaController {
 	}
 
 	@PostMapping
-	public PessoaResponse inserir(@RequestBody PessoaRequest request) {
-		return  cadastroServices.inserir(request);
+	public ResponseEntity<PessoaResponse> inserir(@RequestBody PessoaRequest cliente) {
+		cadastroServices.inserir(cliente);
+		return ResponseEntity.ok(PessoaMapper.toRequest(cliente));
 	}
 /*	@PostMapping("/cadastrar")
 	@ResponseBody
