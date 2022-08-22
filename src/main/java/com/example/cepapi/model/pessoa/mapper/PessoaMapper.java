@@ -12,12 +12,12 @@ public class PessoaMapper {
         return Pessoa.builder()
                 .nome(pessoaRequest.getNome())
                 .dataDeNascimento(pessoaRequest.getDataDeNascimento())
-                .cep(pessoaRequest.getCep())
+/*                .cep(pessoaRequest.getCep())
                 .localidade(pessoaRequest.getLocalidade())
                 .numero(pessoaRequest.getNumero())
                 .bairro(pessoaRequest.getBairro())
                 .logradouro(pessoaRequest.getLogradouro())
-                .uf(pessoaRequest.getUf())
+                .uf(pessoaRequest.getUf())*/
                 .build();
     }
 
@@ -26,12 +26,12 @@ public class PessoaMapper {
                 .id(pessoa.getId())
                 .nome(pessoa.getNome())
                 .dataDeNascimento(pessoa.getDataDeNascimento())
-                .cep(pessoa.getCep())
+/*                .cep(pessoa.getCep())
                 .logradouro(pessoa.getLogradouro())
                 .numero(pessoa.getNumero())
                 .bairro(pessoa.getBairro())
                 .localidade(pessoa.getLocalidade())
-                .uf(pessoa.getUf())
+                .uf(pessoa.getUf())*/
                 .build();
     }
 
@@ -39,11 +39,23 @@ public class PessoaMapper {
         return Pessoa.builder()
                 .nome(pessoaResponse.getNome())
                 .dataDeNascimento(pessoaResponse.getDataDeNascimento())
-                .logradouro(pessoaResponse.getLogradouro())
+/*                .logradouro(pessoaResponse.getLogradouro())
                 .numero(pessoaResponse.getNumero())
                 .bairro(pessoaResponse.getBairro())
                 .localidade(pessoaResponse.getLocalidade())
-                .uf(pessoaResponse.getUf())
+                .uf(pessoaResponse.getUf())*/
+                .build();
+    }
+
+    public static PessoaResponse toRequest(PessoaRequest pessoaRequest){
+        return PessoaResponse.builder()
+                .nome(pessoaRequest.getNome())
+                .dataDeNascimento(pessoaRequest.getDataDeNascimento())
+/*                .logradouro(pessoaResponse.getLogradouro())
+                .numero(pessoaResponse.getNumero())
+                .bairro(pessoaResponse.getBairro())
+                .localidade(pessoaResponse.getLocalidade())
+                .uf(pessoaResponse.getUf())*/
                 .build();
     }
 }

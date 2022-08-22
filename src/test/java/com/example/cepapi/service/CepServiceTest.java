@@ -11,12 +11,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.web.client.HttpClientErrorException;
 
 import static com.example.cepapi.service.CepServiceStub.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ContextConfiguration(classes = {CadastroServices.class, CadastroRepository.class, CepIntegration.class})
@@ -43,7 +41,7 @@ public class CepServiceTest {
 
         when(repository.save(ProductEntity)).thenReturn(ProductEntity);
 
-        var actual = service.getCep("94020070");
+        var actual = service.consultaCep("94020070");
 
         assertEquals(expectedServiceResponse, actual);
     }
@@ -57,7 +55,7 @@ public class CepServiceTest {
         when(integration.consultaCep("94020070")).thenReturn(expectedIntegrationResponse);
 
         Exception exception = assertThrows(ApiNotFoundException.class,
-                () -> service.getCep("94020070"));
+                () -> service.consultaCep("94020070"));
 
         var expectativa = "Please,insert a CEP";
         var actual = exception.getMessage();

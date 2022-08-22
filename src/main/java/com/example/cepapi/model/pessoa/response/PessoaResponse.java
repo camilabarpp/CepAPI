@@ -25,19 +25,6 @@ public class PessoaResponse {
     @JsonFormat(pattern = "dd/MM/yyyy")
     @JsonProperty("dataDeNascimento")
     private String dataDeNascimento;
-    @NotNull
-    @NotBlank
-    @JsonProperty("cep")
-    private String cep;
-    @JsonProperty("logradouro")
-    private String logradouro;
-    @JsonProperty("numero")
-    private String numero;
-    @JsonProperty("bairro")
-    private String bairro;
-    @JsonProperty("localidade")
-    private String localidade;
-    @JsonProperty("uf")
-    private String uf;
+
 
 }

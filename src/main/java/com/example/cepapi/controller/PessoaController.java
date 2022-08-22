@@ -1,18 +1,14 @@
 package com.example.cepapi.controller;
 
-<<<<<<< HEAD
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
-=======
-import com.example.cepapi.model.request.PessoaRequest;
-import com.example.cepapi.model.response.PessoaResponse;
->>>>>>> feature
 import com.example.cepapi.service.CadastroServices;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,8 +36,11 @@ public class PessoaController {
 		return cadastroServices.findById(id);
 	}
 
-
-	@PostMapping("/cadastrar")
+	@PostMapping
+	public PessoaResponse inserir(@RequestBody PessoaRequest request) {
+		return  cadastroServices.inserir(request);
+	}
+/*	@PostMapping("/cadastrar")
 	@ResponseBody
 	@ResponseStatus(CREATED)
 	public PessoaResponse create2(@RequestBody @NotNull PessoaRequest pessoaRequest) {
@@ -55,7 +54,7 @@ public class PessoaController {
 	@ApiOperation(value = "Change an employee by id")
 	public PessoaResponse update(@RequestBody PessoaRequest pessoaRequest , @PathVariable String id){
 		return this.cadastroServices.update(pessoaRequest, id);
-	}
+	}*/
 
 	@DeleteMapping("/deletar/{id}")
 	@ResponseStatus(NO_CONTENT)
