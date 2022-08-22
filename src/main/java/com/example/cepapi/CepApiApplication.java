@@ -14,8 +14,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @SpringBootApplication
 public class CepApiApplication {
 
-    String cep;
-
     private static final Logger log = LoggerFactory.getLogger(CepApiApplication.class);
 
     public static void main(String[] args) {
