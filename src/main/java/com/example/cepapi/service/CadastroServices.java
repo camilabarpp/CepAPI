@@ -38,15 +38,6 @@ public class CadastroServices {
         pesquisarCepESalvarNoBanco(pessoaRequest);
     }
 
-    //Method PUT
-    public void update(PessoaRequest pessoaRequest, String id) {
-        Optional<Pessoa> requestBd = cadastroRepository.findById(id);
-        if (requestBd.isPresent()) {
-            pesquisarCepESalvarNoBanco(pessoaRequest);
-        }
-    }
-
-
     //Método GET todos
     public List<PessoaResponse> findAll() {
         return cadastroRepository.findAll().stream()
@@ -62,22 +53,17 @@ public class CadastroServices {
     }
 
     //Method PUT
-/*    public PessoaResponse update(PessoaRequest pessoaRequest,String id) {
-        var consultaCep = client.consultaCep(pessoaRequest.getCep());
+    public PessoaResponse update(PessoaRequest pessoaRequest,String id) {
+        pesquisarCepESalvarNoBanco(pessoaRequest);
 
         Pessoa found = cadastroRepository.findById(id).orElseThrow(
                 () -> new ApiNotFoundException("ID Not Found: " + id));
         found.setNome(pessoaRequest.getNome());
         found.setDataDeNascimento(pessoaRequest.getDataDeNascimento());
-        found.setCep(consultaCep.getCep());
-        found.setLogradouro(consultaCep.getLogradouro());
-        found.setNumero(pessoaRequest.getNumero());
-        found.setBairro(consultaCep.getBairro());
-        found.setLocalidade(consultaCep.getLocalidade());
-        found.setUf(consultaCep.getUf());
+        found.setEndereco(pessoaRequest.getEndereco());
         Pessoa saved = cadastroRepository.save(found);
         return pessoaResponse(saved);
-    }*/
+    }
 
 
     //Método DELETE

@@ -7,6 +7,7 @@ import com.example.cepapi.service.CadastroServices;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,16 +45,13 @@ public class CadastroController {
 		return ResponseEntity.ok(PessoaMapper.toRequest(cliente));
 	}
 
-/*
 
 	@PutMapping("atualizar/{id}")
 	@ResponseStatus(CREATED)
 	@ApiOperation(value = "Change an employee by id")
 	public PessoaResponse update(@RequestBody PessoaRequest pessoaRequest , @PathVariable String id){
-		this.cadastroServices.update(pessoaRequest, id);
-		return PessoaResponse;
+		return this.cadastroServices.update(pessoaRequest, id);
 	}
-*/
 
 	@DeleteMapping("/deletar/{id}")
 	@ResponseStatus(NO_CONTENT)
