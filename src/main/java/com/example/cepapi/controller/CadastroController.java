@@ -18,7 +18,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @RestController
-@RequestMapping("")
+@RequestMapping("api/")
 @AllArgsConstructor
 public class CadastroController {
 	private final CadastroServices cadastroServices;
@@ -39,7 +39,7 @@ public class CadastroController {
 	@PostMapping("/cadastrar")
 	@ResponseBody
 	@ResponseStatus(CREATED)
-	@ApiOperation(value = "Create a person")
+	//@ApiOperation(value = "Create a person")
 	public ResponseEntity<PessoaResponse> create(@RequestBody PessoaRequest cliente) {
 		cadastroServices.create(cliente);
 		return ResponseEntity.ok(PessoaMapper.toRequest(cliente));

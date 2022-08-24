@@ -1,9 +1,7 @@
 package com.example.cepapi.service;
 
 import com.example.cepapi.configuration.ApiNotFoundException;
-import com.example.cepapi.integration.resttemplate.cep.CepIntegration;
-import com.example.cepapi.model.cep.CepEntity;
-import com.example.cepapi.model.cep.CepMapper;
+import com.example.cepapi.integration.resttemplate.cep.IntegrationCep;
 import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
@@ -15,15 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+import static com.example.cepapi.model.cep.CepMapper.entityToResponse;
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.pessoaResponse;
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
 
 @Service
 @RequiredArgsConstructor
 public class CadastroServices {
-
     @Autowired
     private CadastroRepository cadastroRepository;
     @Autowired
@@ -32,10 +29,18 @@ public class CadastroServices {
     @Autowired
     private CepService cepService;
     @Autowired
-    private CepIntegration cepIntegration;
+    private IntegrationCep cepIntegration;
 
-    public void create(PessoaRequest pessoaRequest) {
+
+
+    public PessoaResponse create(PessoaRequest pessoaRequest) {
         pesquisarCepESalvarNoBanco(pessoaRequest);
+        return pessoaResponse(cadastroRepository.save(requestPessoa(pessoaRequest)));
+    }
+
+    public PessoaResponse save(PessoaRequest pessoaRequest) {
+        //pesquisarCepESalvarNoBanco(pessoaRequest);
+        return pessoaResponse(cadastroRepository.save(requestPessoa(pessoaRequest)));
     }
 
     //Método GET todos
@@ -83,8 +88,8 @@ public class CadastroServices {
 
     private void pesquisarCepESalvarNoBanco(PessoaRequest pessoaRequest) {
         String cep = pessoaRequest.getEndereco().getCep();
-        CepEntity endereco = cepRepository.findById((cep)).orElseGet(() -> {
-            CepEntity novoEndereco = CepMapper.entityToResponse(cepIntegration.consultarCep(cep));
+        var endereco = cepRepository.findById((cep)).orElseGet(() -> {
+            var novoEndereco = entityToResponse(this.cepIntegration.consultarCep(cep));
             cepRepository.save(novoEndereco);
             return novoEndereco;
         });

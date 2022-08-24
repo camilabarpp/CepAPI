@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 
-@Component
 @NoArgsConstructor
-public class CepIntegration {
+@Component
+public class IntegrationCep {
     @Autowired
     private RestTemplate restTemplate;
 

@@ -1,13 +1,14 @@
 package com.example.cepapi.integration;
 
 import com.example.cepapi.model.DataIntegrationResponse;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 
 @Component
-//@NoArgsConstructor
+@NoArgsConstructor
 public class CepIntegration {
     @Autowired
     private RestTemplate restTemplate;

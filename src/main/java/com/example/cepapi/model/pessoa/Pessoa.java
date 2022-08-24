@@ -21,6 +21,8 @@ import javax.validation.constraints.NotNull;
 public class Pessoa {
 
     @Id
+    @NotNull
+    @NotBlank
     private String id;
     @NotNull
     @NotBlank

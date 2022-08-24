@@ -16,8 +16,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class PessoaRequest {
 
-    @NotNull
-    @NotBlank
+
     private String id;
     private String nome;
     @JsonFormat(pattern = "dd/MM/yyyy")

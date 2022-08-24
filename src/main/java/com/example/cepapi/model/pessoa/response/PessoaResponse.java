@@ -8,12 +8,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PessoaResponse {
 
+    @NotNull
+    @NotBlank
+    private String id;
     @JsonProperty("nome")
     private String nome;
     @JsonFormat(pattern = "dd/MM/yyyy")
