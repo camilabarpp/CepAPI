@@ -20,14 +20,6 @@ public class PessoaMapper {
                 .build();
     }
 
-    public static PessoaRequest requestPessoa2(Pessoa pessoaRequest) {
-        return PessoaRequest.builder()
-                //.id(pessoaRequest.getId())
-                .nome(pessoaRequest.getNome())
-                .dataDeNascimento(pessoaRequest.getDataDeNascimento())
-                .endereco(pessoaRequest.getEndereco())
-                .build();
-    }
 
     public static PessoaResponse pessoaResponse(Pessoa pessoa) {
         return PessoaResponse.builder()

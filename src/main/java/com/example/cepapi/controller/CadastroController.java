@@ -44,14 +44,13 @@ public class CadastroController {
 	//@ApiOperation(value = "Create a person")
 	public PessoaResponse create(@RequestBody @Valid PessoaRequest pessoaRequest) {
 		return pessoaResponse(cadastroServices.create(requestPessoa(pessoaRequest)));
-
 	}
 
 	@PutMapping("atualizar/{id}")
 	@ResponseStatus(CREATED)
 	@ApiOperation(value = "Change an employee by id")
-	public PessoaResponse update(@RequestBody PessoaRequest pessoaRequest , @PathVariable String id){
-		return PessoaMapper.pessoaResponse(cadastroServices.update(id, requestPessoa(pessoaRequest)));
+	public PessoaResponse update(@PathVariable @Valid String id, @RequestBody PessoaRequest pessoaRequest){
+		return this.cadastroServices.update(id, requestPessoa(pessoaRequest));
 	}
 
 	@DeleteMapping("/deletar/{id}")

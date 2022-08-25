@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.example.cepapi.model.cep.CepMapper.entityToResponse;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.pessoaResponse;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
+import static com.example.cepapi.model.cep.CepMapper.toProductEntity;
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.*;
 
 @Service
 @RequiredArgsConstructor
@@ -60,12 +60,15 @@ public class CadastroServices {
     }
 
     //Method PUT
-    public Pessoa update(String id, Pessoa pessoaAtt){
-        pesquisarCepESalvarNoBanco(pessoaAtt);
-        Pessoa pessoaSalva = cadastroRepository.findById(id)
-                .orElseThrow(() -> new ApiNotFoundException("Id não encontrado " + id));
-        pessoaAtt.setId(pessoaSalva.getId());
-        return cadastroRepository.save(pessoaAtt);
+    public PessoaResponse update(String id, Pessoa pessoa){
+        pesquisarCepESalvarNoBanco(pessoa);
+        Pessoa found = cadastroRepository.findById(id).orElseThrow(
+                () -> new ApiNotFoundException("ID Not Found: " + id));
+        found.setNome(pessoa.getNome());
+        found.setDataDeNascimento(pessoa.getDataDeNascimento());
+        found.setEndereco(pessoa.getEndereco());
+        Pessoa saved = cadastroRepository.save(found);
+        return pessoaResponse(saved);
     }
 
 
