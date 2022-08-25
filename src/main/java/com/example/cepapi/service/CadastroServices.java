@@ -4,7 +4,6 @@ import com.example.cepapi.configuration.ApiNotFoundException;
 import com.example.cepapi.integration.resttemplate.cep.IntegrationCep;
 import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
-import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.repository.CadastroRepository;
 import com.example.cepapi.repository.CepRepository;
@@ -15,8 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.example.cepapi.model.cep.CepMapper.entityToResponse;
-import static com.example.cepapi.model.cep.CepMapper.toProductEntity;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.*;
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.pessoaResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -54,9 +52,9 @@ public class CadastroServices {
 
     //Método GEt por ID
     public PessoaResponse findById(String id) {
-        Pessoa pessoa = cadastroRepository.findById(id)
+        return cadastroRepository.findById(id)
+                .map(PessoaMapper::pessoaResponse)
                 .orElseThrow(() -> new ApiNotFoundException("ID Not Found: " + id));
-        return pessoaResponse(pessoa);
     }
 
     //Method PUT
@@ -73,20 +71,17 @@ public class CadastroServices {
 
 
     //Método DELETE
-    public void delete(String id) {
-        cadastroRepository.findById(id)
-                .orElseThrow(() -> new ApiNotFoundException("ID Not Found: " + id));
-        cadastroRepository.deleteById(id);
+    public void deletePeolpleByIDs(List<String> id) {
+        if (id == null) {
+            cadastroRepository.deleteAll();
+        } else {
+            cadastroRepository.deleteAllById(id);
+        }
     }
 
-    public void deletePeolpleByIDs(List<String> ids) {
-        cadastroRepository.deleteAllById(ids);
+    public List<Pessoa> findByNomeContains(String nome){
+        return cadastroRepository.findByNomeContains(nome);
     }
-
-    public void deleteAll() {
-        cadastroRepository.deleteAll();
-    }
-
     private void pesquisarCepESalvarNoBanco(Pessoa pessoa) {
         String cep = pessoa.getEndereco().getCep();
         var endereco = cepRepository.findById((cep)).orElseGet(() -> {
