@@ -21,13 +21,8 @@ import javax.validation.constraints.NotNull;
 public class Pessoa {
 
     @Id
-    @NotNull
-    @NotBlank
     private String id;
-    @NotNull
-    @NotBlank
     private String nome;
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private String dataDeNascimento;
     private CepEntity endereco;
     public CepEntity getEndereco() {

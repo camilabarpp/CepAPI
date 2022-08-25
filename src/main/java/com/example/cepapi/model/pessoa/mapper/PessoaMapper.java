@@ -13,7 +13,16 @@ public class PessoaMapper {
 
     public static Pessoa requestPessoa(PessoaRequest pessoaRequest) {
         return Pessoa.builder()
-                .id(pessoaRequest.getId())
+                //.id(pessoaRequest.getId())
+                .nome(pessoaRequest.getNome())
+                .dataDeNascimento(pessoaRequest.getDataDeNascimento())
+                .endereco(pessoaRequest.getEndereco())
+                .build();
+    }
+
+    public static PessoaRequest requestPessoa2(Pessoa pessoaRequest) {
+        return PessoaRequest.builder()
+                //.id(pessoaRequest.getId())
                 .nome(pessoaRequest.getNome())
                 .dataDeNascimento(pessoaRequest.getDataDeNascimento())
                 .endereco(pessoaRequest.getEndereco())
@@ -22,25 +31,25 @@ public class PessoaMapper {
 
     public static PessoaResponse pessoaResponse(Pessoa pessoa) {
         return PessoaResponse.builder()
-                .id(pessoa.getId())
+                .id(pessoa.getId()) //Não tirar, senão não aparece o id no FindAll
                 .nome(pessoa.getNome())
                 .dataDeNascimento(pessoa.getDataDeNascimento())
                 .endereco(pessoa.getEndereco())
                 .build();
     }
 
-    public static Pessoa toEntity(PessoaResponse pessoaResponse){
-        return Pessoa.builder()
-                .id(pessoaResponse.getId())
-                .nome(pessoaResponse.getNome())
-                .dataDeNascimento(pessoaResponse.getDataDeNascimento())
-                .endereco(pessoaResponse.getEndereco())
-                .build();
-    }
+//    public static Pessoa toEntity(PessoaResponse pessoaResponse){
+//        return Pessoa.builder()
+//                //.id(pessoaResponse.getId())
+//                .nome(pessoaResponse.getNome())
+//                .dataDeNascimento(pessoaResponse.getDataDeNascimento())
+//                .endereco(pessoaResponse.getEndereco())
+//                .build();
+//    }
 
     public static Optional<Pessoa> toEntityOptional(PessoaResponse pessoaResponse){
         return Optional.ofNullable(Pessoa.builder()
-                .id(pessoaResponse.getId())
+               // .id(pessoaResponse.getId())
                 .nome(pessoaResponse.getNome())
                 .dataDeNascimento(pessoaResponse.getDataDeNascimento())
                 .endereco(pessoaResponse.getEndereco())
@@ -49,14 +58,14 @@ public class PessoaMapper {
 
     public static PessoaResponse toRequest(PessoaRequest pessoaRequest){
         return PessoaResponse.builder()
-                .id(pessoaRequest.getId())
+                //.id(pessoaRequest.getId())
                 .nome(pessoaRequest.getNome())
                 .dataDeNascimento(pessoaRequest.getDataDeNascimento())
                 .endereco(pessoaRequest.getEndereco())
                 .build();
     }
 
-    public static CepResponse cepToPessoaResponse(PessoaResponse pessoaRequest){
+/*    public static CepResponse cepToPessoaResponse(PessoaResponse pessoaRequest){
         return CepResponse.builder()
                 .cep(pessoaRequest.getEndereco().getCep())
                 .logradouro(pessoaRequest.getEndereco().getLogradouro())
@@ -64,6 +73,6 @@ public class PessoaMapper {
                 .localidade(pessoaRequest.getEndereco().getLocalidade())
                 .uf(pessoaRequest.getEndereco().getUf())
                 .build();
-    }
+    }*/
 
 }

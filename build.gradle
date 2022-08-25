@@ -25,6 +25,7 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.5.2.Final'
     implementation 'junit:junit:4.13.2'
     implementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+    testImplementation 'org.projectlombok:lombok:1.18.22'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

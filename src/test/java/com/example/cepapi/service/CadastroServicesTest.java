@@ -49,7 +49,7 @@ public class CadastroServicesTest {
     @BeforeEach
     void setUp() {
         //autoCloseable = MockitoAnnotations.openMocks(this);
-        this.cadastroServices = new CadastroServices(cadastroRepository);
+        this.cadastroServices = new CadastroServices();
     }
 
     @Test

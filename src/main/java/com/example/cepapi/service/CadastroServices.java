@@ -21,27 +21,29 @@ import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
 @Service
 @RequiredArgsConstructor
 public class CadastroServices {
-    @Autowired
     private CadastroRepository cadastroRepository;
-    @Autowired
     private CepRepository cepRepository;
 
-    @Autowired
     private CepService cepService;
-    @Autowired
     private IntegrationCep cepIntegration;
 
-
-
-    public PessoaResponse create(PessoaRequest pessoaRequest) {
-        pesquisarCepESalvarNoBanco(pessoaRequest);
-        return pessoaResponse(cadastroRepository.save(requestPessoa(pessoaRequest)));
+    @Autowired
+    public CadastroServices(CadastroRepository cadastroRepository, CepRepository cepRepository, CepService cepService, IntegrationCep cepIntegration) {
+        this.cadastroRepository = cadastroRepository;
+        this.cepRepository = cepRepository;
+        this.cepService = cepService;
+        this.cepIntegration = cepIntegration;
     }
 
-    public PessoaResponse save(PessoaRequest pessoaRequest) {
+    public Pessoa create(Pessoa pessoa) {
+        pesquisarCepESalvarNoBanco(pessoa);
+        return cadastroRepository.save(pessoa);
+    }
+
+/*    public Pessoa save(Pessoa pessoaRequest) {
         //pesquisarCepESalvarNoBanco(pessoaRequest);
-        return pessoaResponse(cadastroRepository.save(requestPessoa(pessoaRequest)));
-    }
+        return cadastroRepository.save(pessoaRequest);
+    }*/
 
     //Método GET todos
     public List<PessoaResponse> findAll() {
@@ -58,16 +60,12 @@ public class CadastroServices {
     }
 
     //Method PUT
-    public PessoaResponse update(PessoaRequest pessoaRequest,String id) {
-        pesquisarCepESalvarNoBanco(pessoaRequest);
-
-        Pessoa found = cadastroRepository.findById(id).orElseThrow(
-                () -> new ApiNotFoundException("ID Not Found: " + id));
-        found.setNome(pessoaRequest.getNome());
-        found.setDataDeNascimento(pessoaRequest.getDataDeNascimento());
-        found.setEndereco(pessoaRequest.getEndereco());
-        Pessoa saved = cadastroRepository.save(found);
-        return pessoaResponse(saved);
+    public Pessoa update(String id, Pessoa pessoaAtt){
+        pesquisarCepESalvarNoBanco(pessoaAtt);
+        Pessoa pessoaSalva = cadastroRepository.findById(id)
+                .orElseThrow(() -> new ApiNotFoundException("Id não encontrado " + id));
+        pessoaAtt.setId(pessoaSalva.getId());
+        return cadastroRepository.save(pessoaAtt);
     }
 
 
@@ -86,14 +84,13 @@ public class CadastroServices {
         cadastroRepository.deleteAll();
     }
 
-    private void pesquisarCepESalvarNoBanco(PessoaRequest pessoaRequest) {
-        String cep = pessoaRequest.getEndereco().getCep();
+    private void pesquisarCepESalvarNoBanco(Pessoa pessoa) {
+        String cep = pessoa.getEndereco().getCep();
         var endereco = cepRepository.findById((cep)).orElseGet(() -> {
             var novoEndereco = entityToResponse(this.cepIntegration.consultarCep(cep));
             cepRepository.save(novoEndereco);
             return novoEndereco;
         });
-        pessoaRequest.setEndereco(endereco);
-        cadastroRepository.save(requestPessoa(pessoaRequest));
+        pessoa.setEndereco(endereco);
     }
 }

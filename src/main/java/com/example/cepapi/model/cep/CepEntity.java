@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("CEP")
 public class CepEntity {
     @Id
     private String cep;

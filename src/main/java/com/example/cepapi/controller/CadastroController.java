@@ -11,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.*;
 import static org.springframework.http.HttpStatus.*;
 
 
@@ -40,17 +42,16 @@ public class CadastroController {
 	@ResponseBody
 	@ResponseStatus(CREATED)
 	//@ApiOperation(value = "Create a person")
-	public ResponseEntity<PessoaResponse> create(@RequestBody PessoaRequest cliente) {
-		cadastroServices.create(cliente);
-		return ResponseEntity.ok(PessoaMapper.toRequest(cliente));
-	}
+	public PessoaResponse create(@RequestBody @Valid PessoaRequest pessoaRequest) {
+		return pessoaResponse(cadastroServices.create(requestPessoa(pessoaRequest)));
 
+	}
 
 	@PutMapping("atualizar/{id}")
 	@ResponseStatus(CREATED)
 	@ApiOperation(value = "Change an employee by id")
 	public PessoaResponse update(@RequestBody PessoaRequest pessoaRequest , @PathVariable String id){
-		return this.cadastroServices.update(pessoaRequest, id);
+		return PessoaMapper.pessoaResponse(cadastroServices.update(id, requestPessoa(pessoaRequest)));
 	}
 
 	@DeleteMapping("/deletar/{id}")

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,15 +17,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PessoaResponse {
-
-    @NotNull
-    @NotBlank
     private String id;
-    @JsonProperty("nome")
     private String nome;
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    @JsonProperty("dataDeNascimento")
     private String dataDeNascimento;
-    @JsonProperty("endereco")
     private CepEntity endereco;
 }
