@@ -13,7 +13,7 @@ public class RestTemplateConfig {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplateBuilder()
-                .rootUri("https://viacep.com.br/ws/{cep}/json")
+                .rootUri("https://viacep.com.br")
                 .build();
     }
 }

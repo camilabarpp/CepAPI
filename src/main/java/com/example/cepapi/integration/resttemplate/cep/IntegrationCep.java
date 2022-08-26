@@ -14,7 +14,7 @@ public class IntegrationCep {
     private RestTemplate restTemplate;
 
     public CepResponse consultarCep(String cep){
-        return restTemplate.getForObject("https://viacep.com.br/ws/".concat(cep) + "/json", CepResponse.class);
+        return restTemplate.getForObject("/ws/".concat(cep) + "/json", CepResponse.class);
     }
 }
 //TODO: INTEGRAR OUTRA APLICAÇÃO -

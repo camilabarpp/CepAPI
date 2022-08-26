@@ -1,6 +1,6 @@
-package com.example.cepapi.configuration.errorresponse;
+package com.example.cepapi.configuration.exception.errorresponse;
 
-import com.example.cepapi.configuration.errorobject.ErrorObject;
+import com.example.cepapi.configuration.exception.errorobject.ErrorObject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

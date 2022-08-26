@@ -1,6 +1,6 @@
 package com.example.cepapi.service;
 
-import com.example.cepapi.configuration.ApiNotFoundException;
+import com.example.cepapi.configuration.exception.ApiNotFoundException;
 import com.example.cepapi.integration.resttemplate.cep.IntegrationCep;
 import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
@@ -78,7 +78,6 @@ public class CadastroServices {
             cadastroRepository.deleteAllById(id);
         }
     }
-
     public List<Pessoa> findByNomeContains(String nome){
         return cadastroRepository.findByNomeContains(nome);
     }
