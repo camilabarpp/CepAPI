@@ -1,4 +1,4 @@
-package com.example.cepapi.configuration.errorobject;
+package com.example.cepapi.configuration.exception.errorobject;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

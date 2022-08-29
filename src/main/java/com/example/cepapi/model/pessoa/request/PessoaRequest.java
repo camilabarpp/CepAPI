@@ -18,9 +18,10 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class PessoaRequest {
     private String id;
-    @NotBlank @NotNull
+    @NotBlank(message = "{nome.not.blank}")
     private String nome;
     @JsonFormat(pattern = "dd/MM/yyyy")
+    @NotBlank(message = "{dataDeNascimento.not.blank}")
     private String dataDeNascimento;
     private CepEntity endereco;
 

@@ -1,6 +1,6 @@
 package com.example.cepapi.service;
 
-import com.example.cepapi.configuration.ApiNotFoundException;
+import com.example.cepapi.configuration.exception.ApiNotFoundException;
 import com.example.cepapi.integration.resttemplate.cep.IntegrationCep;
 import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
@@ -60,7 +60,8 @@ public class CadastroServices {
     //Method PUT
     public PessoaResponse update(String id, Pessoa pessoa){
         pesquisarCepESalvarNoBanco(pessoa);
-        Pessoa found = cadastroRepository.findById(id).orElseThrow(
+        Pessoa found = cadastroRepository.findById(id)
+                .orElseThrow(
                 () -> new ApiNotFoundException("ID Not Found: " + id));
         found.setNome(pessoa.getNome());
         found.setDataDeNascimento(pessoa.getDataDeNascimento());
@@ -77,11 +78,9 @@ public class CadastroServices {
         } else {
             cadastroRepository.deleteAllById(id);
         }
+
     }
 
-    public List<Pessoa> findByNomeContains(String nome){
-        return cadastroRepository.findByNomeContains(nome);
-    }
     private void pesquisarCepESalvarNoBanco(Pessoa pessoa) {
         String cep = pessoa.getEndereco().getCep();
         var endereco = cepRepository.findById((cep)).orElseGet(() -> {
@@ -90,5 +89,6 @@ public class CadastroServices {
             return novoEndereco;
         });
         pessoa.setEndereco(endereco);
+        cadastroRepository.insert(pessoa);
     }
 }
