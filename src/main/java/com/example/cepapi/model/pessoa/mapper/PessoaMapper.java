@@ -1,11 +1,11 @@
 package com.example.cepapi.model.pessoa.mapper;
 
-import com.example.cepapi.model.cep.response.CepResponse;
 import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import lombok.experimental.UtilityClass;
 
+import java.util.List;
 import java.util.Optional;
 
 @UtilityClass

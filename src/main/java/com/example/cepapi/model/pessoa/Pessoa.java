@@ -8,16 +8,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 
-@Document(collection = "CepAPI")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Document
 public class Pessoa {
 
     @Id
@@ -34,3 +35,5 @@ public class Pessoa {
     }
 
 }
+
+
