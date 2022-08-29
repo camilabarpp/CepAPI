@@ -1,24 +1,37 @@
 package com.example.cepapi.controller;
 
+import com.example.cepapi.configuration.exception.ApiNotFoundException;
+import com.example.cepapi.model.pessoa.Pessoa;
+import com.example.cepapi.model.pessoa.request.PessoaRequest;
+import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.service.CadastroServices;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.junit.Rule;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static com.example.cepapi.controller.PessoaControllerStub.*;
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PessoaControllerTest {
 
     @InjectMocks
     private CadastroController pessoaController;
-
     @Mock
     private CadastroServices cadastroServices;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
-/*
     @Test
     @DisplayName("Deve procurar todas as pessoas")
     void shouldShowAllPeople() {
@@ -30,7 +43,7 @@ public class PessoaControllerTest {
         List<PessoaResponse> actual = this.pessoaController.findAll();
         assertEquals(expect, actual);
 
-        Mockito.verify(this.cadastroServices, Mockito.atLeastOnce()).findAll();
+        verify(this.cadastroServices, atLeastOnce()).findAll();
 
     }
 
@@ -39,17 +52,7 @@ public class PessoaControllerTest {
     void shouldShowEmployeeByID() {
 
         String id = "1";
-
-        PessoaResponse expect = PessoaResponse.builder()
-                .id("1")
-                .nome("Camila Barpp")
-                .dataDeNascimento("1996-07-02")
-                .cep("94020070")
-                .logradouro("Rua Botijá")
-                .numero("01")
-                .bairro("Miraguaia")
-                .localidade("Gravataí")
-                .build();
+        PessoaResponse expect = createAResponse();
 
         doReturn(expect)
                 .when(this.cadastroServices).findById(id);
@@ -58,10 +61,10 @@ public class PessoaControllerTest {
 
         assertEquals(expect.getId(), actual.getId());
         assertEquals(expect.getNome(), actual.getNome());
+        assertEquals(expect.getDataDeNascimento(), actual.getDataDeNascimento());
+        assertEquals(expect.getEndereco(), actual.getEndereco());
 
-
-
-        Mockito.verify(this.cadastroServices, Mockito.atLeastOnce()).findById(id);
+        verify(this.cadastroServices, atLeastOnce()).findById(id);
     }
 
     @Test
@@ -75,79 +78,56 @@ public class PessoaControllerTest {
         Assertions.assertThrows(ApiNotFoundException.class, () -> this.cadastroServices.findById(id));
     }
 
-
     @Test
-    @DisplayName("Deve criar um funcionario com sucesso.")
-    void shouldRegisterEmployee() throws Exception {
+    @DisplayName("Deve criar uma pessoa com sucesso.")
+    void shouldRegisterAPerson() throws Exception {
+        Pessoa pessoa = createAEntity();
+        PessoaRequest request = createARequest();
+        when(cadastroServices.create(any())).thenReturn(pessoa);
 
-        PessoaResponse expect = PessoaResponse.builder()
-                .id("1")
-                .nome("Camila Barpp")
-                .dataDeNascimento("1996-07-02")
-                .cep("94020070")
-                .logradouro("Rua Botijá")
-                .numero("01")
-                .bairro("Miraguaia")
-                .localidade("Gravataí")
-                .build();
+        var response = pessoaController.create(request);
 
-        PessoaRequest request = PessoaRequest.builder()
-                .nome("Camila Barpp")
-                .dataDeNascimento("1996-07-02")
-                .cep("94020070")
-                .logradouro("Rua Botijá")
-                .numero("01")
-                .bairro("Miraguaia")
-                .localidade("Gravataí")
-                .build();
-
-        doReturn(expect)
-                .when(this.cadastroServices).createPerson(request);
-
-        PessoaResponse actual = this.pessoaController.create(request, expect.getCep());
-
-        assertEquals(expect.getNome(), actual.getNome());
-
-        Mockito.verify(this.cadastroServices, Mockito.atLeastOnce()).createPerson(request);
-
+        assertEquals(pessoa.getId(), response.getId());
+        assertEquals(pessoa.getNome(), response.getNome());
+        assertEquals(pessoa.getDataDeNascimento(), response.getDataDeNascimento());
+        assertEquals(pessoa.getEndereco(), response.getEndereco());
     }
 
     @Test
     @DisplayName("Deve alterar um funcionario pelo id com sucesso.")
     void shouldChangeEmployeeByID() {
-
         String id = "1";
-
-        PessoaResponse expect = PessoaResponse.builder()
-                .id("1")
-                .nome("Camila Barpp")
-                .dataDeNascimento("1996-07-02")
-                .cep("94020070")
-                .logradouro("Rua Botijá")
-                .numero("01")
-                .bairro("Miraguaia")
-                .localidade("Gravataí")
-                .build();
-
-        PessoaRequest request = PessoaRequest.builder()
-                .nome("Camila Barpp")
-                .dataDeNascimento("1996-07-02")
-                .cep("94020070")
-                .logradouro("Rua Botijá")
-                .numero("01")
-                .bairro("Miraguaia")
-                .localidade("Gravataí")
-                .build();
+        Pessoa pessoa = createAEntity();
+        PessoaResponse expect = createAResponse();
+        PessoaRequest request = createARequest();
 
         doReturn(expect)
-                .when(this.cadastroServices).update(request, id);
+                .when(this.cadastroServices).update(id, pessoa);
 
-        PessoaResponse actual = this.pessoaController.update(request, id);
+        var actual = this.pessoaController.update(id, request);
 
-        assertEquals(expect.getId(), actual.getId());
+        //assertEquals(expect.getId(), actual.getId());
 
-        Mockito.verify(this.cadastroServices, Mockito.atLeastOnce()).update(request, id);
+        verify(this.cadastroServices, atLeastOnce()).update(id, pessoa);
     }
+
+    @Test
+    @DisplayName("Deve alterar um funcionario pelo id com sucesso.")
+    void shouldChangeEmployeeByID2() {
+        String id = "1";
+        Pessoa pessoa = createAEntity();
+        PessoaResponse expect = createAResponse();
+        PessoaRequest request = createARequest();
+
+        when(cadastroServices.update(id, pessoa)).thenReturn(expect);
+
+        var response = pessoaController.update(id, request);
+
+        //assertNotNull(response);
+        assertEquals(pessoa.getId(), response.getId());
+        assertEquals(pessoa.getNome(), response.getNome());
+        assertEquals(pessoa.getDataDeNascimento(), response.getDataDeNascimento());
+        assertEquals(pessoa.getEndereco(), response.getEndereco());    }
 
     @Test
     @DisplayName("Deve deletar um funcionario pelo id com sucesso.")
@@ -156,11 +136,11 @@ public class PessoaControllerTest {
         String id = "1";
 
         doNothing()
-                .when(this.cadastroServices).delete(id);
+                .when(this.cadastroServices).deletePeolpleByIDs(Collections.singletonList(id));
 
-        this.pessoaController.delete(id);
+        this.pessoaController.deletePeolpleByIDs(Collections.singletonList(id));
 
-        Mockito.verify(this.cadastroServices, Mockito.atLeastOnce()).delete(id);
+        verify(this.cadastroServices, atLeastOnce()).deletePeolpleByIDs(Collections.singletonList(id));
     }
 
     @Test
@@ -174,6 +154,6 @@ public class PessoaControllerTest {
 
         this.pessoaController.deletePeolpleByIDs(ids);
 
-        Mockito.verify(this.cadastroServices, Mockito.atLeastOnce()).deletePeolpleByIDs(ids);
-    }*/
+        verify(this.cadastroServices, atLeastOnce()).deletePeolpleByIDs(ids);
+    }
 }

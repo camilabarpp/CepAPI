@@ -1,3 +1,4 @@
+/*
 package com.example.cepapi.service;
 
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
@@ -192,4 +193,4 @@ public class CadastroServicesTest {
                 .endereco(createAEntityCep())
                 .build();
     }
-}
+}*/
