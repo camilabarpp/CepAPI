@@ -1,6 +1,5 @@
 package com.example.cepapi.controller;
 
-import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.service.CadastroServices;
@@ -15,7 +14,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.pessoaResponse;
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
@@ -83,18 +84,35 @@ public class CadastroController {
 		cadastroServices.deletePeolpleByIDs(id);
 	}
 
-	@GetMapping("/create-coockie")
+	@PostMapping("/{pessoa}")
 	@ApiOperation("Create a cookie")
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Create a cookie"),
 			@ApiResponse(code = 404, message = "Schema not found"),
 			@ApiResponse(code = 400, message = "Missing or invalid request body"),
 			@ApiResponse(code = 500, message = "Internal error")})
-	public String criandoCoookie(Pessoa pessoa, HttpServletRequest request, HttpServletResponse response) {
-		Cookie cookie = new Cookie("cookieTest", "cookie-value");
+	public String criandoCoookie(HttpServletResponse response, @PathVariable("pessoa") String userName) {
+		Cookie cookie = new Cookie("Pessoa", userName);
 		cookie.getValue();
 		cookie.getName();
 		cookie.setMaxAge(60 * 60 * 24);
 		response.addCookie(cookie);
 		return "cookie-recived/";
+	}
+
+	@GetMapping("/cookies/get")
+	@ApiOperation("Get a cookie")
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "Get a cookie"),
+			@ApiResponse(code = 404, message = "Schema not found"),
+			@ApiResponse(code = 400, message = "Missing or invalid request body"),
+			@ApiResponse(code = 500, message = "Internal error")})
+	public String readAllCookies(HttpServletRequest request) {
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			return Arrays.stream(cookies)
+					.map(c -> c.getName() + ": " +
+							c.getValue()).collect(Collectors.joining("\n"));
+		}
+		log.info("Mostrando todos os cookies!");
+		return "Nenhum cookie encontrado!";
 	}
 }

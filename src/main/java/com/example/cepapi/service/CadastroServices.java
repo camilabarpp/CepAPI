@@ -35,13 +35,8 @@ public class CadastroServices {
 
     public Pessoa create(Pessoa pessoa) {
         pesquisarCepESalvarNoBanco(pessoa);
-        return cadastroRepository.save(pessoa);
+        return cadastroRepository.insert(pessoa);
     }
-
-/*    public Pessoa save(Pessoa pessoaRequest) {
-        //pesquisarCepESalvarNoBanco(pessoaRequest);
-        return cadastroRepository.save(pessoaRequest);
-    }*/
 
     //Método GET todos
     public List<PessoaResponse> findAll() {
@@ -70,7 +65,6 @@ public class CadastroServices {
         return pessoaResponse(saved);
     }
 
-
     //Método DELETE
     public void deletePeolpleByIDs(List<String> id) {
         if (id == null) {
@@ -89,6 +83,5 @@ public class CadastroServices {
             return novoEndereco;
         });
         pessoa.setEndereco(endereco);
-        cadastroRepository.insert(pessoa);
     }
 }
