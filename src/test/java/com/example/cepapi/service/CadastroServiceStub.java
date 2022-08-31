@@ -1,5 +1,8 @@
 package com.example.cepapi.service;
 
+import com.example.cepapi.model.DataIntegrationResponse;
+import com.example.cepapi.model.ResponseData;
+import com.example.cepapi.model.ResponseProduct;
 import com.example.cepapi.model.cep.CepEntity;
 import com.example.cepapi.model.cep.response.CepResponse;
 import com.example.cepapi.model.pessoa.Pessoa;
@@ -21,8 +24,8 @@ public class CadastroServiceStub {
                                 .build())
                         .build())
                 .build();
-    }*/
-/*    static DataIntegrationResponse CepServiceStubBadRequest(){
+    }
+    static DataIntegrationResponse CepServiceStubBadRequest(){
         return DataIntegrationResponse.builder()
                 .data(ResponseData.builder()
                         .product(ResponseProduct.builder()

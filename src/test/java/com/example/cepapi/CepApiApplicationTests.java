@@ -8,6 +8,7 @@ class CepApiApplicationTests {
 
     @Test
     void contextLoads() {
+        CepApiApplication.main(new String[] {});
     }
 
 }

@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class CepResponse {
 
-    @Id
     @JsonProperty("cep")
     private String cep;
     @JsonProperty("logradouro")

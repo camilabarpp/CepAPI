@@ -19,6 +19,17 @@ public class CepMapper {
                 .build();
     }
 
+    public static CepResponse responseToEntity(CepEntity cepEntity) {
+        //var product = response.getData().getProduct();
+        return CepResponse.builder()
+                .cep(cepEntity.getCep())
+                .logradouro(cepEntity.getLogradouro())
+                .bairro(cepEntity.getBairro())
+                .localidade(cepEntity.getLocalidade())
+                .uf(cepEntity.getUf())
+                .build();
+    }
+
     public static CepResponse toProductEntity(CepEntity entity){
 //        var product = entity.getData().getProduct();
         return CepResponse.builder()

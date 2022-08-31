@@ -1,5 +1,6 @@
 package com.example.cepapi.controller;
 
+import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.service.CadastroServices;
@@ -64,15 +65,14 @@ public class CadastroController {
 
 	@PutMapping("/{id}")
 	@ResponseStatus(CREATED)
-	@ApiOperation("Chsnge a person by id")
+	@ApiOperation("Change a person by id")
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Change a person by id"),
 			@ApiResponse(code = 404, message = "Schema not found"),
 			@ApiResponse(code = 400, message = "Missing or invalid request body"),
 			@ApiResponse(code = 500, message = "Internal error")})
 	public PessoaResponse update(@PathVariable @Valid String id, @RequestBody PessoaRequest pessoaRequest){
-		return this.cadastroServices.update(id, requestPessoa(pessoaRequest));
+		return pessoaResponse(cadastroServices.update(id, requestPessoa(pessoaRequest)));
 	}
-
 	@DeleteMapping()
 	@ResponseStatus(NO_CONTENT)
 	@ApiOperation("Delete a list of people or all peolple")

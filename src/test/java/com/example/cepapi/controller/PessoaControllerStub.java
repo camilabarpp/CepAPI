@@ -7,7 +7,7 @@ import com.example.cepapi.model.pessoa.response.PessoaResponse;
 
 public class PessoaControllerStub {
 
-    static Pessoa createAEntity() {
+    public static Pessoa createAEntity() {
         return Pessoa.builder()
                 .id("1")
                 .nome("Camila")
@@ -16,6 +16,11 @@ public class PessoaControllerStub {
                 .build();
     }
 
+    static Pessoa createAEntityNull() {
+        return Pessoa.builder()
+                .id(null)
+                .build();
+    }
 
     static CepEntity createAEntityCep() {
         return CepEntity.builder()
@@ -27,7 +32,7 @@ public class PessoaControllerStub {
                 .build();
     }
 
-    static PessoaRequest createARequest() {
+    public static PessoaRequest createARequest() {
         return PessoaRequest.builder()
                 .id("1")
                 .nome("Camila")
@@ -36,7 +41,7 @@ public class PessoaControllerStub {
                 .build();
     }
 
-    static PessoaResponse createAResponse() {
+    public static PessoaResponse createAResponse() {
         return PessoaResponse.builder()
                 .id("1")
                 .nome("Camila")

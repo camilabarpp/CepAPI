@@ -30,18 +30,18 @@ public class PessoaMapper {
                 .build();
     }
 
-//    public static Pessoa toEntity(PessoaResponse pessoaResponse){
-//        return Pessoa.builder()
-//                //.id(pessoaResponse.getId())
-//                .nome(pessoaResponse.getNome())
-//                .dataDeNascimento(pessoaResponse.getDataDeNascimento())
-//                .endereco(pessoaResponse.getEndereco())
-//                .build();
-//    }
+    public static Pessoa toEntity(PessoaResponse pessoaResponse){
+        return Pessoa.builder()
+                //.id(pessoaResponse.getId())
+                .nome(pessoaResponse.getNome())
+                .dataDeNascimento(pessoaResponse.getDataDeNascimento())
+                .endereco(pessoaResponse.getEndereco())
+                .build();
+    }
 
     public static Optional<Pessoa> toEntityOptional(PessoaResponse pessoaResponse){
         return Optional.ofNullable(Pessoa.builder()
-               // .id(pessoaResponse.getId())
+                .id(pessoaResponse.getId())
                 .nome(pessoaResponse.getNome())
                 .dataDeNascimento(pessoaResponse.getDataDeNascimento())
                 .endereco(pessoaResponse.getEndereco())

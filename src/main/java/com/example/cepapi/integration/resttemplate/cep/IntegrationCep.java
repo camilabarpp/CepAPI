@@ -1,22 +1,20 @@
 package com.example.cepapi.integration.resttemplate.cep;
 
 import com.example.cepapi.model.cep.response.CepResponse;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 
-@NoArgsConstructor
+@AllArgsConstructor
 @Component
 public class IntegrationCep {
-    @Autowired
     private RestTemplate restTemplate;
 
     public CepResponse consultarCep(String cep){
         return restTemplate.getForObject("/ws/".concat(cep) + "/json", CepResponse.class);
     }
 }
-//TODO: INTEGRAR OUTRA APLICAÇÃO -
-//TODO: MONGOTEMPLATE/QUERY DATAS -
-//TODO: ESTUDAR PROPERTIES DO SPRING -

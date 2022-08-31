@@ -5,6 +5,7 @@ import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
+import com.example.cepapi.repository.CadastroRepository;
 import com.example.cepapi.service.CadastroServices;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 import static com.example.cepapi.controller.PessoaControllerStub.*;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.*;
 import static java.util.Optional.empty;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.not;
@@ -99,21 +100,53 @@ public class PessoaControllerTest {
     }
 
     @Test
-    @DisplayName("Deve alterar um funcionario pelo id com sucesso.")
-    void shouldChangeEmployeeByID() {
+    @DisplayName("Não deve criar uma pessoa nula")
+    void shouldNotCreateANullPerson() {
+        CadastroController controller = mock(CadastroController.class);
+        CadastroServices services = mock(CadastroServices.class);
+
+        PessoaRequest expect = new PessoaRequest();
+
+        when(controller.create(any())).thenReturn(toRequest(expect));
+
+        assertNull(expect.getId());
+        assertNull(expect.getNome());
+        assertNull(expect.getDataDeNascimento());
+        assertNull(expect.getEndereco());
+        verify(services, never()).create(requestPessoa(expect));
+
+    }
+
+    @Test
+    @DisplayName("Deve alterar uma pessoa pelo id com sucesso.")
+    void shouldChangeAPersonByID() {
         String id = "1";
         Pessoa pessoa = createAEntity();
         PessoaRequest request = createARequest();
-        when(cadastroServices.update(any(),any())).thenReturn(PessoaMapper.pessoaResponse(pessoa));
+        when(cadastroServices.update(any(),any())).thenReturn(pessoa);
 
         var response = pessoaController.update(id, request);
 
+        assertNotNull(response);
         assertEquals(pessoa.getId(), response.getId());
         assertEquals(pessoa.getNome(), response.getNome());
         assertEquals(pessoa.getDataDeNascimento(), response.getDataDeNascimento());
         assertEquals(pessoa.getEndereco(), response.getEndereco());
 
         verify(this.cadastroServices,  atLeastOnce()).update(id, requestPessoa(request));
+
+    }
+
+    @Test
+    @DisplayName("Não deve atualizar pessoa quando o id for nulo")
+    void shouldNotUpdatePersonWhenIdIsNull() {
+        String id = null;
+        Pessoa pessoa = createAEntityNull();
+
+        doThrow(ApiNotFoundException.class)
+                .when(this.cadastroServices).update(id, pessoa);
+
+        assertThrows(ApiNotFoundException.class, () -> this.cadastroServices.update(id, pessoa));
     }
 
     @Test

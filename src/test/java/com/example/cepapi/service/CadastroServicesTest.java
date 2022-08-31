@@ -1,196 +1,191 @@
-/*
 package com.example.cepapi.service;
 
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
 import com.example.cepapi.integration.resttemplate.cep.IntegrationCep;
-import com.example.cepapi.model.cep.CepEntity;
+import com.example.cepapi.model.cep.CepMapper;
+import com.example.cepapi.model.cep.response.CepResponse;
 import com.example.cepapi.model.pessoa.Pessoa;
+import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.repository.CadastroRepository;
-import org.junit.Rule;
+import com.example.cepapi.repository.CepRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.rules.ExpectedException;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Stream;
 
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.*;
+import static com.example.cepapi.controller.PessoaControllerStub.*;
+import static com.example.cepapi.model.cep.CepMapper.entityToResponse;
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.toEntityOptional;
 import static com.example.cepapi.service.CadastroServiceStub.PessoaServiceStubExpected;
 import static com.example.cepapi.service.CadastroServiceStub.PessoaServiceStubResponse;
+import static com.example.cepapi.service.CepServiceTest.createAResponseCep;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
+@RequiredArgsConstructor
 public class CadastroServicesTest {
 
-    @Mock
+    @InjectMocks
     private CadastroServices cadastroServices;
+    @InjectMocks
+    private CepService cepService;
     @MockBean
     CadastroRepository cadastroRepository;
 
-    @Mock
-    IntegrationCep integration;
+    @MockBean
+    CepRepository cepRepository;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+    @MockBean
+    IntegrationCep integrationCep;
 
     @BeforeEach
     void setUp() {
-        //autoCloseable = MockitoAnnotations.openMocks(this);
-        this.cadastroServices = new CadastroServices();
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void findAll() {
-        cadastroServices.findAll();
-        verify(cadastroRepository).findAll();
+    @DisplayName("Deve mostrar todas as pessoas")
+    void shouldfindAllPeople() {
+        CadastroServices services = mock(CadastroServices.class);
+
+        List<PessoaResponse> expect = new ArrayList<>();
+
+        doReturn(expect)
+                .when(services).findAll();
+
+        List<PessoaResponse> actual = services.findAll();
+        assertEquals(expect, actual);
+
+        verify(services, atLeastOnce()).findAll();
+
     }
 
     @Test
-    void findById() {
+    @DisplayName("Deve procurar uma pessoa por ID")
+    void shouldShowEmployeeByID() {
+        CadastroServices services = mock(CadastroServices.class);
+
         String id = "1";
+        PessoaResponse expect = createAResponse();
 
-        when(cadastroRepository.findById(id)).thenReturn(Optional.of(createAEntity()));
+        doReturn(expect)
+                .when(services).findById(id);
 
-        Optional<PessoaResponse> foundBook = Optional.ofNullable(cadastroServices.findById(id));
+        PessoaResponse actual = services.findById(id);
 
-        assertThat( foundBook.isPresent() ).isTrue();
-
+        assertEquals( expect.getId(), actual.getId());
+        assertEquals( expect.getNome(), actual.getNome());
+        assertEquals( expect.getDataDeNascimento(), actual.getDataDeNascimento());
     }
 
     @Test
-    void update() {
+    @DisplayName("Return a optonal empty quando ID não existe")
+    void testFindByIdNotFound() {
+        doReturn(Optional.empty()).when(cadastroRepository).findById("1");
+
+        assertThrows(ApiNotFoundException.class,
+                () -> cadastroServices.findById("1"));
+   }
+
+    @Test
+    @DisplayName("Deve atualizar uma pessoa com sucesso")
+    void shouldUpdateAPersonWithSuccess2() {
+        CadastroServices cadastroServices = mock(CadastroServices.class);
         String id = "1";
+        Pessoa atualizar = new Pessoa();
+        Pessoa atualizada = createAEntity();
 
-        PessoaRequest pessoaAtualizar = PessoaRequest.builder().id(id).build();
+        doReturn(atualizada).when(cadastroServices).update(id, atualizar);
 
-        PessoaRequest pessoaAtualizada = createARequest();
-        pessoaAtualizada.setId(id);
-        when(cadastroRepository.save(requestPessoa(pessoaAtualizar)))
-                .thenReturn(requestPessoa(pessoaAtualizada));
+        cadastroRepository.save(atualizada);
 
-        var pessoa = cadastroServices.create(pessoaAtualizar);
+        var actual = cadastroServices.update(id, atualizar);
 
-        assertThat(pessoa.getId()).isEqualTo(pessoaAtualizada.getId());
-        assertThat(pessoa.getNome()).isEqualTo(pessoaAtualizada.getNome());
-        assertThat(pessoa.getDataDeNascimento()).isEqualTo(pessoaAtualizada.getDataDeNascimento());
+        assertEquals(atualizada.getId(), actual.getId());
+        assertEquals(atualizada.getNome(), actual.getNome());
+        assertEquals(atualizada.getDataDeNascimento(), actual.getDataDeNascimento());
+        assertEquals(atualizada.getEndereco(), actual.getEndereco());
+
+        verify(cadastroRepository).save(atualizada);
     }
 
     @Test
     @DisplayName("Deve ocorrer erro ao tentar atualizar uma pessoa inexistente.")
     public void updateInvalidPerson(){
-        var pessoa = createARequestNull();
-        String id = null;
+        var pessoa = new PessoaRequest();
 
-        assertThrows(NullPointerException.class, () -> cadastroServices.update(pessoa, id));
+        assertThrows(NullPointerException.class,
+                () -> cadastroServices.update(null, requestPessoa(pessoa)));
 
         verify( cadastroRepository, never() ).save(requestPessoa(pessoa));
     }
 
     @Test
-    @DisplayName("Deve criar pessoas 2")
-    void savedPerson() {
-        var pessoa = createARequest();
+    @DisplayName("Deve criar uma pessoa com sucesso")
+    void shouldCreateAPersonWithSuccess() {
+        CadastroServices cadastroServices = mock(CadastroServices.class);
 
-        //this.integration.consultarCep(pessoa.getEndereco().getCep());
-        var savedPessoa = cadastroServices.save(pessoa);
-        assertThat(savedPessoa.getId()).isNotNull();
-        assertThat(savedPessoa.getNome()).isEqualTo("Camila");
-        assertThat(savedPessoa.getDataDeNascimento()).isEqualTo("02/07/1996");
-    }
+        Pessoa expect = createAEntity();
 
-    @Test //Está passando
-    void whenFindArtistByIdReturnOptionalOfPessoaEntity() {
-        Optional<Pessoa> entityResponse = PessoaServiceStubResponse();
-        Optional<Pessoa> entityExpected = PessoaServiceStubExpected();
+        doReturn(expect).when(cadastroServices).create(expect);
 
-        when(cadastroRepository.findById("1"))
-                .thenReturn(entityResponse);
+        cadastroRepository.save(expect);
 
-        var actual = cadastroServices.findById("1");
-        assertEquals(entityExpected, toEntityOptional(actual));
+        var actual = cadastroServices.create(expect);
+
+        assertEquals(expect.getId(), actual.getId());
+        assertEquals(expect.getNome(), actual.getNome());
+        assertEquals(expect.getDataDeNascimento(), actual.getDataDeNascimento());
+        assertEquals(expect.getEndereco(), actual.getEndereco());
+
+        verify(cadastroRepository).save(expect);
     }
 
     @Test
-    @DisplayName("Deve lançar uma excessão ao tentar deletar uma pessoa inexistente")
-    void shouldNotDeleteAValidPerson() {
-        var pessoa = new Pessoa();
-        String id = null;
+    @DisplayName("Não deve criar uma pessoa nula")
+    void shouldNotCreateANullPerson() {
+        CadastroServices cadastroServices = mock(CadastroServices.class);
+        Pessoa expect = new Pessoa();
 
-        assertThrows(ApiNotFoundException.class, () -> cadastroServices.delete(id));
+        doThrow(ApiNotFoundException.class)
+                .when(cadastroServices).create(expect);
 
-        verify(cadastroRepository, never()).delete(pessoa);
+        assertThrows(ApiNotFoundException.class, () -> cadastroServices.create(expect));
+
+        verify(cadastroRepository, never()).save(expect);
     }
 
     @Test
-     void deletePeolpleByIDs() {
+    @DisplayName("Deve deletar pessoas por ids")
+     void shouldDeletePersonByIds() {
         List<String> ids = Arrays.asList("1", "2");
+
         cadastroServices.deletePeolpleByIDs(ids);
+
         verify(cadastroRepository).deleteAllById(ids);
     }
 
     @Test
-    void deleteAll() {
-        cadastroServices.deleteAll();
+    @DisplayName("Deve deletar todas as pessoas quando id for null")
+    void shouldDleteAllPeopleWhenIdIsNull() {
+        cadastroServices.deletePeolpleByIDs(null);
+
         verify(cadastroRepository).deleteAll();
     }
-
-    private static Pessoa createAEntity() {
-        return Pessoa.builder()
-                .id("1")
-                .nome("Camila")
-                .dataDeNascimento("02/07/1996")
-                .endereco(createAEntityCep())
-                .build();
-    }
-
-
-    private static CepEntity createAEntityCep() {
-        return CepEntity.builder()
-                .cep("94020070")
-                .logradouro("Rua Joao Dutra")
-                .bairro("Salgado Filho")
-                .localidade("Gravataí")
-                .uf("RS")
-                .build();
-    }
-
-    private static PessoaRequest createARequest() {
-        return PessoaRequest.builder()
-                .id("1")
-                .nome("Camila")
-                .dataDeNascimento("02/07/1996")
-                .endereco(createAEntityCep())
-                .build();
-    }
-
-    private static PessoaResponse createAResponse() {
-        return PessoaResponse.builder()
-                .id("1")
-                .nome("Camila")
-                .dataDeNascimento("02/07/1996")
-                .endereco(createAEntityCep())
-                .build();
-    }
-
-    private static PessoaRequest createARequestNull() {
-        return PessoaRequest.builder()
-                .id(null)
-                .nome(null)
-                .dataDeNascimento(null)
-                .endereco(createAEntityCep())
-                .build();
-    }
-}*/
+}
