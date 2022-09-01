@@ -94,7 +94,7 @@ public class ApiExceptionHandler extends DefaultResponseErrorHandler {
         return ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .error(List.of(ErrorObject.builder()
-                        .message("Please,insert a CEP")
+                        .message(e.getMessage())
                         .field(BAD_REQUEST.name())
                         .parameter(e.getClass().getSimpleName())
                         .build()))

@@ -95,9 +95,9 @@ public class CadastroServicesTest {
     }
 
     @Test
-    @DisplayName("Return a optonal empty quando ID não existe")
+    @DisplayName("Return ApiNotFound quando ID não existe")
     void testFindByIdNotFound() {
-        doReturn(Optional.empty()).when(cadastroRepository).findById("1");
+        doThrow(ApiNotFoundException.class).when(cadastroRepository).findById("1");
 
         assertThrows(ApiNotFoundException.class,
                 () -> cadastroServices.findById("1"));

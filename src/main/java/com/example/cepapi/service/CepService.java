@@ -16,7 +16,6 @@ public class CepService {
 
     private CepRepository cepRepository;
     private IntegrationCep integration;
-    private CepRepository repository;
 
     public void pesquisarCepESalvarNoBanco(Pessoa pessoa) {
         String cep = pessoa.getEndereco().getCep();

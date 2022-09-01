@@ -17,6 +17,7 @@ public class PessoaMapper {
                 .nome(pessoaRequest.getNome())
                 .dataDeNascimento(pessoaRequest.getDataDeNascimento())
                 .endereco(pessoaRequest.getEndereco())
+                .temperatura(pessoaRequest.getTemperatura())
                 .build();
     }
 
@@ -27,6 +28,17 @@ public class PessoaMapper {
                 .nome(pessoa.getNome())
                 .dataDeNascimento(pessoa.getDataDeNascimento())
                 .endereco(pessoa.getEndereco())
+                .temperature(pessoa.getTemperatura())
+                .build();
+    }
+
+    public static PessoaRequest pessoaRequest(Pessoa pessoa) {
+        return PessoaRequest.builder()
+                .id(pessoa.getId()) //Não tirar, senão não aparece o id no FindAll
+                .nome(pessoa.getNome())
+                .dataDeNascimento(pessoa.getDataDeNascimento())
+                .endereco(pessoa.getEndereco())
+                .temperatura(pessoa.getTemperatura())
                 .build();
     }
 
@@ -36,6 +48,7 @@ public class PessoaMapper {
                 .nome(pessoaResponse.getNome())
                 .dataDeNascimento(pessoaResponse.getDataDeNascimento())
                 .endereco(pessoaResponse.getEndereco())
+                .temperatura(pessoaResponse.getTemperature())
                 .build();
     }
 
@@ -45,6 +58,7 @@ public class PessoaMapper {
                 .nome(pessoaResponse.getNome())
                 .dataDeNascimento(pessoaResponse.getDataDeNascimento())
                 .endereco(pessoaResponse.getEndereco())
+                .temperatura(pessoaResponse.getTemperature())
                 .build());
     }
 
@@ -54,6 +68,7 @@ public class PessoaMapper {
                 .nome(pessoaRequest.getNome())
                 .dataDeNascimento(pessoaRequest.getDataDeNascimento())
                 .endereco(pessoaRequest.getEndereco())
+                .temperature(pessoaRequest.getTemperatura())
                 .build();
     }
 

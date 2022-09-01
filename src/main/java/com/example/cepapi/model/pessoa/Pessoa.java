@@ -1,17 +1,13 @@
 package com.example.cepapi.model.pessoa;
 
 import com.example.cepapi.model.cep.CepEntity;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.example.cepapi.model.weather.WeatherEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.web.bind.annotation.ModelAttribute;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 
 @Data
@@ -26,6 +22,8 @@ public class Pessoa {
     private String nome;
     private String dataDeNascimento;
     private CepEntity endereco;
+    private WeatherEntity temperatura;
+
     public CepEntity getEndereco() {
         return endereco;
     }
@@ -34,6 +32,13 @@ public class Pessoa {
         this.endereco = endereco;
     }
 
+    public WeatherEntity getTemperatura() {
+        return temperatura;
+    }
+
+    public void setTemperatura(WeatherEntity temperatura) {
+        this.temperatura = temperatura;
+    }
 }
 
 

@@ -1,14 +1,19 @@
 package com.example.cepapi.controller;
 
-import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
+import com.example.cepapi.integration.resttemplate.weather.IntegrationWeather;
+import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
+import com.example.cepapi.model.weather.WeatherEntity;
+import com.example.cepapi.model.weather.response.WeatherResponse;
 import com.example.cepapi.service.CadastroServices;
+import com.example.cepapi.service.WeatherService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -30,7 +35,9 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @AllArgsConstructor
 public class CadastroController {
 	private final CadastroServices cadastroServices;
+	WeatherService service;
 
+	private IntegrationWeather integrationWeather;
 	@GetMapping("")
 	@ApiOperation("Show a list of peolple")
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Returns a list of people"),
@@ -62,7 +69,6 @@ public class CadastroController {
 	public PessoaResponse create(@RequestBody @Valid PessoaRequest pessoaRequest) {
 		return pessoaResponse(cadastroServices.create(requestPessoa(pessoaRequest)));
 	}
-
 	@PutMapping("/{id}")
 	@ResponseStatus(CREATED)
 	@ApiOperation("Change a person by id")

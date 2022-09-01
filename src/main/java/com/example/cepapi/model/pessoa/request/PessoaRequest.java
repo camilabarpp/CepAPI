@@ -1,6 +1,7 @@
 package com.example.cepapi.model.pessoa.request;
 
 import com.example.cepapi.model.cep.CepEntity;
+import com.example.cepapi.model.weather.WeatherEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -24,15 +25,14 @@ public class PessoaRequest {
     @NotBlank(message = "{dataDeNascimento.not.blank}")
     private String dataDeNascimento;
     private CepEntity endereco;
+    private WeatherEntity temperatura;
 
     public CepEntity getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(CepEntity endereco) {
-        this.endereco = endereco;
+    public void setTemperatura(WeatherEntity temperatura) {
+        this.temperatura = temperatura;
     }
-
-
 }
 
