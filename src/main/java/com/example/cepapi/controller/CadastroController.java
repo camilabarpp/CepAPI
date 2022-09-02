@@ -1,5 +1,6 @@
 package com.example.cepapi.controller;
 
+import com.example.cepapi.configuration.exception.ApiNotFoundException;
 import com.example.cepapi.integration.resttemplate.cep.IntegrationCep;
 import com.example.cepapi.integration.resttemplate.weather.IntegrationWeather;
 import com.example.cepapi.model.cep.response.CepResponse;
@@ -58,14 +59,11 @@ public class CadastroController {
             @ApiResponse(code = 404, message = "Schema not found"),
             @ApiResponse(code = 400, message = "Missing or invalid request body"),
             @ApiResponse(code = 500, message = "Internal error")})
-    public List<PessoaResponse> findByNome(@RequestParam(required = false) String nome){
-
+    public List<PessoaResponse> findByNome(@RequestParam String nome){
         if (nome != null) {
             return cadastroServices.findByNome(nome);
-
         } else {
-            return this.cadastroServices.findAll();
-
+            throw new ApiNotFoundException("Nome não encontrado!");
         }
     }
 

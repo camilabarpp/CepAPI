@@ -30,14 +30,7 @@ class ApiExceptionHandlerTest {
     @Mock
     private IntegrationWeather integrationWeather;
 
-    @Test
-    @DisplayName("Deve lançar HttpClientErrorException")
-    void handleApiRequestExceptionNotFound() {
-        doThrow(HttpClientErrorException.class)
-                .when(this.integrationWeather).getWeather(" ");
 
-        assertThrows(HttpClientErrorException.class, () -> this.integrationWeather.getWeather(" "));
-    }
 
     @Test
     @DisplayName("Deve lançar NullPointerException")

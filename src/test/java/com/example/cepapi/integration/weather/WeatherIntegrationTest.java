@@ -1,17 +1,17 @@
 package com.example.cepapi.integration.weather;
 
 import com.example.cepapi.configuration.exception.ErroHandler;
+import com.example.cepapi.controller.CadastroController;
 import com.example.cepapi.integration.resttemplate.weather.IntegrationWeather;
 import com.example.cepapi.model.weather.response.WeatherResponse;
+import com.example.cepapi.service.CadastroServices;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpRequest;
@@ -21,12 +21,16 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import static com.example.cepapi.integration.weather.WeatherIntegrationStub.weatherIntegrationResponse;
 import static com.example.cepapi.integration.weather.WeatherIntegrationStub.weatherIntegrationResponseExpect;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -86,5 +90,15 @@ class WeatherIntegrationTest {
 
         var actual = integrationWeather.getWeather("Canoas");
         assertEquals(expect, actual);
+    }
+
+    @Test
+    @DisplayName("Deve lançar HttpClientErrorException quando a cidade estiver em branco")
+    void handleApiRequestExceptionNotFound() {
+        IntegrationWeather integration = mock(IntegrationWeather.class);
+
+        doThrow(HttpClientErrorException.class)
+                .when(integration).getWeather(null);
+        assertThrows(HttpClientErrorException.class, () -> integration.getWeather(null));
     }
 }

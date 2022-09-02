@@ -2,10 +2,8 @@ package com.example.cepapi.controller;
 
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
 import com.example.cepapi.model.pessoa.Pessoa;
-import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
-import com.example.cepapi.repository.CadastroRepository;
 import com.example.cepapi.service.CadastroServices;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,19 +11,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static com.example.cepapi.controller.PessoaControllerStub.*;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.*;
-import static java.util.Optional.empty;
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.toRequest;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.not;
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -53,7 +51,7 @@ public class PessoaControllerTest {
 
 
     @Test
-    @DisplayName("Deve procurar todas as pessoas")
+    @DisplayName("Deve procurar todas as pessoas por nome")
     void shouldShowAllPeopleByName() {
         String name = "Camila";
         List<PessoaResponse> expect = new ArrayList<>();
@@ -66,6 +64,17 @@ public class PessoaControllerTest {
 
         verify(this.cadastroServices, atLeastOnce()).findByNome(name);
 
+    }
+
+    @Test
+    @DisplayName("Deve procurar todas as pessoas por nome")
+    void shouldShowAllPeopleByName2() {
+        String name = "1";
+
+        doThrow(ApiNotFoundException.class)
+                .when(this.cadastroServices).findByNome(name);
+
+        assertThrows(ApiNotFoundException.class,() -> cadastroServices.findByNome(name));
     }
 
     @Test
