@@ -51,6 +51,23 @@ public class PessoaControllerTest {
 
     }
 
+
+    @Test
+    @DisplayName("Deve procurar todas as pessoas")
+    void shouldShowAllPeopleByName() {
+        String name = "Camila";
+        List<PessoaResponse> expect = new ArrayList<>();
+
+        doReturn(expect)
+                .when(this.cadastroServices).findByNome(name);
+
+        List<PessoaResponse> actual = this.pessoaController.findByNome(name);
+        assertEquals(expect, actual);
+
+        verify(this.cadastroServices, atLeastOnce()).findByNome(name);
+
+    }
+
     @Test
     @DisplayName("Deve procurar uma pessoa pelo id com sucesso.")
     void shouldShowEmployeeByID() {

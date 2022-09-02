@@ -48,19 +48,26 @@ public class CadastroController {
 			@ApiResponse(code = 404, message = "Schema not found"),
 			@ApiResponse(code = 400, message = "Missing or invalid request body"),
 			@ApiResponse(code = 500, message = "Internal error")})
-	public List<PessoaResponse> findAll(@RequestParam(required = false) String nome){
+	public List<PessoaResponse> findAll(){
+        return cadastroServices.findAll();
+    }
+
+    @GetMapping(value = "nome/")
+    @ApiOperation("Show a list of peolple by name")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Show a list of peolple by name"),
+            @ApiResponse(code = 404, message = "Schema not found"),
+            @ApiResponse(code = 400, message = "Missing or invalid request body"),
+            @ApiResponse(code = 500, message = "Internal error")})
+    public List<PessoaResponse> findByNome(@RequestParam(required = false) String nome){
 
         if (nome != null) {
-           return cadastroServices.findByNome(nome);
+            return cadastroServices.findByNome(nome);
 
         } else {
             return this.cadastroServices.findAll();
 
         }
-
-
-		//return this.cadastroServices.findAll();
-	}
+    }
 
 	@GetMapping("/{id}")
 	@ApiOperation("Show a person by id")
@@ -134,23 +141,6 @@ public class CadastroController {
 		}
 		log.info("Mostrando todos os cookies!");
 		return "Nenhum cookie encontrado!";
-	}
-
-	@GetMapping("/nome")
-	public List<PessoaResponse> findByNome(@RequestParam String nome) {
-        if (nome != null) {
-            nome = URLEncoder.encode(nome, StandardCharsets.UTF_8);
-            var list = cadastroServices.findByNome(nome);
-
-            if (list == null) {
-                throw new NullPointerException();
-            }
-            return cadastroServices.findByNome(nome);
-
-        } else {
-            return this.cadastroServices.findAll();
-
-        }
 	}
 
 	@GetMapping("/city/")

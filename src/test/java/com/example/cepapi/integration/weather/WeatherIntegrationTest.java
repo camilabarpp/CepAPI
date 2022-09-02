@@ -70,7 +70,7 @@ class WeatherIntegrationTest {
         WeatherResponse expect = weatherIntegrationResponseExpect();
 
         HttpRequest request =  HttpRequest.request()
-                .withPath("http://localhost:8080/v1/api/city/?city=Canoas")
+                .withPath("v1/weather?city=Canoas")
                 .withMethod("GET");
 
 
