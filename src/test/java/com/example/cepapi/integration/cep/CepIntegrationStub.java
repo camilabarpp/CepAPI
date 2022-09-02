@@ -1,4 +1,4 @@
-package com.example.cepapi.integration;
+package com.example.cepapi.integration.cep;
 
 import com.example.cepapi.model.cep.response.CepResponse;
 

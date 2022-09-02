@@ -2,16 +2,10 @@ package com.example.cepapi.model.pessoa.response;
 
 import com.example.cepapi.model.cep.CepEntity;
 import com.example.cepapi.model.weather.WeatherEntity;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
@@ -22,5 +16,21 @@ public class PessoaResponse {
     private String nome;
     private String dataDeNascimento;
     private CepEntity endereco;
-    private WeatherEntity temperature;
+    private WeatherEntity temperatura;
+
+    public CepEntity getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(CepEntity endereco) {
+        this.endereco = endereco;
+    }
+
+    public WeatherEntity getTemperatura() {
+        return temperatura;
+    }
+
+    public void setTemperatura(WeatherEntity temperatura) {
+        this.temperatura = temperatura;
+    }
 }

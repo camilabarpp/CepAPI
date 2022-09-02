@@ -1,16 +1,11 @@
 package com.example.cepapi.service;
 
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
-import com.example.cepapi.integration.resttemplate.cep.IntegrationCep;
-import com.example.cepapi.integration.resttemplate.weather.IntegrationWeather;
 import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
-import com.example.cepapi.model.weather.mapper.WeatherMapper;
 import com.example.cepapi.repository.CadastroRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,6 +56,15 @@ public class CadastroServices {
         } else {
             cadastroRepository.deleteAllById(id);
         }
+    }
 
+/*
+    public List<Pessoa> findByNome(String nome) {
+        return cadastroRepository.findByNomeContains(nome);
+    }
+*/
+
+    public List<PessoaResponse> findByNome(String nome) {
+        return cadastroRepository.findByNome(nome);
     }
 }

@@ -30,7 +30,7 @@ public class RestTemplateConfig {
                 .rootUri("https://weather-by-api-ninjas.p.rapidapi.com")
                 .defaultHeader("X-RapidAPI-Key", "3c2316e5ccmsh4c9334453d4100cp11f529jsn398286bc960e")
                 .defaultHeader("X-RapidAPI-Host", "weather-by-api-ninjas.p.rapidapi.com")
-                //.defaultHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .defaultHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .errorHandler(new ErroHandler())
                 .build();
     }

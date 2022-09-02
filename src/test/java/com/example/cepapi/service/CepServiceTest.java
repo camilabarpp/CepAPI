@@ -61,6 +61,7 @@ class CepServiceTest {
         verify(repository).save(entity);
 
     }
+
     public static Pessoa createAEntity() {
         return Pessoa.builder()
                 .id("1")

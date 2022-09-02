@@ -5,7 +5,6 @@ import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import lombok.experimental.UtilityClass;
 
-import java.util.List;
 import java.util.Optional;
 
 @UtilityClass
@@ -28,7 +27,17 @@ public class PessoaMapper {
                 .nome(pessoa.getNome())
                 .dataDeNascimento(pessoa.getDataDeNascimento())
                 .endereco(pessoa.getEndereco())
-                .temperature(pessoa.getTemperatura())
+                .temperatura(pessoa.getTemperatura())
+                .build();
+    }
+
+    public static PessoaResponse listPessoaResponse(Pessoa pessoa) {
+        return PessoaResponse.builder()
+                .id(pessoa.getId()) //Não tirar, senão não aparece o id no FindAll
+                .nome(pessoa.getNome())
+                .dataDeNascimento(pessoa.getDataDeNascimento())
+                .endereco(pessoa.getEndereco())
+                .temperatura(pessoa.getTemperatura())
                 .build();
     }
 
@@ -48,17 +57,16 @@ public class PessoaMapper {
                 .nome(pessoaResponse.getNome())
                 .dataDeNascimento(pessoaResponse.getDataDeNascimento())
                 .endereco(pessoaResponse.getEndereco())
-                .temperatura(pessoaResponse.getTemperature())
+                .temperatura(pessoaResponse.getTemperatura())
                 .build();
     }
-
     public static Optional<Pessoa> toEntityOptional(PessoaResponse pessoaResponse){
         return Optional.ofNullable(Pessoa.builder()
                 .id(pessoaResponse.getId())
                 .nome(pessoaResponse.getNome())
                 .dataDeNascimento(pessoaResponse.getDataDeNascimento())
                 .endereco(pessoaResponse.getEndereco())
-                .temperatura(pessoaResponse.getTemperature())
+                .temperatura(pessoaResponse.getTemperatura())
                 .build());
     }
 
@@ -68,7 +76,7 @@ public class PessoaMapper {
                 .nome(pessoaRequest.getNome())
                 .dataDeNascimento(pessoaRequest.getDataDeNascimento())
                 .endereco(pessoaRequest.getEndereco())
-                .temperature(pessoaRequest.getTemperatura())
+                .temperatura(pessoaRequest.getTemperatura())
                 .build();
     }
 
