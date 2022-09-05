@@ -1,39 +1,30 @@
 package com.example.cepapi.service;
 
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
-import com.example.cepapi.integration.resttemplate.cep.IntegrationCep;
-import com.example.cepapi.model.cep.CepMapper;
-import com.example.cepapi.model.cep.response.CepResponse;
 import com.example.cepapi.model.pessoa.Pessoa;
-import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.repository.CadastroRepository;
-import com.example.cepapi.repository.CepRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import static com.example.cepapi.controller.PessoaControllerStub.*;
-import static com.example.cepapi.model.cep.CepMapper.entityToResponse;
+import static com.example.cepapi.controller.PessoaControllerStub.createAEntity;
+import static com.example.cepapi.controller.PessoaControllerStub.createAResponse;
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.toEntityOptional;
-import static com.example.cepapi.service.CadastroServiceStub.PessoaServiceStubExpected;
-import static com.example.cepapi.service.CadastroServiceStub.PessoaServiceStubResponse;
-import static com.example.cepapi.service.CepServiceTest.createAResponseCep;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -43,16 +34,9 @@ public class CadastroServicesTest {
 
     @InjectMocks
     private CadastroServices cadastroServices;
-    @InjectMocks
-    private CepService cepService;
+
     @MockBean
     CadastroRepository cadastroRepository;
-
-    @MockBean
-    CepRepository cepRepository;
-
-    @MockBean
-    IntegrationCep integrationCep;
 
     @BeforeEach
     void setUp() {
@@ -62,17 +46,17 @@ public class CadastroServicesTest {
     @Test
     @DisplayName("Deve mostrar todas as pessoas")
     void shouldfindAllPeople() {
-        CadastroServices services = mock(CadastroServices.class);
+        CadastroServices cadastroServices = mock(CadastroServices.class);
 
         List<PessoaResponse> expect = new ArrayList<>();
 
         doReturn(expect)
-                .when(services).findAll();
+                .when(cadastroServices).findAll();
 
-        List<PessoaResponse> actual = services.findAll();
+        List<PessoaResponse> actual = cadastroServices.findAll();
         assertEquals(expect, actual);
 
-        verify(services, atLeastOnce()).findAll();
+        verify(cadastroServices, atLeastOnce()).findAll();
 
     }
 

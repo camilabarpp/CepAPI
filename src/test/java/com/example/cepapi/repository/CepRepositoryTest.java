@@ -4,24 +4,26 @@ import com.example.cepapi.model.pessoa.Pessoa;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static com.example.cepapi.repository.PessoaRepositoryStub.createAEntity;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 @DataMongoTest
+@EnableMongoRepositories
 public class CepRepositoryTest {
 
-    @Autowired
+    @SpyBean
     private MongoTemplate mongoTemplate;
     @Autowired
     private CadastroRepository cadastroRepository;
@@ -50,7 +52,6 @@ public class CepRepositoryTest {
     @Test
     @DisplayName("Deve salvar uma pessoa no banco de dados")
     public void shouldSaveAPerson() {
-        MongoTemplate mongoTemplate = mock(MongoTemplate.class);
 
         Pessoa pessoa = createAEntity();
         mongoTemplate.save(pessoa);
@@ -66,7 +67,6 @@ public class CepRepositoryTest {
     @Test
     @DisplayName("Deve alterar uma pessoa no banco de dados")
     public void shouldUpdateAPerson() {
-        MongoTemplate mongoTemplate = mock(MongoTemplate.class);
 
         Pessoa pessoa = createAEntity();
         mongoTemplate.save(pessoa);

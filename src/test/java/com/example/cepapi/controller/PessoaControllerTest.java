@@ -7,10 +7,21 @@ import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.service.CadastroServices;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.openqa.selenium.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -26,13 +37,22 @@ import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.toRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class PessoaControllerTest {
     @InjectMocks
     private CadastroController pessoaController;
     @Mock
     private CadastroServices cadastroServices;
+
+    @Autowired
+    private MockMvc mvc;
 
     @Test
     @DisplayName("Deve procurar todas as pessoas")
@@ -205,32 +225,34 @@ public class PessoaControllerTest {
 
     @Test
     @DisplayName("Deve criar um cookie")
-    public void shouldCreateACookie() {
-        Cookie cookies = new Cookie("Pessoa", "Camila");
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        CadastroController controller = mock(CadastroController.class);
+    public void shouldCreateACookie() throws Exception {
+        Cookie cookie = new Cookie("A", "B");
 
-        response.addCookie(cookies);
-        response.addHeader("Pessoa", "Camila");
-
-        controller.criandoCoookie(response, "Camila");
-
-        Mockito.verify( controller, atLeastOnce()).criandoCoookie(response, "Camila");
-        assertThat(cookies).isNotNull();
-        Mockito.verify( response ).addHeader( "Pessoa", "Camila");
-
+        mvc.perform(MockMvcRequestBuilders.post("/v1/api/Camila")
+                        .cookie(cookie)
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("Deve buscar todos os cookies")
-    public void shouldGetACookie() {
-        Cookie cookies = new Cookie("Pessoa", "Camila");
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        CadastroController controller = mock(CadastroController.class);
+    public void shouldGetACookie() throws Exception {
+        Cookie cookie = new Cookie("A", "V");
 
-        controller.readAllCookies(request);
-        Mockito.verify( controller, atLeastOnce()).readAllCookies(request);
-        assertThat(cookies).isNotNull();
+        mvc.perform(get("/v1/api/cookies/get")
+                        .cookie(cookie)
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Deve testar se o cookie existe")
+    public void testNotExists() throws Exception {
+        mvc.perform(get("/v1/api/cookies/get"))
+                .andExpect(cookie().doesNotExist("unknownCookie"));
+
     }
 }
 

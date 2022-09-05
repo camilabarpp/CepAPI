@@ -138,7 +138,7 @@ public class CadastroController {
 							c.getValue()).collect(Collectors.joining("\n"));
 		}
 		log.info("Mostrando todos os cookies!");
-		return "Nenhum cookie encontrado!";
+		return String.valueOf(new ApiNotFoundException("Nenhum cookie encontrado!"));
 	}
 
 	@GetMapping("/city/")

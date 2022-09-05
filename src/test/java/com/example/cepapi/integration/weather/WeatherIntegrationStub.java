@@ -6,19 +6,19 @@ public class WeatherIntegrationStub {
 
     public static WeatherResponse  weatherIntegrationResponseExpect() {
         return WeatherResponse.builder()
-                .temp("16")
-                .feelsLike("16")
-                .minTemp("16")
-                .maxTemp("16")
+                .temp("21")
+                .feelsLike("20")
+                .minTemp("20")
+                .maxTemp("22")
                 .build();
     }
 
     public static WeatherResponse weatherIntegrationResponse() {
         return WeatherResponse.builder()
-                .temp("16")
-                .feelsLike("16")
-                .minTemp("16")
-                .maxTemp("16")
+                .temp("21")
+                .feelsLike("20")
+                .minTemp("20")
+                .maxTemp("22")
                 .build();
     }
 

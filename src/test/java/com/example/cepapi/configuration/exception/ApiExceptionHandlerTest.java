@@ -1,5 +1,6 @@
 package com.example.cepapi.configuration.exception;
 
+import com.example.cepapi.configuration.exception.errorresponse.ErrorResponse;
 import com.example.cepapi.integration.resttemplate.weather.IntegrationWeather;
 import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.service.CadastroServices;
@@ -12,12 +13,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.HttpClientErrorException;
 
 import static com.example.cepapi.controller.PessoaControllerStub.createAEntityNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.doThrow;
+import static org.mockito.Mockito.doReturn;
+
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 @WebMvcTest(value = ApiExceptionHandlerTest.class)
@@ -29,8 +33,6 @@ class ApiExceptionHandlerTest {
 
     @Mock
     private IntegrationWeather integrationWeather;
-
-
 
     @Test
     @DisplayName("Deve lançar NullPointerException")
@@ -73,5 +75,4 @@ class ApiExceptionHandlerTest {
 
         assertThrows(ApiNotFoundException.class, () -> this.services.findById(id));
     }
-
 }
