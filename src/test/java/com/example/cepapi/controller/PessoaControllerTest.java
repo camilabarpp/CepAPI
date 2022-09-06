@@ -102,12 +102,12 @@ public class PessoaControllerTest {
     void shouldShowEmployeeByID() {
 
         String id = "1";
-        PessoaResponse expect = createAResponse();
+        Pessoa expect = createAEntity();
 
         doReturn(expect)
                 .when(this.cadastroServices).findById(id);
 
-        PessoaResponse actual = this.pessoaController.findById(id);
+        var actual = this.pessoaController.findById(id);
 
         assertEquals(expect.getId(), actual.getId());
         assertEquals(expect.getNome(), actual.getNome());

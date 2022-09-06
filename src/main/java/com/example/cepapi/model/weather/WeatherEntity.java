@@ -9,7 +9,6 @@ import org.springframework.data.annotation.Id;
 import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @Data
 public class WeatherEntity {

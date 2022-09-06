@@ -31,17 +31,11 @@ import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
-@Slf4j
 @RestController
 @RequestMapping("v1/api/")
 @AllArgsConstructor
 public class CadastroController {
 	private final CadastroServices cadastroServices;
-	WeatherService service;
-
-	private IntegrationWeather integrationWeather;
-
-	private IntegrationCep integrationCep;
 
 	@GetMapping(value = "")
 	@ApiOperation("Show a list of peolple")
@@ -60,11 +54,7 @@ public class CadastroController {
             @ApiResponse(code = 400, message = "Missing or invalid request body"),
             @ApiResponse(code = 500, message = "Internal error")})
     public List<PessoaResponse> findByNome(@RequestParam String nome){
-        if (nome != null) {
             return cadastroServices.findByNome(nome);
-        } else {
-            throw new ApiNotFoundException("Nome não encontrado!");
-        }
     }
 
 	@GetMapping("/{id}")
@@ -74,7 +64,7 @@ public class CadastroController {
 			@ApiResponse(code = 400, message = "Missing or invalid request body"),
 			@ApiResponse(code = 500, message = "Internal error")})
 	public PessoaResponse findById(@PathVariable String id) {
-		return cadastroServices.findById(id);
+		return pessoaResponse(cadastroServices.findById(id));
 	}
 
 	@PostMapping()
@@ -137,24 +127,6 @@ public class CadastroController {
 					.map(c -> c.getName() + ": " +
 							c.getValue()).collect(Collectors.joining("\n"));
 		}
-		log.info("Mostrando todos os cookies!");
 		return String.valueOf(new ApiNotFoundException("Nenhum cookie encontrado!"));
 	}
-
-	@GetMapping("/city/")
-	public WeatherResponse getWeather(@RequestParam("city") String city) {
-		return integrationWeather.getWeather(city);
-	}
-
-	@GetMapping("/cep/{cep}")
-	public CepResponse getCep(@PathVariable String cep) {
-		return integrationCep.consultarCep(cep);
-	}
-
-	/*@GetMapping("/{city}")
-	@ApiOperation("cvv")
-	public WeatherResponse getWeather(@PathVariable String city) {
-		return weatherClient.getWeather(city);
-	}*/
-
 }

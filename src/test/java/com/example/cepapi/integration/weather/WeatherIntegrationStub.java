@@ -6,7 +6,7 @@ public class WeatherIntegrationStub {
 
     public static WeatherResponse  weatherIntegrationResponseExpect() {
         return WeatherResponse.builder()
-                .temp("21")
+                .temp("20")
                 .feelsLike("20")
                 .minTemp("20")
                 .maxTemp("22")
@@ -15,7 +15,7 @@ public class WeatherIntegrationStub {
 
     public static WeatherResponse weatherIntegrationResponse() {
         return WeatherResponse.builder()
-                .temp("21")
+                .temp("20")
                 .feelsLike("20")
                 .minTemp("20")
                 .maxTemp("22")

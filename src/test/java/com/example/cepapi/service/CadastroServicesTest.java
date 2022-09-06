@@ -15,10 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.example.cepapi.controller.PessoaControllerStub.createAEntity;
 import static com.example.cepapi.controller.PessoaControllerStub.createAResponse;
@@ -46,43 +43,49 @@ public class CadastroServicesTest {
     @Test
     @DisplayName("Deve mostrar todas as pessoas")
     void shouldfindAllPeople() {
-        CadastroServices cadastroServices = mock(CadastroServices.class);
-
         List<PessoaResponse> expect = new ArrayList<>();
 
         doReturn(expect)
-                .when(cadastroServices).findAll();
+                .when(cadastroRepository).findAll();
 
-        List<PessoaResponse> actual = cadastroServices.findAll();
+        var actual = cadastroServices.findAll();
+
         assertEquals(expect, actual);
 
-        verify(cadastroServices, atLeastOnce()).findAll();
+        verify(cadastroRepository, atLeastOnce()).findAll();
 
     }
 
     @Test
     @DisplayName("Deve procurar uma pessoa por ID")
     void shouldShowPersonByID() {
-        CadastroServices services = mock(CadastroServices.class);
-
         String id = "1";
-        PessoaResponse expect = createAResponse();
+        Optional<Pessoa> expect = Optional.ofNullable(createAEntity());
 
         doReturn(expect)
-                .when(services).findById(id);
+                .when(cadastroRepository).findById(id);
 
-        PessoaResponse actual = services.findById(id);
+        Optional<Pessoa> actual = Optional.ofNullable(cadastroServices.findById(id));
 
-        assertEquals(expect.getId(), actual.getId());
-        assertEquals(expect.getNome(), actual.getNome());
-        assertEquals(expect.getDataDeNascimento(), actual.getDataDeNascimento());
+        assertEquals(expect.get().getId(), actual.get().getId());
+        assertEquals(expect.get().getNome(), actual.get().getNome());
+        assertEquals(expect.get().getDataDeNascimento(), actual.get().getDataDeNascimento());
+    }
+
+    @Test
+    @DisplayName("Return ApiNotFound quando ID não existe")
+    void testFindByIdNotFound() {
+        Pessoa pessoa = Pessoa.builder().id("A").build();
+
+        doThrow(ApiNotFoundException.class).when(cadastroRepository).findById(pessoa.getId());
+
+        assertThrows(ApiNotFoundException.class,
+                () -> cadastroServices.findById("1"));
     }
 
     @Test
     @DisplayName("Deve procurar uma pessoa por nome")
     void shouldShowPersonByName() {
-        //CadastroServices services = mock(CadastroServices.class);
-
         String nome = "Camila";
         List<PessoaResponse> expect = Collections.singletonList(createAResponse());
 
@@ -98,43 +101,27 @@ public class CadastroServicesTest {
     @Test
     @DisplayName("Não deve procurar uma pessoa por nome inexistente")
     void shouldNotShowPersonByName() {
-        //CadastroServices services = mock(CadastroServices.class);
+        String nome = "1";
 
-        String nome = "Camila";
-        List<PessoaResponse> expect = Collections.singletonList(createAResponse());
-
-        doReturn(expect)
+        doThrow(ApiNotFoundException.class)
                 .when(cadastroRepository).findByNome(nome);
 
-        var actual = cadastroServices.findByNome(nome);
+        assertThrows(ApiNotFoundException.class, () -> cadastroServices.findByNome(nome));
 
-        assertNotNull(actual);
-        assertEquals(expect.contains(nome), actual.contains(nome));
-    }
-
-    @Test
-    @DisplayName("Return ApiNotFound quando ID não existe")
-    void testFindByIdNotFound() {
-        doThrow(ApiNotFoundException.class).when(cadastroRepository).findById("1");
-
-        assertThrows(ApiNotFoundException.class,
-                () -> cadastroServices.findById("1"));
     }
 
     @Test
     @DisplayName("Deve atualizar uma pessoa com sucesso")
     void shouldUpdateAPersonWithSuccess2() {
-        CadastroServices cadastroServices = mock(CadastroServices.class);
-        String id = "1";
-        Pessoa atualizar = new Pessoa();
+        Pessoa atualizar = createAEntity();
+
         Pessoa atualizada = createAEntity();
 
-        doReturn(atualizada).when(cadastroServices).update(id, atualizar);
+        when(cadastroRepository.save(any())).thenReturn(atualizada);
 
-        cadastroRepository.save(atualizada);
+        var actual = cadastroServices.atualizar(atualizar);
 
-        var actual = cadastroServices.update(id, atualizar);
-
+        assertNotNull(actual);
         assertEquals(atualizada.getId(), actual.getId());
         assertEquals(atualizada.getNome(), actual.getNome());
         assertEquals(atualizada.getDataDeNascimento(), actual.getDataDeNascimento());
@@ -157,42 +144,35 @@ public class CadastroServicesTest {
     @Test
     @DisplayName("Deve criar uma pessoa com sucesso")
     void shouldCreateAPersonWithSuccess() {
-        CadastroServices cadastroServices = mock(CadastroServices.class);
+        Pessoa pessoa = CepServiceTest.createAEntity();
 
-        Pessoa expect = createAEntity();
+        when(cadastroRepository.save(any(Pessoa.class))).thenReturn(pessoa);
 
-        doReturn(expect).when(cadastroServices).create(expect);
+        var response = cadastroServices.save(pessoa);
 
-        cadastroRepository.save(expect);
-
-        var actual = cadastroServices.create(expect);
-
-        assertEquals(expect.getId(), actual.getId());
-        assertEquals(expect.getNome(), actual.getNome());
-        assertEquals(expect.getDataDeNascimento(), actual.getDataDeNascimento());
-        assertEquals(expect.getEndereco(), actual.getEndereco());
-
-        verify(cadastroRepository).save(expect);
+        assertNotNull(response);
+        assertEquals(pessoa.getId(), response.getId());
+        assertEquals(pessoa.getNome(), response.getNome());
+        assertEquals(pessoa.getDataDeNascimento(), response.getDataDeNascimento());
     }
 
     @Test
     @DisplayName("Não deve criar uma pessoa nula")
     void shouldNotCreateANullPerson() {
-        CadastroServices cadastroServices = mock(CadastroServices.class);
-        Pessoa expect = new Pessoa();
+        Pessoa pessoa = createAEntity();
 
-        doThrow(ApiNotFoundException.class)
-                .when(cadastroServices).create(expect);
+        doThrow(NullPointerException.class).when(cadastroRepository).save(pessoa);
 
-        assertThrows(ApiNotFoundException.class, () -> cadastroServices.create(expect));
-
-        verify(cadastroRepository, never()).save(expect);
+        assertThrows(NullPointerException.class,
+                () -> cadastroServices.save(pessoa));
     }
 
     @Test
     @DisplayName("Deve deletar pessoas por ids")
     void shouldDeletePersonByIds() {
         List<String> ids = Arrays.asList("1", "2");
+
+        doNothing().when(cadastroRepository).deleteAllById(ids);
 
         cadastroServices.deletePeolpleByIDs(ids);
 
@@ -202,8 +182,8 @@ public class CadastroServicesTest {
     @Test
     @DisplayName("Deve deletar todas as pessoas quando id for null")
     void shouldDeteAllPeopleWhenIdIsNull() {
-        cadastroServices.deletePeolpleByIDs(null);
+        doNothing().when(cadastroRepository).deleteAll();
 
-        verify(cadastroRepository).deleteAll();
+        cadastroServices.deletePeolpleByIDs(null);
     }
 }

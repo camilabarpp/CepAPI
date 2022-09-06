@@ -23,6 +23,9 @@ public class CadastroServices {
         return cadastroRepository.insert(pessoa);
     }
 
+    public Pessoa save(Pessoa pessoa) {
+        return cadastroRepository.save(pessoa);
+    }
     //Método GET todos
     public List<PessoaResponse> findAll() {
         return cadastroRepository.findAll().stream()
@@ -30,12 +33,10 @@ public class CadastroServices {
                 .toList();
     }
 
-    //Método GEt por ID
-    public PessoaResponse findById(String id) {
+    public Pessoa findById(String id) {
         return cadastroRepository.findById(id)
-                .map(PessoaMapper::pessoaResponse)
-                .orElseThrow(() -> new ApiNotFoundException("ID Not Found: " + id));
-    }
+                .orElseThrow(() ->
+                        new ApiNotFoundException("ID '" + id + "' não encontrado!"));}
     public Pessoa update(String id, Pessoa pessoa){
         cepService.pesquisarCepESalvarNoBanco(pessoa);
         Pessoa found = cadastroRepository.findById(id)
@@ -49,6 +50,20 @@ public class CadastroServices {
         return cadastroRepository.save(found);
     }
 
+    public Pessoa atualizar(Pessoa pessoa){
+        return cadastroRepository.findById(pessoa.getId())
+                .map(material -> {
+                    material.setNome(pessoa.getNome());
+                    material.setDataDeNascimento(pessoa.getDataDeNascimento());
+                    material.setEndereco(pessoa.getEndereco());
+                    return cadastroRepository.save(material);
+                })
+                .orElseGet(() -> {
+                    pessoa.setId(pessoa.getId());
+                    return cadastroRepository.save(pessoa);
+                });
+    }
+
     //Método DELETE
     public void deletePeolpleByIDs(List<String> id) {
         if (id == null) {
@@ -57,12 +72,11 @@ public class CadastroServices {
             cadastroRepository.deleteAllById(id);
         }
     }
-
     public List<PessoaResponse> findByNome(String nome) {
-        if (nome != null) {
-            return cadastroRepository.findByNome(nome);
-        } else {
+        if (cadastroRepository.findByNome(nome).isEmpty()) {
             throw new ApiNotFoundException("Nome '" + nome + "' não encontrado!");
+        } else {
+            return cadastroRepository.findByNome(nome);
         }
     }
 }
