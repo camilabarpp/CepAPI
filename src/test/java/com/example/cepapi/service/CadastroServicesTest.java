@@ -11,21 +11,21 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.example.cepapi.controller.PessoaControllerStub.createAEntity;
 import static com.example.cepapi.controller.PessoaControllerStub.createAResponse;
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
@@ -40,7 +40,7 @@ public class CadastroServicesTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        openMocks(this);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class CadastroServicesTest {
 
     @Test
     @DisplayName("Deve procurar uma pessoa por ID")
-    void shouldShowEmployeeByID() {
+    void shouldShowPersonByID() {
         CadastroServices services = mock(CadastroServices.class);
 
         String id = "1";
@@ -73,9 +73,43 @@ public class CadastroServicesTest {
 
         PessoaResponse actual = services.findById(id);
 
-        assertEquals( expect.getId(), actual.getId());
-        assertEquals( expect.getNome(), actual.getNome());
-        assertEquals( expect.getDataDeNascimento(), actual.getDataDeNascimento());
+        assertEquals(expect.getId(), actual.getId());
+        assertEquals(expect.getNome(), actual.getNome());
+        assertEquals(expect.getDataDeNascimento(), actual.getDataDeNascimento());
+    }
+
+    @Test
+    @DisplayName("Deve procurar uma pessoa por nome")
+    void shouldShowPersonByName() {
+        //CadastroServices services = mock(CadastroServices.class);
+
+        String nome = "Camila";
+        List<PessoaResponse> expect = Collections.singletonList(createAResponse());
+
+        doReturn(expect)
+                .when(cadastroRepository).findByNome(nome);
+
+        var actual = cadastroServices.findByNome(nome);
+
+        assertNotNull(actual);
+        assertEquals(expect.contains(nome), actual.contains(nome));
+    }
+
+    @Test
+    @DisplayName("Não deve procurar uma pessoa por nome inexistente")
+    void shouldNotShowPersonByName() {
+        //CadastroServices services = mock(CadastroServices.class);
+
+        String nome = "Camila";
+        List<PessoaResponse> expect = Collections.singletonList(createAResponse());
+
+        doReturn(expect)
+                .when(cadastroRepository).findByNome(nome);
+
+        var actual = cadastroServices.findByNome(nome);
+
+        assertNotNull(actual);
+        assertEquals(expect.contains(nome), actual.contains(nome));
     }
 
     @Test
@@ -85,7 +119,7 @@ public class CadastroServicesTest {
 
         assertThrows(ApiNotFoundException.class,
                 () -> cadastroServices.findById("1"));
-   }
+    }
 
     @Test
     @DisplayName("Deve atualizar uma pessoa com sucesso")
@@ -111,13 +145,13 @@ public class CadastroServicesTest {
 
     @Test
     @DisplayName("Deve ocorrer erro ao tentar atualizar uma pessoa inexistente.")
-    public void updateInvalidPerson(){
+    public void updateInvalidPerson() {
         var pessoa = new PessoaRequest();
 
         assertThrows(NullPointerException.class,
                 () -> cadastroServices.update(null, requestPessoa(pessoa)));
 
-        verify( cadastroRepository, never() ).save(requestPessoa(pessoa));
+        verify(cadastroRepository, never()).save(requestPessoa(pessoa));
     }
 
     @Test
@@ -157,7 +191,7 @@ public class CadastroServicesTest {
 
     @Test
     @DisplayName("Deve deletar pessoas por ids")
-     void shouldDeletePersonByIds() {
+    void shouldDeletePersonByIds() {
         List<String> ids = Arrays.asList("1", "2");
 
         cadastroServices.deletePeolpleByIDs(ids);
@@ -167,7 +201,7 @@ public class CadastroServicesTest {
 
     @Test
     @DisplayName("Deve deletar todas as pessoas quando id for null")
-    void shouldDleteAllPeopleWhenIdIsNull() {
+    void shouldDeteAllPeopleWhenIdIsNull() {
         cadastroServices.deletePeolpleByIDs(null);
 
         verify(cadastroRepository).deleteAll();

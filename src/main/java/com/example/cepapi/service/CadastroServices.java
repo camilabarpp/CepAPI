@@ -58,13 +58,11 @@ public class CadastroServices {
         }
     }
 
-/*
-    public List<Pessoa> findByNome(String nome) {
-        return cadastroRepository.findByNomeContains(nome);
-    }
-*/
-
     public List<PessoaResponse> findByNome(String nome) {
-        return cadastroRepository.findByNome(nome);
+        if (nome != null) {
+            return cadastroRepository.findByNome(nome);
+        } else {
+            throw new ApiNotFoundException("Nome '" + nome + "' não encontrado!");
+        }
     }
 }
