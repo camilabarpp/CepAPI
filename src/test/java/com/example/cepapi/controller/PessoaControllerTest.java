@@ -55,18 +55,17 @@ public class PessoaControllerTest {
     private MockMvc mvc;
 
     @Test
-    @DisplayName("Deve procurar todas as pessoas")
+    @DisplayName("Deve mostrar todas as pessoas")
     void shouldShowAllPeople() {
+        String nome = null;
         List<PessoaResponse> expect = new ArrayList<>();
 
         doReturn(expect)
                 .when(this.cadastroServices).findAll();
 
-        List<PessoaResponse> actual = this.pessoaController.findAll();
+        List<PessoaResponse> actual = this.pessoaController.findByNome(nome);
+
         assertEquals(expect, actual);
-
-        verify(this.cadastroServices, atLeastOnce()).findAll();
-
     }
 
 

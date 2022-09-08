@@ -27,7 +27,7 @@ public class SwaggerConfig {
     private ApiInfo metaData() {
         return new ApiInfoBuilder()
                 .title("Cep API")
-                .description("\"Api de cadastro de pessoas com busca de CEP na api externa\"")
+                .description("\"Api de cadastro de pessoas com busca de CEP e temperatura na api externa\"")
                 .version("1.0.0")
                 .contact(new Contact("Camila Ramão Barpp",
                         "https://www.github.com/camilabarpp",

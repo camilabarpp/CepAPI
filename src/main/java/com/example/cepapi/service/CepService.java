@@ -1,7 +1,6 @@
 package com.example.cepapi.service;
 
 import com.example.cepapi.integration.resttemplate.cep.IntegrationCep;
-import com.example.cepapi.model.cep.CepMapper;
 import com.example.cepapi.model.cep.response.CepResponse;
 import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.repository.CepRepository;
@@ -25,6 +24,10 @@ public class CepService {
             return novoEndereco;
         });
         pessoa.setEndereco(endereco);
+    }
+
+    public CepResponse consultarCep(String cep) {
+       return integration.consultarCep(cep);
     }
 
 }

@@ -2,42 +2,34 @@ package com.example.cepapi.service;
 
 import com.example.cepapi.integration.resttemplate.cep.IntegrationCep;
 import com.example.cepapi.model.cep.CepEntity;
-import com.example.cepapi.model.cep.CepMapper;
 import com.example.cepapi.model.cep.response.CepResponse;
 import com.example.cepapi.model.pessoa.Pessoa;
-import com.example.cepapi.repository.CadastroRepository;
 import com.example.cepapi.repository.CepRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.core.AutoConfigureCache;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
 import static com.example.cepapi.model.cep.CepMapper.entityToResponse;
-import static com.example.cepapi.model.cep.CepMapper.toProductEntity;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.toEntityOptional;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static com.example.cepapi.model.cep.CepMapper.responseToEntity;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 @RequiredArgsConstructor
 class CepServiceTest {
-
-    @MockBean
-    CadastroRepository cadastroRepository;
     @Mock
     private CepRepository repository;
-    @Mock
+    @MockBean
     private CepService service;
-    @InjectMocks
-    private CadastroServices cadastroServices;
     @Mock
     private IntegrationCep integrationCep;
 
@@ -47,9 +39,9 @@ class CepServiceTest {
         Pessoa pessoa = createAEntity();
         CepEntity entity = createAEntityCep();
 
-        repository.save(entity);
+        when(integrationCep.consultarCep(cep)).thenReturn(responseToEntity(entity));
+        when(repository.save(entity)).thenReturn(entity);
 
-        when(integrationCep.consultarCep(cep)).thenReturn(CepMapper.responseToEntity(entity));
         service.pesquisarCepESalvarNoBanco(pessoa);
 
         assertEquals(pessoa.getEndereco().getCep(), entity.getCep());
@@ -57,9 +49,6 @@ class CepServiceTest {
         assertEquals(pessoa.getEndereco().getBairro(), entity.getBairro());
         assertEquals(pessoa.getEndereco().getLocalidade(), entity.getLocalidade());
         assertEquals(pessoa.getEndereco().getUf(), entity.getUf());
-
-        verify(repository).save(entity);
-
     }
 
     public static Pessoa createAEntity() {

@@ -8,13 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-
-@AllArgsConstructor
 @Component
 public class IntegrationCep {
-    @Qualifier("restTemplateCep")
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
+
+    @Autowired
+    public IntegrationCep(@Qualifier("restTemplateCep") RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     public CepResponse consultarCep(String cep){
         return restTemplate.getForObject("/ws/".concat(cep) + "/json", CepResponse.class);

@@ -69,7 +69,7 @@ class WeatherIntegrationTest {
     }
 
     @Test
-    void whenFindCepReturnCepIntegration() throws JsonProcessingException {
+    void whenFindWeatherReturnCepIntegration() throws JsonProcessingException {
 
         WeatherResponse expect = weatherIntegrationResponseExpect();
 

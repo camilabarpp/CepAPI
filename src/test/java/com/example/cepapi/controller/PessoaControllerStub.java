@@ -34,7 +34,7 @@ public class PessoaControllerStub {
                 .build();
     }
 
-    static WeatherEntity createAEntityWeather() {
+    public static WeatherEntity createAEntityWeather() {
         return WeatherEntity.builder()
                 .temp("20")
                 .feelsLike("20")

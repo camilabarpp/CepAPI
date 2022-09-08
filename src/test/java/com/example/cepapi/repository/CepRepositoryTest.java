@@ -4,9 +4,11 @@ import com.example.cepapi.model.pessoa.Pessoa;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -19,10 +21,9 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-@DataMongoTest
-@EnableMongoRepositories
+@DataMongoTest //se concentra somente nos componentes dp mongo
+@EnableMongoRepositories //para ativar os repositories do mongo
 public class CepRepositoryTest {
-
     @SpyBean
     private MongoTemplate mongoTemplate;
     @Autowired
@@ -34,7 +35,7 @@ public class CepRepositoryTest {
         Pessoa pessoa = createAEntity();
         mongoTemplate.save(pessoa);
 
-        boolean exists = cadastroRepository.existsById(pessoa.getId());
+        var exists = cadastroRepository.existsById(pessoa.getId());
 
         assertThat(exists).isTrue();
     }
@@ -44,7 +45,7 @@ public class CepRepositoryTest {
     public void returnsFalseWhenIdExists() {
         String id = "10";
 
-        boolean exists = cadastroRepository.existsById(id);
+        var exists = cadastroRepository.existsById(id);
 
         assertThat(exists).isFalse();
     }
@@ -53,10 +54,10 @@ public class CepRepositoryTest {
     @DisplayName("Deve salvar uma pessoa no banco de dados")
     public void shouldSaveAPerson() {
 
-        Pessoa pessoa = createAEntity();
+        var pessoa = createAEntity();
         mongoTemplate.save(pessoa);
 
-        Pessoa pessoaSalva = cadastroRepository.save(pessoa);
+        var pessoaSalva = cadastroRepository.save(pessoa);
 
         assertThat(pessoaSalva.getId()).isNotNull();
 
@@ -68,17 +69,17 @@ public class CepRepositoryTest {
     @DisplayName("Deve alterar uma pessoa no banco de dados")
     public void shouldUpdateAPerson() {
 
-        Pessoa pessoa = createAEntity();
+        var pessoa = createAEntity();
         mongoTemplate.save(pessoa);
 
-        Pessoa atualizar = new Pessoa();
+        var atualizar = new Pessoa();
 
         atualizar.setId(pessoa.getId());
         atualizar.setNome(pessoa.getNome());
         atualizar.setDataDeNascimento(pessoa.getDataDeNascimento());
         atualizar.setEndereco(pessoa.getEndereco());
 
-        Pessoa atualizada = cadastroRepository.save(pessoa);
+        var atualizada = cadastroRepository.save(pessoa);
 
         assertThat(atualizada.getId()).isNotNull();
 
@@ -89,15 +90,15 @@ public class CepRepositoryTest {
     @Test
     @DisplayName("Deve deletar uma pessoa no banco de dados")
     public void shouldDeleteAPerson() {
-        Pessoa pessoa = createAEntity();
+        var pessoa = createAEntity();
         mongoTemplate.save(pessoa, "test");
 
-        Pessoa pessoaEncontrada = mongoTemplate.findById(pessoa.getId(), Pessoa.class);
+        var pessoaEncontrada = mongoTemplate.findById(pessoa.getId(), Pessoa.class);
 
         assert pessoaEncontrada != null;
         cadastroRepository.delete(pessoaEncontrada);
 
-        Pessoa pessoaDeletada = mongoTemplate.findById(pessoa.getId(), Pessoa.class);
+        var pessoaDeletada = mongoTemplate.findById(pessoa.getId(), Pessoa.class);
 
         assertThat(pessoaDeletada).isNull();
     }

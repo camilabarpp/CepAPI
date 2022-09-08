@@ -16,7 +16,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Configuration
 public class RestTemplateConfig {
 
-    @Bean @Primary
+    @Bean //@Primary
     public RestTemplate restTemplateCep() {
         return new RestTemplateBuilder()
                 .rootUri("https://viacep.com.br")

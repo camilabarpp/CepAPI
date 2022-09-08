@@ -2,6 +2,7 @@ package com.example.cepapi.service;
 
 import com.example.cepapi.integration.resttemplate.weather.IntegrationWeather;
 import com.example.cepapi.model.pessoa.Pessoa;
+import com.example.cepapi.model.weather.response.WeatherResponse;
 import com.example.cepapi.repository.WeatherRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,9 @@ public class WeatherService {
             return novaTemperatura;
         });
         pessoa.setTemperatura(temperatura);
+    }
+
+    public WeatherResponse getWeather(String city) {
+        return integrationWeather.getWeather(city);
     }
 }

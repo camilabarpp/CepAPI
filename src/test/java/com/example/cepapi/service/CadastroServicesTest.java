@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -19,6 +20,7 @@ import java.util.*;
 
 import static com.example.cepapi.controller.PessoaControllerStub.createAEntity;
 import static com.example.cepapi.controller.PessoaControllerStub.createAResponse;
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.optionalToEntity;
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -31,9 +33,12 @@ public class CadastroServicesTest {
 
     @InjectMocks
     private CadastroServices cadastroServices;
-
     @MockBean
     CadastroRepository cadastroRepository;
+    @Mock
+    CepService cepService;
+    @Mock
+    WeatherService weatherService;
 
     @BeforeEach
     void setUp() {
@@ -75,7 +80,7 @@ public class CadastroServicesTest {
     @Test
     @DisplayName("Return ApiNotFound quando ID não existe")
     void testFindByIdNotFound() {
-        Pessoa pessoa = Pessoa.builder().id("A").build();
+        Pessoa pessoa = new Pessoa();
 
         doThrow(ApiNotFoundException.class).when(cadastroRepository).findById(pessoa.getId());
 
@@ -113,32 +118,35 @@ public class CadastroServicesTest {
     @Test
     @DisplayName("Deve atualizar uma pessoa com sucesso")
     void shouldUpdateAPersonWithSuccess2() {
-        Pessoa atualizar = createAEntity();
-
+        String id = "1";
         Pessoa atualizada = createAEntity();
 
+        when(cadastroRepository.findById(any())).thenReturn(optionalToEntity(atualizada));
         when(cadastroRepository.save(any())).thenReturn(atualizada);
 
-        var actual = cadastroServices.atualizar(atualizar);
+        var actual = cadastroServices.update(id, atualizada);
+        cepService.pesquisarCepESalvarNoBanco(atualizada);
+        weatherService.pesquisarTemperaturaESalvarNoBanco(atualizada);
 
         assertNotNull(actual);
         assertEquals(atualizada.getId(), actual.getId());
         assertEquals(atualizada.getNome(), actual.getNome());
         assertEquals(atualizada.getDataDeNascimento(), actual.getDataDeNascimento());
         assertEquals(atualizada.getEndereco(), actual.getEndereco());
-
-        verify(cadastroRepository).save(atualizada);
     }
 
     @Test
     @DisplayName("Deve ocorrer erro ao tentar atualizar uma pessoa inexistente.")
     public void updateInvalidPerson() {
-        var pessoa = new PessoaRequest();
+        String id = null;
+        var pessoa = new Pessoa();
 
-        assertThrows(NullPointerException.class,
-                () -> cadastroServices.update(null, requestPessoa(pessoa)));
+        doThrow(ApiNotFoundException.class).when(cadastroRepository).save(pessoa);
 
-        verify(cadastroRepository, never()).save(requestPessoa(pessoa));
+        assertThrows(ApiNotFoundException.class,
+                () -> cadastroServices.update(id, pessoa));
+
+        verify(cadastroRepository, never()).save(pessoa);
     }
 
     @Test
@@ -148,7 +156,7 @@ public class CadastroServicesTest {
 
         when(cadastroRepository.save(any(Pessoa.class))).thenReturn(pessoa);
 
-        var response = cadastroServices.save(pessoa);
+        var response = cadastroServices.create(pessoa);
 
         assertNotNull(response);
         assertEquals(pessoa.getId(), response.getId());
@@ -164,7 +172,7 @@ public class CadastroServicesTest {
         doThrow(NullPointerException.class).when(cadastroRepository).save(pessoa);
 
         assertThrows(NullPointerException.class,
-                () -> cadastroServices.save(pessoa));
+                () -> cadastroServices.create(pessoa));
     }
 
     @Test

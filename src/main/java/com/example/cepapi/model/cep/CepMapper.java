@@ -20,7 +20,6 @@ public class CepMapper {
     }
 
     public static CepResponse responseToEntity(CepEntity cepEntity) {
-        //var product = response.getData().getProduct();
         return CepResponse.builder()
                 .cep(cepEntity.getCep())
                 .logradouro(cepEntity.getLogradouro())
@@ -30,24 +29,5 @@ public class CepMapper {
                 .build();
     }
 
-    public static CepResponse toProductEntity(CepEntity entity){
-//        var product = entity.getData().getProduct();
-        return CepResponse.builder()
-                .cep(entity.getCep())
-                .logradouro(entity.getLogradouro())
-                .bairro(entity.getBairro())
-                .localidade(entity.getLocalidade())
-                .uf(entity.getUf())
-                .build();
-    }
 
-    public static Optional<CepEntity> toEntityOptional(CepResponse cepResponse){
-        return Optional.ofNullable(CepEntity.builder()
-                .cep(cepResponse.getCep())
-                .logradouro(cepResponse.getLogradouro())
-                .bairro(cepResponse.getBairro())
-                .localidade(cepResponse.getLocalidade())
-                .uf(cepResponse.getUf())
-                .build());
-    }
 }

@@ -15,7 +15,7 @@ public class IntegrationWeather {
     @Qualifier(value = "restTemplateWeather")
     private RestTemplate restTemplate;
     @Autowired
-    public IntegrationWeather(RestTemplate restTemplate) {
+    public IntegrationWeather(@Qualifier("restTemplateWeather") RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
     public WeatherResponse getWeather(String city) {

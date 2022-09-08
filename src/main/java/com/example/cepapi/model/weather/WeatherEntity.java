@@ -4,13 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-
-import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Builder
 @Data
+@NoArgsConstructor
 public class WeatherEntity {
 
     private String temp;
