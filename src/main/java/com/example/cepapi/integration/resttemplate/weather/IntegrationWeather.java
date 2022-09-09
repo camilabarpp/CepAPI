@@ -12,7 +12,6 @@ import org.springframework.web.client.RestTemplate;
 @NoArgsConstructor
 public class IntegrationWeather {
 
-    @Qualifier(value = "restTemplateWeather")
     private RestTemplate restTemplate;
     @Autowired
     public IntegrationWeather(@Qualifier("restTemplateWeather") RestTemplate restTemplate) {

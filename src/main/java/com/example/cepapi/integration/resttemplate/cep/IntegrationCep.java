@@ -11,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class IntegrationCep {
     private final RestTemplate restTemplate;
-
     @Autowired
     public IntegrationCep(@Qualifier("restTemplateCep") RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
