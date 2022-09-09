@@ -19,13 +19,12 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.*;
-
 @RestControllerAdvice
 public class ApiExceptionHandler extends DefaultResponseErrorHandler {
 
     @ExceptionHandler(ApiNotFoundException.class)
     @ResponseStatus (NOT_FOUND)
-    public ErrorResponse handleApiRequestExceptionNotFound(ApiNotFoundException e) {
+    public ErrorResponse apiNotFoundException(ApiNotFoundException e) {
         return  ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .error(List.of(ErrorObject.builder()
@@ -90,7 +89,7 @@ public class ApiExceptionHandler extends DefaultResponseErrorHandler {
 
     @ExceptionHandler(HttpClientErrorException.class)
     @ResponseStatus(BAD_REQUEST)
-    public ErrorResponse apiNotFoundException(HttpClientErrorException e) {
+    public ErrorResponse httpClientErrorException(HttpClientErrorException e) {
         return ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .error(List.of(ErrorObject.builder()
@@ -100,20 +99,6 @@ public class ApiExceptionHandler extends DefaultResponseErrorHandler {
                         .build()))
                 .build();
     }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(code = BAD_REQUEST)
-    public ErrorResponse handlerBadRequestException(MethodArgumentNotValidException error) {
-        List<FieldError> errorList = error.getBindingResult().getFieldErrors();
-        return ErrorResponse.builder()
-                .timestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
-                .error(errorList.stream().map(fieldError -> ErrorObject.builder()
-                        .message(fieldError.getDefaultMessage())
-                        .field(fieldError.getField()).build()).collect(toList()))
-                .build();
-
-    }
-
     @ExceptionHandler(Exception.class)
     @ResponseStatus (INTERNAL_SERVER_ERROR)
     public ErrorResponse handleException(Exception e) {

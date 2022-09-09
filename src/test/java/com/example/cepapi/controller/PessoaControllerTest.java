@@ -10,28 +10,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.openqa.selenium.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.example.cepapi.controller.PessoaControllerStub.*;
+import static com.example.cepapi.controller.stub.PessoaControllerStub.*;
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.toRequest;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -112,6 +104,7 @@ public class PessoaControllerTest {
         assertEquals(expect.getNome(), actual.getNome());
         assertEquals(expect.getDataDeNascimento(), actual.getDataDeNascimento());
         assertEquals(expect.getEndereco(), actual.getEndereco());
+        assertEquals(expect.getTemperatura(), actual.getTemperatura());
 
         verify(this.cadastroServices, atLeastOnce()).findById(id);
     }
@@ -158,6 +151,7 @@ public class PessoaControllerTest {
         assertNull(expect.getNome());
         assertNull(expect.getDataDeNascimento());
         assertNull(expect.getEndereco());
+        assertNull(expect.getTemperatura());
         verify(services, never()).create(requestPessoa(expect));
 
     }

@@ -1,14 +1,10 @@
 package com.example.cepapi.configuration.exception.errorobject;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
 public class ErrorObject {
     private String message;
     private String field;

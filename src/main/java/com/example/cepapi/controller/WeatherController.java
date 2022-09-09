@@ -26,7 +26,7 @@ public class WeatherController {
             @ApiResponse(code = 404, message = "Schema not found"),
             @ApiResponse(code = 400, message = "Missing or invalid request body"),
             @ApiResponse(code = 500, message = "Internal error")})
-    public WeatherResponse getCep(@PathVariable String city) {
+    public WeatherResponse getCity(@PathVariable String city) {
         log.info("Mostrando temperatura de " + city);
         return service.getWeather(city);
     }

@@ -1,17 +1,15 @@
 package com.example.cepapi.integration.weather;
 
+import com.example.cepapi.configuration.exception.ApiNotFoundException;
 import com.example.cepapi.configuration.exception.ErroHandler;
-import com.example.cepapi.controller.CadastroController;
 import com.example.cepapi.integration.resttemplate.weather.IntegrationWeather;
 import com.example.cepapi.model.weather.response.WeatherResponse;
-import com.example.cepapi.service.CadastroServices;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpRequest;
@@ -21,7 +19,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -69,7 +66,8 @@ class WeatherIntegrationTest {
     }
 
     @Test
-    void whenFindWeatherReturnCepIntegration() throws JsonProcessingException {
+    @DisplayName("Deve pesquisar temperatura na api externa com sucesso")
+    void whenFindWeatherReturnWeatherIntegration() throws JsonProcessingException {
 
         WeatherResponse expect = weatherIntegrationResponseExpect();
 
@@ -93,12 +91,12 @@ class WeatherIntegrationTest {
     }
 
     @Test
-    @DisplayName("Deve lançar HttpClientErrorException quando a cidade estiver em branco")
+    @DisplayName("Deve lançar ApiNotFoundException quando a cidade estiver em branco")
     void handleApiRequestExceptionNotFound() {
         IntegrationWeather integration = mock(IntegrationWeather.class);
 
-        doThrow(HttpClientErrorException.class)
+        doThrow(ApiNotFoundException.class)
                 .when(integration).getWeather(null);
-        assertThrows(HttpClientErrorException.class, () -> integration.getWeather(null));
+        assertThrows(ApiNotFoundException.class, () -> integration.getWeather(null));
     }
 }

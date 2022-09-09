@@ -2,15 +2,11 @@ package com.example.cepapi.model.pessoa.response;
 
 import com.example.cepapi.model.cep.CepEntity;
 import com.example.cepapi.model.weather.WeatherEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class PessoaResponse {
     private String id;
     private String nome;
@@ -22,15 +18,7 @@ public class PessoaResponse {
         return endereco;
     }
 
-    public void setEndereco(CepEntity endereco) {
-        this.endereco = endereco;
-    }
-
     public WeatherEntity getTemperatura() {
         return temperatura;
-    }
-
-    public void setTemperatura(WeatherEntity temperatura) {
-        this.temperatura = temperatura;
     }
 }

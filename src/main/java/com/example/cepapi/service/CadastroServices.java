@@ -9,9 +9,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.optionalToEntity;
 
 @Service
 @AllArgsConstructor
@@ -25,7 +22,6 @@ public class CadastroServices {
         weatherService.pesquisarTemperaturaESalvarNoBanco(pessoa);
         return cadastroRepository.save(pessoa);
     }
-
     public List<PessoaResponse> findAll() {
         return cadastroRepository.findAll().stream()
                 .map(PessoaMapper::pessoaResponse)
@@ -46,7 +42,6 @@ public class CadastroServices {
         found.setTemperatura(pessoa.getTemperatura());
         return cadastroRepository.save(found);
     }
-    //Método DELETE
     public void deletePeolpleByIDs(List<String> id) {
         if (id == null) {
             cadastroRepository.deleteAll();

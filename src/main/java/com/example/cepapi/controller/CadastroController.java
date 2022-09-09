@@ -1,15 +1,9 @@
 package com.example.cepapi.controller;
 
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
-import com.example.cepapi.integration.resttemplate.cep.IntegrationCep;
-import com.example.cepapi.integration.resttemplate.weather.IntegrationWeather;
-import com.example.cepapi.model.cep.response.CepResponse;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
-import com.example.cepapi.model.weather.response.WeatherResponse;
 import com.example.cepapi.service.CadastroServices;
-import com.example.cepapi.service.CepService;
-import com.example.cepapi.service.WeatherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -22,11 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.pessoaResponse;
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;

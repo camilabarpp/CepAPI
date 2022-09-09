@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-@NoArgsConstructor
 public class IntegrationWeather {
 
     private RestTemplate restTemplate;

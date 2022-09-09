@@ -3,18 +3,22 @@ package com.example.cepapi.service;
 import com.example.cepapi.integration.resttemplate.weather.IntegrationWeather;
 import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.model.weather.WeatherEntity;
+import com.example.cepapi.model.weather.response.WeatherResponse;
 import com.example.cepapi.repository.WeatherRepository;
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static com.example.cepapi.controller.PessoaControllerStub.createAEntity;
-import static com.example.cepapi.controller.PessoaControllerStub.createAEntityWeather;
+import static com.example.cepapi.controller.stub.PessoaControllerStub.*;
+import static com.example.cepapi.model.weather.mapper.WeatherMapper.toEntity;
 import static com.example.cepapi.model.weather.mapper.WeatherMapper.toResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -23,27 +27,39 @@ import static org.mockito.Mockito.when;
 class WeatherServiceTest {
     @Mock
     private WeatherRepository repository;
-    @Mock
+    @InjectMocks
     private WeatherService service;
     @Mock
     private IntegrationWeather integrationWeather;
 
     @Test
+    @DisplayName("Pesquisar temperatura e salvar no banco de dados")
     void pesquisarTemperaturaESalvarNoBanco() {
-        String city = "Canoas";
         Pessoa pessoa = createAEntity();
+        String city = pessoa.getEndereco().getLocalidade();
+        WeatherResponse response = createAResponseWeather();
         WeatherEntity entity = createAEntityWeather();
 
-        //repository.save(entity);
-
         when(integrationWeather.getWeather(city)).thenReturn(toResponse(entity));
-        when(repository.save(entity)).thenReturn(entity);
+        when(repository.save(entity)).thenReturn(toEntity(response));
 
         service.pesquisarTemperaturaESalvarNoBanco(pessoa);
+        pessoa.setTemperatura(entity);
 
+        assertNotNull(entity);
         assertEquals(pessoa.getTemperatura().getTemp(), entity.getTemp());
         assertEquals(pessoa.getTemperatura().getFeelsLike(), entity.getFeelsLike());
         assertEquals(pessoa.getTemperatura().getMinTemp(), entity.getMinTemp());
         assertEquals(pessoa.getTemperatura().getMaxTemp(), entity.getMaxTemp());
+    }
+
+    @Test
+    @DisplayName("Deve pesquisar cep da camada SERVICE")
+    void shouldFindCep() {
+        WeatherResponse response = new WeatherResponse();
+        when(integrationWeather.getWeather("Canoas"))
+                .thenReturn(response);
+        var actual = service.getWeather("Canoas");
+        assertNotNull(actual);
     }
 }

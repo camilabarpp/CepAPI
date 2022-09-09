@@ -8,7 +8,7 @@ import lombok.experimental.UtilityClass;
 import java.util.Optional;
 
 @UtilityClass
-public class PessoaMapper {
+public class PessoaMapper{
 
     public static Pessoa requestPessoa(PessoaRequest pessoaRequest) {
         return Pessoa.builder()
@@ -47,15 +47,5 @@ public class PessoaMapper {
                 .endereco(pessoa.getEndereco())
                 .temperatura(pessoa.getTemperatura())
                 .build());
-    }
-
-    public static Pessoa entityToOptional(Optional<Pessoa> pessoa){
-        return Pessoa.builder()
-                //.id(pessoaRequest.getId())
-                .nome(pessoa.get().getNome())
-                .dataDeNascimento(pessoa.get().getDataDeNascimento())
-                .endereco(pessoa.get().getEndereco())
-                .temperatura(pessoa.get().getTemperatura())
-                .build();
     }
 }

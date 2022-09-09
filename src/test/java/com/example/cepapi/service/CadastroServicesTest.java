@@ -2,7 +2,6 @@ package com.example.cepapi.service;
 
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
 import com.example.cepapi.model.pessoa.Pessoa;
-import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.repository.CadastroRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +17,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.*;
 
-import static com.example.cepapi.controller.PessoaControllerStub.createAEntity;
-import static com.example.cepapi.controller.PessoaControllerStub.createAResponse;
+import static com.example.cepapi.controller.stub.PessoaControllerStub.createAEntity;
+import static com.example.cepapi.controller.stub.PessoaControllerStub.createAResponse;
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.optionalToEntity;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -75,10 +73,12 @@ public class CadastroServicesTest {
         assertEquals(expect.get().getId(), actual.get().getId());
         assertEquals(expect.get().getNome(), actual.get().getNome());
         assertEquals(expect.get().getDataDeNascimento(), actual.get().getDataDeNascimento());
+        assertEquals(expect.get().getEndereco(), actual.get().getEndereco());
+        assertEquals(expect.get().getTemperatura(), actual.get().getTemperatura());
     }
 
     @Test
-    @DisplayName("Return ApiNotFound quando ID não existe")
+    @DisplayName("Retornar ApiNotFound quando ID não existe")
     void testFindByIdNotFound() {
         Pessoa pessoa = new Pessoa();
 
@@ -106,13 +106,12 @@ public class CadastroServicesTest {
     @Test
     @DisplayName("Não deve procurar uma pessoa por nome inexistente")
     void shouldNotShowPersonByName() {
-        String nome = "1";
+        Pessoa pessoa = new Pessoa();
 
         doThrow(ApiNotFoundException.class)
-                .when(cadastroRepository).findByNome(nome);
+                .when(cadastroRepository).findByNome(pessoa.getNome());
 
-        assertThrows(ApiNotFoundException.class, () -> cadastroServices.findByNome(nome));
-
+        assertThrows(ApiNotFoundException.class, () -> cadastroServices.findByNome(""));
     }
 
     @Test

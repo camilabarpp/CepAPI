@@ -1,7 +1,7 @@
 package com.example.cepapi.integration.cep;
 
+import com.example.cepapi.configuration.exception.ApiNotFoundException;
 import com.example.cepapi.integration.resttemplate.cep.IntegrationCep;
-import com.example.cepapi.integration.resttemplate.weather.IntegrationWeather;
 import com.example.cepapi.model.cep.response.CepResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,7 +18,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -61,6 +60,7 @@ class CepIntegrationTest {
     }
 
     @Test
+    @DisplayName("Deve pesquisar CEP na api externa")
     void whenFindCepReturnCepIntegration() throws JsonProcessingException {
         CepResponse expect = cepIntegrationResponseExpect();
 
@@ -83,11 +83,13 @@ class CepIntegrationTest {
     }
 
     @Test
-    @DisplayName("Deve lançar HttpClientErrorException quando o cep estiver em branco")
-    void handleApiRequestExceptionNotFound() {
+    @DisplayName("Deve lançar ApiNotFoundException quando o cep estiver em branco")
+    void shouldThrowsApiNotFoundException() {
         IntegrationCep integration = mock(IntegrationCep.class);
-        doThrow(HttpClientErrorException.class)
+
+        doThrow(ApiNotFoundException.class)
                 .when(integration).consultarCep(null);
-        assertThrows(HttpClientErrorException.class, () -> integration.consultarCep(null));
+
+        assertThrows(ApiNotFoundException.class, () -> integration.consultarCep(null));
     }
 }

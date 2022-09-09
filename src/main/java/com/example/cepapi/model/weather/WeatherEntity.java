@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-@NoArgsConstructor
 public class WeatherEntity {
 
     private String temp;

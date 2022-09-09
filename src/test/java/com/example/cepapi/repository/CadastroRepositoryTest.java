@@ -4,18 +4,15 @@ import com.example.cepapi.model.pessoa.Pessoa;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static com.example.cepapi.repository.PessoaRepositoryStub.createAEntity;
+import static com.example.cepapi.repository.CadastroRepositoryStub.createAEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
@@ -23,7 +20,7 @@ import static org.mockito.Mockito.verify;
 @ActiveProfiles("test")
 @DataMongoTest //se concentra somente nos componentes dp mongo
 @EnableMongoRepositories //para ativar os repositories do mongo
-public class CepRepositoryTest {
+public class CadastroRepositoryTest {
     @SpyBean
     private MongoTemplate mongoTemplate;
     @Autowired

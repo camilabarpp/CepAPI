@@ -1,28 +1,21 @@
-package com.example.cepapi.controller;
+package com.example.cepapi.repository;
 
 import com.example.cepapi.model.cep.CepEntity;
 import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
-import com.example.cepapi.model.weather.WeatherEntity;
 
-public class PessoaControllerStub {
+public class CadastroRepositoryStub {
 
-    public static Pessoa createAEntity() {
+    static Pessoa createAEntity() {
         return Pessoa.builder()
                 .id("1")
                 .nome("Camila")
                 .dataDeNascimento("02/07/1996")
                 .endereco(createAEntityCep())
-                .temperatura(createAEntityWeather())
                 .build();
     }
 
-    public static Pessoa createAEntityNull() {
-        return Pessoa.builder()
-                .id(null)
-                .build();
-    }
 
     static CepEntity createAEntityCep() {
         return CepEntity.builder()
@@ -34,32 +27,21 @@ public class PessoaControllerStub {
                 .build();
     }
 
-    public static WeatherEntity createAEntityWeather() {
-        return WeatherEntity.builder()
-                .temp("20")
-                .feelsLike("20")
-                .minTemp("20")
-                .maxTemp("20")
-                .build();
-    }
-
-    public static PessoaRequest createARequest() {
+    static PessoaRequest createARequest() {
         return PessoaRequest.builder()
                 .id("1")
                 .nome("Camila")
                 .dataDeNascimento("02/07/1996")
                 .endereco(createAEntityCep())
-                .temperatura(createAEntityWeather())
                 .build();
     }
 
-    public static PessoaResponse createAResponse() {
+    static PessoaResponse createAResponse() {
         return PessoaResponse.builder()
                 .id("1")
                 .nome("Camila")
                 .dataDeNascimento("02/07/1996")
                 .endereco(createAEntityCep())
-                .temperatura(createAEntityWeather())
                 .build();
     }
 }

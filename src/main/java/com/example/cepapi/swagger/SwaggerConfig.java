@@ -23,8 +23,8 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
-
-    private ApiInfo metaData() {
+    @Bean
+    ApiInfo metaData() {
         return new ApiInfoBuilder()
                 .title("Cep API")
                 .description("\"Api de cadastro de pessoas com busca de CEP e temperatura na api externa\"")
