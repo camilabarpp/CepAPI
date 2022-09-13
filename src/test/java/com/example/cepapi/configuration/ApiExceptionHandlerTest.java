@@ -1,6 +1,8 @@
-package com.example.cepapi.configuration.exception;
+package com.example.cepapi.configuration;
 
 import com.example.cepapi.configuration.exception.errorresponse.ErrorResponse;
+import com.example.cepapi.configuration.exception.ApiExceptionHandler;
+import com.example.cepapi.configuration.exception.ApiNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,9 +17,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -43,8 +42,7 @@ class ApiExceptionHandlerTest {
     void apiNotFoundException() {
         ErrorResponse response = exceptionHandler
                 .apiNotFoundException(new ApiNotFoundException(
-                        errorObject.getField(),
-                        errorObject.getParameter()));
+                        errorObject.getMessage()));
 
         assertNotNull(response);
         assertEquals("ApiNotFoundException", response.getParameter());

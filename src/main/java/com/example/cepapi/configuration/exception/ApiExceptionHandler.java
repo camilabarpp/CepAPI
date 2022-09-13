@@ -1,7 +1,6 @@
 package com.example.cepapi.configuration.exception;
 
 import com.example.cepapi.configuration.exception.errorresponse.ErrorResponse;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

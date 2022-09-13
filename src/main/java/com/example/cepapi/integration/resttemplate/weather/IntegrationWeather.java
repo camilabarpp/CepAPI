@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class IntegrationWeather {
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
     @Autowired
     public IntegrationWeather(@Qualifier("restTemplateWeather") RestTemplate restTemplate) {
         this.restTemplate = restTemplate;

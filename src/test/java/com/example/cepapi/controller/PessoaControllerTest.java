@@ -20,18 +20,15 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import javax.servlet.http.Cookie;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static com.example.cepapi.controller.stub.PessoaControllerStub.*;
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.toRequest;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -50,12 +47,11 @@ class PessoaControllerTest {
     @Test
     @DisplayName("Deve mostrar todas as pessoas")
     void shouldShowAllPeople() {
-        String nome = null;
         List<PessoaResponse> expect = new ArrayList<>();
 
         when(cadastroServices.findAll()).thenReturn(expect);
 
-        List<PessoaResponse> actual = this.pessoaController.findByNome(nome);
+        List<PessoaResponse> actual = this.pessoaController.findByNome(null);
 
         assertEquals(expect, actual);
     }
@@ -108,7 +104,7 @@ class PessoaControllerTest {
 
     @Test
     @DisplayName("Deve lancar excessão ao tentar pesquisar pessoa com id inválido")
-    void shouldNotShowEmployeeByInvalidId() throws Exception {
+    void shouldNotShowEmployeeByInvalidId() {
         String id = "10";
 
         when(cadastroServices.findById(id)).thenThrow(ApiNotFoundException.class);
@@ -118,7 +114,7 @@ class PessoaControllerTest {
 
     @Test
     @DisplayName("Deve criar uma pessoa com sucesso.")
-    void shouldRegisterAPerson() throws Exception {
+    void shouldRegisterAPerson() {
         Pessoa pessoa = createAEntity();
         PessoaRequest request = createARequest();
 
@@ -177,12 +173,11 @@ class PessoaControllerTest {
     @Test
     @DisplayName("Não deve atualizar pessoa quando o id for nulo")
     void shouldNotUpdatePersonWhenIdIsNull() {
-        String id = null;
         Pessoa pessoa = createAEntityNull();
 
-        when(this.cadastroServices.update(id, pessoa)).thenThrow(ApiNotFoundException.class);
+        when(this.cadastroServices.update(null, pessoa)).thenThrow(ApiNotFoundException.class);
 
-        assertThrows(ApiNotFoundException.class, () -> this.cadastroServices.update(id, pessoa));
+        assertThrows(ApiNotFoundException.class, () -> this.cadastroServices.update(null, pessoa));
     }
 
     @Test

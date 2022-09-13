@@ -1,6 +1,5 @@
 package com.example.cepapi.controller;
 
-import com.example.cepapi.configuration.exception.ApiNotFoundException;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.service.CadastroServices;
@@ -20,7 +19,6 @@ import java.util.List;
 
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.pessoaResponse;
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
-import static java.lang.String.valueOf;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -102,8 +100,6 @@ public class CadastroController {
 			@ApiResponse(code = 500, message = "Internal error")})
 	public String criandoCoookie(HttpServletResponse response, @PathVariable("pessoa") String userName) {
 		Cookie cookie = new Cookie("Pessoa", userName);
-		cookie.getValue();
-		cookie.getName();
 		cookie.setMaxAge(60 * 60 * 24);
 		response.addCookie(cookie);
 		log.info("Cookie '" + userName + "' criado com sucesso!");

@@ -1,4 +1,4 @@
-package com.example.cepapi.swagger;
+package com.example.cepapi.configuration.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

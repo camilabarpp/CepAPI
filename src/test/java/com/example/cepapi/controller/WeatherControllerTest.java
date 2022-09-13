@@ -1,10 +1,8 @@
 package com.example.cepapi.controller;
 
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
-import com.example.cepapi.integration.resttemplate.weather.IntegrationWeather;
 import com.example.cepapi.model.weather.WeatherEntity;
 import com.example.cepapi.model.weather.mapper.WeatherMapper;
-import com.example.cepapi.model.weather.response.WeatherResponse;
 import com.example.cepapi.service.WeatherService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,9 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static com.example.cepapi.controller.stub.PessoaControllerStub.createAEntityWeather;
-import static com.example.cepapi.controller.stub.PessoaControllerStub.createAResponse;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)

@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static com.example.cepapi.repository.CadastroRepositoryStub.createAEntity;
+import static com.example.cepapi.controller.stub.PessoaControllerStub.createAEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
