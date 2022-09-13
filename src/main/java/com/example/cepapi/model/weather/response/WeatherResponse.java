@@ -7,6 +7,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class WeatherResponse {
     //ResponseBody
     private String temp;
@@ -14,6 +15,7 @@ public class WeatherResponse {
     private String feelsLike;
     @JsonProperty("min_temp")
     private String minTemp;
+    @JsonProperty("max_temp")
     private String maxTemp;
 
 }

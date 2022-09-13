@@ -3,9 +3,7 @@ package com.example.cepapi.configuration.exception;
 import com.example.cepapi.configuration.exception.errorobject.ErrorObject;
 import com.example.cepapi.configuration.exception.errorresponse.ErrorResponse;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -14,10 +12,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.*;
 @RestControllerAdvice
 public class ApiExceptionHandler extends DefaultResponseErrorHandler {

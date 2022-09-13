@@ -24,8 +24,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import static com.example.cepapi.integration.weather.WeatherIntegrationStub.weatherIntegrationResponse;
 import static com.example.cepapi.integration.weather.WeatherIntegrationStub.weatherIntegrationResponseExpect;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
@@ -47,7 +46,6 @@ class WeatherIntegrationTest {
     static void startServer(){
         server = startClientAndServer();
     }
-
     @BeforeEach
     void setupClass() {
         RestTemplate restTemplate = new RestTemplateBuilder()
@@ -67,14 +65,13 @@ class WeatherIntegrationTest {
 
     @Test
     @DisplayName("Deve pesquisar temperatura na api externa com sucesso")
-    void whenFindWeatherReturnWeatherIntegration() throws JsonProcessingException {
+    void whenFindCepReturnCepIntegration() throws JsonProcessingException {
 
         WeatherResponse expect = weatherIntegrationResponseExpect();
 
         HttpRequest request =  HttpRequest.request()
                 .withPath("v1/weather?city=Canoas")
                 .withMethod("GET");
-
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -87,7 +84,10 @@ class WeatherIntegrationTest {
         server.when(request).respond(response);
 
         var actual = integrationWeather.getWeather("Canoas");
-        assertEquals(expect, actual);
+        assertEquals(expect.getTemp(), actual.getTemp());
+        assertEquals(expect.getFeelsLike(), actual.getFeelsLike());
+        assertEquals(expect.getMaxTemp(), actual.getMaxTemp());
+        assertEquals(expect.getMinTemp(), actual.getMinTemp());
     }
 
     @Test

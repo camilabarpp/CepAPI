@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -26,12 +28,11 @@ import static org.mockito.MockitoAnnotations.openMocks;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-@RequiredArgsConstructor
-public class CadastroServicesTest {
+class CadastroServicesTest {
 
-    @InjectMocks
+    @InjectMocks //Usado para testar a classe em si
     private CadastroServices cadastroServices;
-    @MockBean
+    @MockBean //Um mock substituirá o bean existente do mesmo tipo definido no ApplicationContext
     CadastroRepository cadastroRepository;
     @Mock
     CepService cepService;
@@ -136,7 +137,7 @@ public class CadastroServicesTest {
 
     @Test
     @DisplayName("Deve ocorrer erro ao tentar atualizar uma pessoa inexistente.")
-    public void updateInvalidPerson() {
+    void updateInvalidPerson() {
         String id = null;
         var pessoa = new Pessoa();
 
@@ -189,8 +190,11 @@ public class CadastroServicesTest {
     @Test
     @DisplayName("Deve deletar todas as pessoas quando id for null")
     void shouldDeteAllPeopleWhenIdIsNull() {
-        doNothing().when(cadastroRepository).deleteAll();
+        List<String> ids = new ArrayList<>();
 
-        cadastroServices.deletePeolpleByIDs(null);
+        assertDoesNotThrow( () -> cadastroServices.deletePeolpleByIDs(ids));
+
+        verify(cadastroRepository, times(1)).deleteAllById(ids);
     }
+
 }

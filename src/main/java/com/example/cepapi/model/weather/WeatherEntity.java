@@ -3,7 +3,6 @@ package com.example.cepapi.model.weather;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @Builder

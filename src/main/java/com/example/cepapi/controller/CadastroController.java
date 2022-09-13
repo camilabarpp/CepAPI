@@ -32,17 +32,6 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @Slf4j
 public class CadastroController {
 	private final CadastroServices cadastroServices;
-/*	@GetMapping(value = "/find")
-	@ApiOperation("Show a list of peolple")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Returns a list of people"),
-			@ApiResponse(code = 404, message = "Schema not found"),
-			@ApiResponse(code = 400, message = "Missing or invalid request body"),
-			@ApiResponse(code = 500, message = "Internal error")})
-	public List<PessoaResponse> findAll(){
-		log.info("Buscando todos as pessoas");
-		return cadastroServices.findAll();
-	}*/
 
     @GetMapping()
     @ApiOperation("Show a list of peolple by name")
@@ -117,10 +106,10 @@ public class CadastroController {
 		cookie.getName();
 		cookie.setMaxAge(60 * 60 * 24);
 		response.addCookie(cookie);
-		log.info("Criado cookie " + userName);
-		return "cookie-recived/";
+		log.info("Cookie '" + userName + "' criado com sucesso!");
+		return "Cookie '" + userName + "' criado com sucesso!";
 	}
-	@GetMapping("/cookies/get")
+	@GetMapping("/cookies/")
 	@ApiOperation("Get a cookie")
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Get a cookie"),
 			@ApiResponse(code = 404, message = "Schema not found"),
@@ -135,6 +124,6 @@ public class CadastroController {
 							c.getValue()).collect(joining("\n"));
 		}
 		log.info("Nenhum cookie encontrado!");
-		return valueOf(new ApiNotFoundException("Nenhum cookie encontrado!"));
+		return "Nenhum cookie encontrado!";
 	}
 }

@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import javax.servlet.http.Cookie;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PessoaControllerTest {
+class PessoaControllerTest {
     @InjectMocks
     private CadastroController pessoaController;
     @Mock
@@ -52,8 +53,7 @@ public class PessoaControllerTest {
         String nome = null;
         List<PessoaResponse> expect = new ArrayList<>();
 
-        doReturn(expect)
-                .when(this.cadastroServices).findAll();
+        when(cadastroServices.findAll()).thenReturn(expect);
 
         List<PessoaResponse> actual = this.pessoaController.findByNome(nome);
 
@@ -65,10 +65,9 @@ public class PessoaControllerTest {
     @DisplayName("Deve procurar todas as pessoas por nome")
     void shouldShowAllPeopleByName() {
         String name = "Camila";
-        List<PessoaResponse> expect = new ArrayList<>();
+        List<PessoaResponse> expect = Collections.singletonList(createAResponse());
 
-        doReturn(expect)
-                .when(this.cadastroServices).findByNome(name);
+        when(cadastroServices.findByNome(name)).thenReturn(expect);
 
         List<PessoaResponse> actual = this.pessoaController.findByNome(name);
         assertEquals(expect, actual);
@@ -82,8 +81,7 @@ public class PessoaControllerTest {
     void shouldShowAllPeopleByName2() {
         String name = "1";
 
-        doThrow(ApiNotFoundException.class)
-                .when(this.cadastroServices).findByNome(name);
+        when(cadastroServices.findByNome(name)).thenThrow(ApiNotFoundException.class);
 
         assertThrows(ApiNotFoundException.class,() -> cadastroServices.findByNome(name));
     }
@@ -95,8 +93,7 @@ public class PessoaControllerTest {
         String id = "1";
         Pessoa expect = createAEntity();
 
-        doReturn(expect)
-                .when(this.cadastroServices).findById(id);
+        when(cadastroServices.findById(id)).thenReturn(expect);
 
         var actual = this.pessoaController.findById(id);
 
@@ -112,10 +109,9 @@ public class PessoaControllerTest {
     @Test
     @DisplayName("Deve lancar excessão ao tentar pesquisar pessoa com id inválido")
     void shouldNotShowEmployeeByInvalidId() throws Exception {
-        String id = null;
+        String id = "10";
 
-        doThrow(ApiNotFoundException.class)
-                .when(this.cadastroServices).findById(id);
+        when(cadastroServices.findById(id)).thenThrow(ApiNotFoundException.class);
 
         assertThrows(ApiNotFoundException.class, () -> this.cadastroServices.findById(id));
     }
@@ -125,6 +121,7 @@ public class PessoaControllerTest {
     void shouldRegisterAPerson() throws Exception {
         Pessoa pessoa = createAEntity();
         PessoaRequest request = createARequest();
+
         when(cadastroServices.create(any())).thenReturn(pessoa);
 
         var response = pessoaController.create(request);
@@ -162,6 +159,7 @@ public class PessoaControllerTest {
         String id = "1";
         Pessoa pessoa = createAEntity();
         PessoaRequest request = createARequest();
+
         when(cadastroServices.update(any(),any())).thenReturn(pessoa);
 
         var response = pessoaController.update(id, request);
@@ -182,8 +180,7 @@ public class PessoaControllerTest {
         String id = null;
         Pessoa pessoa = createAEntityNull();
 
-        doThrow(ApiNotFoundException.class)
-                .when(this.cadastroServices).update(id, pessoa);
+        when(this.cadastroServices.update(id, pessoa)).thenThrow(ApiNotFoundException.class);
 
         assertThrows(ApiNotFoundException.class, () -> this.cadastroServices.update(id, pessoa));
     }
@@ -218,7 +215,7 @@ public class PessoaControllerTest {
 
     @Test
     @DisplayName("Deve criar um cookie")
-    public void shouldCreateACookie() throws Exception {
+    void shouldCreateACookie() throws Exception {
         Cookie cookie = new Cookie("A", "B");
 
         mvc.perform(MockMvcRequestBuilders.post("/v1/api/Camila")
@@ -230,10 +227,10 @@ public class PessoaControllerTest {
 
     @Test
     @DisplayName("Deve buscar todos os cookies")
-    public void shouldGetACookie() throws Exception {
+    void shouldGetACookie() throws Exception {
         Cookie cookie = new Cookie("A", "V");
 
-        mvc.perform(get("/v1/api/cookies/get")
+        mvc.perform(get("/v1/api/cookies/")
                         .cookie(cookie)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -242,8 +239,8 @@ public class PessoaControllerTest {
 
     @Test
     @DisplayName("Deve testar se o cookie existe")
-    public void testNotExists() throws Exception {
-        mvc.perform(get("/v1/api/cookies/get"))
+    void testNotExists() throws Exception {
+        mvc.perform(get("/v1/api/cookies/"))
                 .andExpect(cookie().doesNotExist("unknownCookie"));
 
     }

@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class CepControllerTest {
+class CepControllerTest {
     @InjectMocks
     private CepController controller;
     @Mock

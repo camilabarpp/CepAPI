@@ -1,15 +1,12 @@
 package com.example.cepapi.model.cep;
 
 import com.example.cepapi.model.cep.response.CepResponse;
-import com.example.cepapi.model.pessoa.Pessoa;
-import com.example.cepapi.model.pessoa.response.PessoaResponse;
-
-import java.util.Optional;
 
 public class CepMapper {
+    private CepMapper() {
+    }
 
-   public static CepEntity entityToResponse(CepResponse response) {
-        //var product = response.getData().getProduct();
+    public static CepEntity entityToResponse(CepResponse response) {
         return CepEntity.builder()
                 .cep(response.getCep())
                 .logradouro(response.getLogradouro())

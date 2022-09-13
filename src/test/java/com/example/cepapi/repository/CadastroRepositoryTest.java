@@ -18,17 +18,17 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-@DataMongoTest //se concentra somente nos componentes dp mongo
+@DataMongoTest //se concentra somente nos componentes do mongo
 @EnableMongoRepositories //para ativar os repositories do mongo
-public class CadastroRepositoryTest {
-    @SpyBean
+class CadastroRepositoryTest {
+    @SpyBean //é usada para aplicar espiões do Mockito ao ApplicationContext sem substituir o bean existente
     private MongoTemplate mongoTemplate;
     @Autowired
     private CadastroRepository cadastroRepository;
 
     @Test
     @DisplayName("Deve retornar verdadeiro quando encontrar id no banco de dados")
-    public void returnsTrueWhenIdExists() {
+    void returnsTrueWhenIdExists() {
         Pessoa pessoa = createAEntity();
         mongoTemplate.save(pessoa);
 
@@ -39,7 +39,7 @@ public class CadastroRepositoryTest {
 
     @Test
     @DisplayName("Deve retornar falso quando não encontrar id no banco de dados")
-    public void returnsFalseWhenIdExists() {
+    void returnsFalseWhenIdExists() {
         String id = "10";
 
         var exists = cadastroRepository.existsById(id);
@@ -49,7 +49,7 @@ public class CadastroRepositoryTest {
 
     @Test
     @DisplayName("Deve salvar uma pessoa no banco de dados")
-    public void shouldSaveAPerson() {
+    void shouldSaveAPerson() {
 
         var pessoa = createAEntity();
         mongoTemplate.save(pessoa);
@@ -64,7 +64,7 @@ public class CadastroRepositoryTest {
 
     @Test
     @DisplayName("Deve alterar uma pessoa no banco de dados")
-    public void shouldUpdateAPerson() {
+    void shouldUpdateAPerson() {
 
         var pessoa = createAEntity();
         mongoTemplate.save(pessoa);
@@ -86,7 +86,7 @@ public class CadastroRepositoryTest {
 
     @Test
     @DisplayName("Deve deletar uma pessoa no banco de dados")
-    public void shouldDeleteAPerson() {
+    void shouldDeleteAPerson() {
         var pessoa = createAEntity();
         mongoTemplate.save(pessoa, "test");
 

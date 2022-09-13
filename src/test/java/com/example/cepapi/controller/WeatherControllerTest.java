@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class WeatherControllerTest {
+class WeatherControllerTest {
     @InjectMocks
     private WeatherController controller;
     @Mock
@@ -48,7 +48,7 @@ public class WeatherControllerTest {
     @Test
     @DisplayName("Deve lançar ApiNotFoundException quando o nome da cidade estiver incorreto")
     void shouldNotFindCityAndThrowsApiNotFoundException() {
-        doThrow(ApiNotFoundException.class).when(service).getWeather("94");
+        when(service.getWeather("94")).thenThrow(ApiNotFoundException.class);
 
         assertThrows(ApiNotFoundException.class, () -> controller.getCity("94"));
     }
