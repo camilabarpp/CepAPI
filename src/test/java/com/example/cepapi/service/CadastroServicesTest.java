@@ -186,15 +186,12 @@ class CadastroServicesTest {
 
         verify(cadastroRepository).deleteAllById(ids);
     }
-
     @Test
-    @DisplayName("Deve deletar todas as pessoas quando id for null")
-    void shouldDeteAllPeopleWhenIdIsNull() {
-        List<String> ids = new ArrayList<>();
+    @DisplayName("Deve deletar todas as pessoas quando não passar nada")
+    void shouldDeteAllPeopleWhenIdIsNull2() {
+        assertDoesNotThrow( () -> cadastroServices.deletePeolpleByIDs(null));
 
-        assertDoesNotThrow( () -> cadastroServices.deletePeolpleByIDs(ids));
-
-        verify(cadastroRepository, times(1)).deleteAllById(ids);
+        verify(cadastroRepository, times(1)).deleteAll();
     }
 
 }

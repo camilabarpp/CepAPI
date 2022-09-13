@@ -1,9 +1,6 @@
 package com.example.cepapi.configuration.exception;
 
-import com.example.cepapi.configuration.exception.errorobject.ErrorObject;
 import com.example.cepapi.configuration.exception.errorresponse.ErrorResponse;
-import com.example.cepapi.integration.resttemplate.weather.IntegrationWeather;
-import com.example.cepapi.service.CadastroServices;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,18 +9,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -36,7 +31,7 @@ class ApiExceptionHandlerTest {
     @InjectMocks
     private ApiExceptionHandler exceptionHandler;
     @Mock
-    ErrorObject errorObject;
+    ErrorResponse errorObject;
 
     @BeforeEach
     void setUp() {
@@ -52,8 +47,9 @@ class ApiExceptionHandlerTest {
                         errorObject.getParameter()));
 
         assertNotNull(response);
-        assertEquals(response.getError(), errorObject);
-        assertNotNull(response.getTimestamp(), String.valueOf(LocalDateTime.now()));
+        assertEquals("ApiNotFoundException", response.getParameter());
+        assertEquals("NOT_FOUND", response.getField());
+        assertEquals("Dados não encontrados!", response.getMessage());
     }
 
     @Test
@@ -64,22 +60,9 @@ class ApiExceptionHandlerTest {
                         errorObject.getParameter()));
 
         assertNotNull(response);
-        assertEquals(response.getError(), errorObject);
-        assertNotNull(response.getTimestamp(), String.valueOf(LocalDateTime.now()));
+        assertEquals("NullPointerException", response.getParameter());
+        assertEquals("INTERNAL_SERVER_ERROR", response.getField());
     }
-
-    @Test
-    @DisplayName("Deve lançar HttpMessageNotReadableException")
-    void httpMessageNotReadableException() {
-        ErrorResponse response = exceptionHandler
-                .httpMessageNotReadableException(new HttpMessageNotReadableException(
-                        errorObject.getParameter()));
-
-        assertNotNull(response);
-        assertEquals(response.getError(), errorObject);
-        assertNotNull(response.getTimestamp(), String.valueOf(LocalDateTime.now()));
-    }
-
     @Test
     @DisplayName("Deve lançar HttpRequestMethodNotSupportedException")
     void shouldThowsHttpRequestMethodNotSupportedException() {
@@ -87,8 +70,8 @@ class ApiExceptionHandlerTest {
                 .methodArgumentNotValidException(new HttpRequestMethodNotSupportedException(
                         errorObject.getParameter()));
         assertNotNull(response);
-        assertEquals(response.getError(), errorObject);
-        assertNotNull(response.getTimestamp(), String.valueOf(LocalDateTime.now()));
+        assertEquals("HttpRequestMethodNotSupportedException", response.getParameter());
+        assertEquals("METHOD_NOT_ALLOWED", response.getField());
     }
 
     @Test
@@ -99,8 +82,8 @@ class ApiExceptionHandlerTest {
                         HttpStatus.BAD_REQUEST));
 
         assertNotNull(response);
-        assertEquals(response.getError(), errorObject);
-        assertNotNull(response.getTimestamp(), String.valueOf(LocalDateTime.now()));
+        assertEquals("ResponseStatusException", response.getParameter());
+        assertEquals("BAD_REQUEST", response.getField());
     }
 
     @Test
@@ -112,8 +95,8 @@ class ApiExceptionHandlerTest {
                 ));
 
         assertNotNull(response);
-        assertEquals(response.getError(), errorObject);
-        assertNotNull(response.getTimestamp(), String.valueOf(LocalDateTime.now()));
+        assertEquals("HttpClientErrorException", response.getParameter());
+        assertEquals("BAD_REQUEST", response.getField());
     }
 
     @Test
@@ -123,7 +106,7 @@ class ApiExceptionHandlerTest {
                 .handleException(new Exception(
                         errorObject.getParameter()));
         assertNotNull(response);
-        assertEquals(response.getError(), errorObject);
-        assertNotNull(response.getTimestamp(), String.valueOf(LocalDateTime.now()));
+        assertEquals("Exception", response.getParameter());
+        assertEquals("INTERNAL_SERVER_ERROR", response.getField());
     }
 }
