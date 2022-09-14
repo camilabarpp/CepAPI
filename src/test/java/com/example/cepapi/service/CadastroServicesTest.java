@@ -145,7 +145,7 @@ class CadastroServicesTest {
     @Test
     @DisplayName("Deve criar uma pessoa com sucesso")
     void shouldCreateAPersonWithSuccess() {
-        Pessoa pessoa = CepServiceTest.createAEntity();
+        Pessoa pessoa = createAEntity();
 
         when(cadastroRepository.save(any(Pessoa.class))).thenReturn(pessoa);
 
