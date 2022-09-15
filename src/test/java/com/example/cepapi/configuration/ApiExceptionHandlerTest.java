@@ -113,35 +113,4 @@ class ApiExceptionHandlerTest {
         assertEquals("Exception", response.getParameter());
         assertEquals("INTERNAL_SERVER_ERROR", response.getField());
     }
-
-
-    @Test
-    void weatherMapperTest_cannot_instantiate() {
-        assertThrows(InvocationTargetException.class, () -> {
-            var constructor = WeatherMapper.class.getDeclaredConstructor();
-            assertTrue(Modifier.isPrivate(constructor.getModifiers()));
-            constructor.setAccessible(true);
-            constructor.newInstance();
-        });
-    }
-
-    @Test
-    void pessoaMapperTest_cannot_instantiate() {
-        assertThrows(InvocationTargetException.class, () -> {
-            var constructor = PessoaMapper.class.getDeclaredConstructor();
-            assertTrue(Modifier.isPrivate(constructor.getModifiers()));
-            constructor.setAccessible(true);
-            constructor.newInstance();
-        });
-    }
-
-    @Test
-    void cepMapperTest_cannot_instantiate() {
-        assertThrows(InvocationTargetException.class, () -> {
-            var constructor = CepMapper.class.getDeclaredConstructor();
-            assertTrue(Modifier.isPrivate(constructor.getModifiers()));
-            constructor.setAccessible(true);
-            constructor.newInstance();
-        });
-    }
 }

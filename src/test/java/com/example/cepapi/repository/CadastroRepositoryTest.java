@@ -88,7 +88,7 @@ class CadastroRepositoryTest {
     @DisplayName("Deve deletar uma pessoa no banco de dados")
     void shouldDeleteAPerson() {
         var pessoa = createAEntity();
-        mongoTemplate.save(pessoa, "test");
+        mongoTemplate.save(pessoa);
 
         var pessoaEncontrada = mongoTemplate.findById(pessoa.getId(), Pessoa.class);
 
