@@ -1,8 +1,8 @@
 package com.example.cepapi.configuration;
 
-import com.example.cepapi.configuration.exception.errorresponse.ErrorResponse;
 import com.example.cepapi.configuration.exception.ApiExceptionHandler;
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
+import com.example.cepapi.configuration.exception.errorresponse.ErrorResponse;
 import com.example.cepapi.model.cep.CepMapper;
 import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
 import com.example.cepapi.model.weather.mapper.WeatherMapper;
@@ -29,9 +29,9 @@ import static org.mockito.MockitoAnnotations.openMocks;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-@WebMvcTest(value = ApiExceptionHandlerTest.class)
+@WebMvcTest(value = CadastroMapperTest.class)
 @AutoConfigureMockMvc
-class ApiExceptionHandlerTest {
+class CadastroMapperTest {
     @InjectMocks
     private ApiExceptionHandler exceptionHandler;
     @Mock

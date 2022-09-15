@@ -2,6 +2,7 @@ package com.example.cepapi.controller;
 
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
 import com.example.cepapi.model.pessoa.Pessoa;
+import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.service.CadastroServices;
@@ -24,7 +25,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.example.cepapi.controller.stub.PessoaControllerStub.*;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
 import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.toRequest;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -73,8 +73,8 @@ class PessoaControllerTest {
     }
 
     @Test
-    @DisplayName("Deve procurar todas as pessoas por nome")
-    void shouldShowAllPeopleByName2() {
+    @DisplayName("Deve lançar excessão ao tentar procurar todas as pessoas por um nome inexistente no banco")
+    void shouldThrownsApiNotFoundExceptionWhenFindAllPeopleByInvalidName() {
         String name = "1";
 
         when(cadastroServices.findByNome(name)).thenThrow(ApiNotFoundException.class);
@@ -84,7 +84,7 @@ class PessoaControllerTest {
 
     @Test
     @DisplayName("Deve procurar uma pessoa pelo id com sucesso.")
-    void shouldShowEmployeeByID() {
+    void shouldShowAPersonByID() {
 
         String id = "1";
         Pessoa expect = createAEntity();
@@ -104,7 +104,7 @@ class PessoaControllerTest {
 
     @Test
     @DisplayName("Deve lancar excessão ao tentar pesquisar pessoa com id inválido")
-    void shouldNotShowEmployeeByInvalidId() {
+    void shouldNotShowAPersonByInvalidId() {
         String id = "10";
 
         when(cadastroServices.findById(id)).thenThrow(ApiNotFoundException.class);
@@ -127,7 +127,7 @@ class PessoaControllerTest {
         assertEquals(pessoa.getDataDeNascimento(), response.getDataDeNascimento());
         assertEquals(pessoa.getEndereco(), response.getEndereco());
 
-        verify(this.cadastroServices,  atLeastOnce()).create(requestPessoa(request));
+        verify(this.cadastroServices,  atLeastOnce()).create(PessoaMapper.requestPessoa(request));
     }
 
     @Test
@@ -145,7 +145,7 @@ class PessoaControllerTest {
         assertNull(expect.getDataDeNascimento());
         assertNull(expect.getEndereco());
         assertNull(expect.getTemperatura());
-        verify(services, never()).create(requestPessoa(expect));
+        verify(services, never()).create(PessoaMapper.requestPessoa(expect));
 
     }
 
@@ -166,7 +166,7 @@ class PessoaControllerTest {
         assertEquals(pessoa.getDataDeNascimento(), response.getDataDeNascimento());
         assertEquals(pessoa.getEndereco(), response.getEndereco());
 
-        verify(this.cadastroServices,  atLeastOnce()).update(id, requestPessoa(request));
+        verify(this.cadastroServices,  atLeastOnce()).update(id, PessoaMapper.requestPessoa(request));
 
     }
 

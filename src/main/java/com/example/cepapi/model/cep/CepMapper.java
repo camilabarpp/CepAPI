@@ -1,10 +1,10 @@
 package com.example.cepapi.model.cep;
 
 import com.example.cepapi.model.cep.response.CepResponse;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class CepMapper {
-    private CepMapper() {
-    }
 
     public static CepEntity entityToResponse(CepResponse response) {
         return CepEntity.builder()

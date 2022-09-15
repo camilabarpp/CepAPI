@@ -74,9 +74,9 @@ class CadastroServicesTest {
     @Test
     @DisplayName("Retornar ApiNotFound quando ID não existe")
     void testFindByIdNotFound() {
-        Pessoa pessoa = new Pessoa();
+        String id = "10";
 
-        doThrow(ApiNotFoundException.class).when(cadastroRepository).findById(pessoa.getId());
+        doThrow(ApiNotFoundException.class).when(cadastroRepository).findById(id);
 
         assertThrows(ApiNotFoundException.class,
                 () -> cadastroServices.findById("1"));
