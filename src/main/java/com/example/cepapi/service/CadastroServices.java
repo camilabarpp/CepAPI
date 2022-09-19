@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.pessoaResponse;
+
 @Service
 @AllArgsConstructor
 public class CadastroServices {
@@ -26,10 +28,10 @@ public class CadastroServices {
         return cadastroRepository.findAll().stream()
                 .map(PessoaMapper::pessoaResponse)
                 .toList();}
-    public Pessoa findById(String id) {
-        return cadastroRepository.findById(id)
+    public PessoaResponse findById(String id) {
+        return pessoaResponse(cadastroRepository.findById(id)
                 .orElseThrow(() ->
-                        new ApiNotFoundException("ID '" + id + "' não encontrado!"));}
+                        new ApiNotFoundException("ID '" + id + "' não encontrado!")));}
     public Pessoa update(String id, Pessoa pessoa){
         cepService.pesquisarCepESalvarNoBanco(pessoa);
         Pessoa found = cadastroRepository.findById(id)

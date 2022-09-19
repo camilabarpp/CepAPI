@@ -28,27 +28,6 @@ class WeatherRepositoryTest {
     private WeatherRepository weatherRepository;
 
     @Test
-    @DisplayName("Deve retornar verdadeiro quando encontrar id no banco de dados")
-    void returnsTrueWhenIdExists() {
-        var weather = createAEntityWeather();
-        mongoTemplate.save(weather);
-
-        var exists = weatherRepository.existsById(weather.getTemp());
-
-        assertThat(exists).isTrue();
-    }
-
-    @Test
-    @DisplayName("Deve retornar falso quando não encontrar id no banco de dados")
-    void returnsFalseWhenIdExists() {
-        String id = "10";
-
-        var exists = weatherRepository.existsById(id);
-
-        assertThat(exists).isFalse();
-    }
-
-    @Test
     @DisplayName("Deve salvar uma pessoa no banco de dados")
     void shouldSaveAPerson() {
 
@@ -87,20 +66,5 @@ class WeatherRepositoryTest {
 
         verify(mongoTemplate).save(weather);
 
-    }
-    @Test
-    @DisplayName("Deve deletar uma pessoa no banco de dados")
-    void shouldDeleteAPerson() {
-        var weather = createAEntityWeather();
-        mongoTemplate.save(weather);
-
-        var weatherFound = mongoTemplate.findById(weather.getTemp(), WeatherEntity.class);
-
-        assert weatherFound != null;
-        weatherRepository.delete(weatherFound);
-
-        var weatherDeleted = mongoTemplate.findById(weather.getTemp(), WeatherEntity.class);
-
-        assertThat(weatherDeleted).isNull();
     }
 }

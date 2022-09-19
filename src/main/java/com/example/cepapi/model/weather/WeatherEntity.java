@@ -11,7 +11,6 @@ import org.springframework.data.annotation.Id;
 @Builder
 @Data
 public class WeatherEntity {
-    @Id
     private String temp;
     private String feelsLike;
     private String minTemp;

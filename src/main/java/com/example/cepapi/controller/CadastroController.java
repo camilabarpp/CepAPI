@@ -55,7 +55,7 @@ public class CadastroController {
 			@ApiResponse(code = 500, message = "Internal error")})
 	public PessoaResponse findById(@PathVariable String id) {
 		log.info("Buscando pessoa pelo ID " + id);
-		return pessoaResponse(cadastroServices.findById(id));
+		return cadastroServices.findById(id);
 	}
 	@PostMapping()
 	@ResponseBody
