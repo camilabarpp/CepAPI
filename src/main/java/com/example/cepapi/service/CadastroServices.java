@@ -28,10 +28,10 @@ public class CadastroServices {
         return cadastroRepository.findAll().stream()
                 .map(PessoaMapper::pessoaResponse)
                 .toList();}
-    public PessoaResponse findById(String id) {
-        return pessoaResponse(cadastroRepository.findById(id)
+    public Pessoa findById(String id) {
+        return cadastroRepository.findById(id)
                 .orElseThrow(() ->
-                        new ApiNotFoundException("ID '" + id + "' não encontrado!")));}
+                        new ApiNotFoundException("ID '" + id + "' não encontrado!"));}
     public Pessoa update(String id, Pessoa pessoa){
         cepService.pesquisarCepESalvarNoBanco(pessoa);
         Pessoa found = cadastroRepository.findById(id)
