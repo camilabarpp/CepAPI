@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class WeatherResponse {
     //ResponseBody
+    @JsonProperty("temp")
     private String temp;
     @JsonProperty("feels_like")
     private String feelsLike;

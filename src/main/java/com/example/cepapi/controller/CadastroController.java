@@ -1,5 +1,6 @@
 package com.example.cepapi.controller;
 
+import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.model.pessoa.request.PessoaRequest;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import com.example.cepapi.service.CadastroServices;
@@ -17,8 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.pessoaResponse;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.requestPessoa;
+import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.*;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 import static org.springframework.http.HttpStatus.CREATED;

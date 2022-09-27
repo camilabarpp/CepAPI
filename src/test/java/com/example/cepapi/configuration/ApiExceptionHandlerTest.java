@@ -1,11 +1,8 @@
 package com.example.cepapi.configuration;
 
-import com.example.cepapi.configuration.exception.errorresponse.ErrorResponse;
 import com.example.cepapi.configuration.exception.ApiExceptionHandler;
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
-import com.example.cepapi.model.cep.CepMapper;
-import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
-import com.example.cepapi.model.weather.mapper.WeatherMapper;
+import com.example.cepapi.configuration.exception.errorresponse.ErrorResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,10 +18,8 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 @ExtendWith(SpringExtension.class)
