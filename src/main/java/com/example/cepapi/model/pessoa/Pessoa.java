@@ -1,6 +1,7 @@
 package com.example.cepapi.model.pessoa;
 
 import com.example.cepapi.model.cep.CepEntity;
+import com.example.cepapi.model.payment.DebitCard;
 import com.example.cepapi.model.weather.WeatherEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,6 +32,8 @@ public class Pessoa {
     private CepEntity endereco;
     @ApiModelProperty(notes = "Weather of the city")
     private WeatherEntity temperatura;
+    @ApiModelProperty(notes = "Debit card of the user")
+    private DebitCard.Builder debitCard;
 
     public CepEntity getEndereco() {
         return endereco;
@@ -46,6 +49,14 @@ public class Pessoa {
 
     public void setTemperatura(WeatherEntity temperatura) {
         this.temperatura = temperatura;
+    }
+
+    public DebitCard.Builder getDebitCard() {
+        return debitCard;
+    }
+
+    public void setDebitCard(DebitCard.Builder debitCard) {
+        this.debitCard = debitCard;
     }
 }
 
