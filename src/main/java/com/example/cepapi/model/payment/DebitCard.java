@@ -1,13 +1,10 @@
 package com.example.cepapi.model.payment;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Data
-@Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class DebitCard {
     private String nomeTitular;
     private String number;

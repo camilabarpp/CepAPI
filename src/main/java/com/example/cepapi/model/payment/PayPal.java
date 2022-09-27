@@ -1,38 +1,37 @@
 package com.example.cepapi.model.payment;
 
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class PayPal {
-    private final String id;
-    private final String nomeTitular;
-    private final String email;
-    private final String password;
+    private String nomeTitular;
+    private String email;
+    private String password;
 
     public PayPal(builder builder) {
-        this.id = builder.id;
         this.nomeTitular = builder.nomeTitular;
         this.email = builder.email;
         this.password = builder.password;
 
     }
-
+    @Getter @Setter
     public static class builder {
-
-        private String id;
         private String nomeTitular;
-        private final String email;
-        private final String password;
+        private String email;
+        private String password;
 
-        public builder(String email, String password) {
-            this.email = email;
-            this.password = password;
+        public builder() {
         }
 
-        public builder id(String id) {
-            this.id = id;
+        public builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public builder password(String password) {
+            this.password = password;
             return this;
         }
 

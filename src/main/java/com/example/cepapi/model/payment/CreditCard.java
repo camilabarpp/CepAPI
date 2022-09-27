@@ -18,19 +18,11 @@ public class CreditCard {
     }
     @Getter
     @Setter
-    @AllArgsConstructor
-    //@NoArgsConstructor
     public static class Builder {
         private String nomeTitular;
         private String number;
         private String dateExpiration;
         private String cvv;
-
-/*        public Builder(String number, String dateExpiration, String cvv) {
-            this.number = number;
-            this.dateExpiration = dateExpiration;
-            this.cvv = cvv;
-        }*/
 
         public Builder() {
         }

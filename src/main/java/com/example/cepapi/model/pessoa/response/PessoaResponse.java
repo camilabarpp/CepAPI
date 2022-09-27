@@ -1,7 +1,9 @@
 package com.example.cepapi.model.pessoa.response;
 
 import com.example.cepapi.model.cep.CepEntity;
+import com.example.cepapi.model.payment.CreditCard;
 import com.example.cepapi.model.payment.DebitCard;
+import com.example.cepapi.model.payment.PayPal;
 import com.example.cepapi.model.weather.WeatherEntity;
 import lombok.*;
 
@@ -14,7 +16,6 @@ public class PessoaResponse {
     private String dataDeNascimento;
     private CepEntity endereco;
     private WeatherEntity temperatura;
-    private DebitCard.Builder debitCard;
 
     public CepEntity getEndereco() {
         return endereco;
@@ -24,7 +25,5 @@ public class PessoaResponse {
         return temperatura;
     }
 
-    public DebitCard.Builder getDebitCard() {
-        return debitCard;
-    }
+
 }
