@@ -1,10 +1,11 @@
 package com.example.cepapi.service;
 
-import com.example.cepapi.integration.resttemplate.cep.IntegrationCep;
-import com.example.cepapi.model.cep.CepEntity;
-import com.example.cepapi.model.cep.response.CepResponse;
-import com.example.cepapi.model.pessoa.Pessoa;
-import com.example.cepapi.repository.CepRepository;
+import com.example.cepapi.cep.service.CepService;
+import com.example.cepapi.configuration.resttemplate.cep.IntegrationCep;
+import com.example.cepapi.cep.model.CepEntity;
+import com.example.cepapi.cep.model.response.CepResponse;
+import com.example.cepapi.registrationPeople.model.pessoa.Pessoa;
+import com.example.cepapi.cep.repository.CepRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,8 @@ import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static com.example.cepapi.model.cep.CepMapper.entityToResponse;
-import static com.example.cepapi.model.cep.CepMapper.responseToEntity;
+import static com.example.cepapi.cep.model.CepMapper.entityToResponse;
+import static com.example.cepapi.cep.model.CepMapper.responseToEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;

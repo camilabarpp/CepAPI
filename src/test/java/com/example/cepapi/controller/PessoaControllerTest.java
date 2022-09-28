@@ -1,11 +1,12 @@
 package com.example.cepapi.controller;
 
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
-import com.example.cepapi.model.pessoa.Pessoa;
-import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
-import com.example.cepapi.model.pessoa.request.PessoaRequest;
-import com.example.cepapi.model.pessoa.response.PessoaResponse;
-import com.example.cepapi.service.CadastroServices;
+import com.example.cepapi.registrationPeople.model.pessoa.Pessoa;
+import com.example.cepapi.registrationPeople.model.pessoa.mapper.PessoaMapper;
+import com.example.cepapi.registrationPeople.model.pessoa.request.PessoaRequest;
+import com.example.cepapi.registrationPeople.model.pessoa.response.PessoaResponse;
+import com.example.cepapi.registrationPeople.controller.CadastroController;
+import com.example.cepapi.registrationPeople.service.CadastroServices;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.example.cepapi.controller.stub.PessoaControllerStub.*;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.toRequest;
+import static com.example.cepapi.registrationPeople.model.pessoa.mapper.PessoaMapper.toRequest;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

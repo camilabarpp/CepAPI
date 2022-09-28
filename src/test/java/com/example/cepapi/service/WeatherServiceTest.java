@@ -1,10 +1,11 @@
 package com.example.cepapi.service;
 
-import com.example.cepapi.integration.resttemplate.weather.IntegrationWeather;
-import com.example.cepapi.model.pessoa.Pessoa;
-import com.example.cepapi.model.weather.WeatherEntity;
-import com.example.cepapi.model.weather.response.WeatherResponse;
-import com.example.cepapi.repository.WeatherRepository;
+import com.example.cepapi.configuration.resttemplate.weather.IntegrationWeather;
+import com.example.cepapi.registrationPeople.model.pessoa.Pessoa;
+import com.example.cepapi.registrationPeople.model.weather.WeatherEntity;
+import com.example.cepapi.registrationPeople.model.weather.response.WeatherResponse;
+import com.example.cepapi.registrationPeople.repository.WeatherRepository;
+import com.example.cepapi.registrationPeople.service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,8 +16,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static com.example.cepapi.controller.stub.PessoaControllerStub.*;
-import static com.example.cepapi.model.weather.mapper.WeatherMapper.toEntity;
-import static com.example.cepapi.model.weather.mapper.WeatherMapper.toResponse;
+import static com.example.cepapi.registrationPeople.model.weather.mapper.WeatherMapper.toEntity;
+import static com.example.cepapi.registrationPeople.model.weather.mapper.WeatherMapper.toResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;

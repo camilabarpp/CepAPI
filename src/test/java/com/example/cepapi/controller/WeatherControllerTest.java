@@ -1,9 +1,10 @@
 package com.example.cepapi.controller;
 
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
-import com.example.cepapi.model.weather.WeatherEntity;
-import com.example.cepapi.model.weather.mapper.WeatherMapper;
-import com.example.cepapi.service.WeatherService;
+import com.example.cepapi.registrationPeople.model.weather.WeatherEntity;
+import com.example.cepapi.registrationPeople.model.weather.mapper.WeatherMapper;
+import com.example.cepapi.registrationPeople.controller.WeatherController;
+import com.example.cepapi.registrationPeople.service.WeatherService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,6 +1,6 @@
 package com.example.cepapi.patterns.decorator;
 
-import com.example.cepapi.model.drink.Drink;
+import com.example.cepapi.cafe.model.drink.Drink;
 
 public class Milk extends DrinkDecorator {
     //Decorator de Milk

@@ -1,26 +1,20 @@
 package com.example.cepapi.patterns.strategy;
 
-import com.example.cepapi.model.payment.DebitCard;
-import com.example.cepapi.model.payment.DebitCard.Builder;
-import com.example.cepapi.service.ShoppingCartService;
+import com.example.cepapi.cafe.model.payment.DebitCard;
+import com.example.cepapi.cafe.service.ShoppingCartService;
+import com.example.cepapi.registrationPeople.service.CadastroServices;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PayByDebitCard implements PayStrategy {
-    private static final DebitCard card = new Builder()
-            .nomeTitular("Camila")
-            .number("123456")
-            .dateExpiration("02/28")
-            .cvv("123")
-            .build();
-
     private boolean signedIn;
     private boolean signedIn2;
     private boolean signedIn3;
     private final ShoppingCartService shoppingCartService;
-
-    public PayByDebitCard(ShoppingCartService shoppingCartService) {
+    private final CadastroServices cadastroServices;
+    public PayByDebitCard(ShoppingCartService shoppingCartService, CadastroServices cadastroServices) {
         this.shoppingCartService = shoppingCartService;
+        this.cadastroServices = cadastroServices;
     }
 
     @Override
@@ -38,10 +32,14 @@ public class PayByDebitCard implements PayStrategy {
         }
     }
 
-    public void verify(DebitCard debitCard) {
-        var numberAccount = debitCard.getNumber().equals(card.getNumber());
-        var dateExpirationAccount = debitCard.getDateExpiration().equals(card.getDateExpiration());
-        var cvvAccount = debitCard.getCvv().equals(card.getCvv());
+    public void verify(String id, DebitCard debitCard) {
+        var found = cadastroServices.findById(id);
+        var numberAccount = debitCard.getNumber().equals(
+                found.getDebitCard().getNumber());
+        var dateExpirationAccount = debitCard.getDateExpiration().equals(
+                found.getDebitCard().getDateExpiration());
+        var cvvAccount = debitCard.getCvv().equals(
+                found.getDebitCard().getCvv());
         setSignedIn(numberAccount, dateExpirationAccount, cvvAccount);
     }
 

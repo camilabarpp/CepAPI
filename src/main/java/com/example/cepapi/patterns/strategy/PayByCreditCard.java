@@ -1,24 +1,22 @@
 package com.example.cepapi.patterns.strategy;
 
-import com.example.cepapi.model.payment.CreditCard;
-import com.example.cepapi.service.ShoppingCartService;
+import com.example.cepapi.cafe.model.payment.CreditCard;
+import com.example.cepapi.cafe.service.ShoppingCartService;
+import com.example.cepapi.registrationPeople.service.CadastroServices;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PayByCreditCard implements PayStrategy {
-    private static final CreditCard card = new CreditCard.Builder()
-            .nomeTitular("Camila")
-            .number("123456")
-            .dateExpiration("02/28")
-            .cvv("123")
-            .build();
     private boolean signedIn;
     private boolean signedIn2;
     private boolean signedIn3;
     private final ShoppingCartService shoppingCartService;
 
-    public PayByCreditCard(ShoppingCartService shoppingCartService) {
+    private final CadastroServices cadastroServices;
+
+    public PayByCreditCard(ShoppingCartService shoppingCartService, CadastroServices cadastroServices) {
         this.shoppingCartService = shoppingCartService;
+        this.cadastroServices = cadastroServices;
     }
 
     @Override
@@ -35,10 +33,14 @@ public class PayByCreditCard implements PayStrategy {
             return "Wrong number card, date expiration or cvv!";
         }
     }
-    public void verify(CreditCard creditCard) {
-        var numberAccount = creditCard.getNumber().equals(card.getNumber());
-        var dateExpirationAccount = creditCard.getDateExpiration().equals(card.getDateExpiration());
-        var cvvAccount = creditCard.getCvv().equals(card.getCvv());
+    public void verify(String id, CreditCard creditCard) {
+        var found = cadastroServices.findById(id);
+        var numberAccount = creditCard.getNumber().equals(
+                found.getCreditCard().getNumber());
+        var dateExpirationAccount = creditCard.getDateExpiration().equals(
+                found.getCreditCard().getDateExpiration());
+        var cvvAccount = creditCard.getCvv().equals(
+                found.getCreditCard().getCvv());
         setSignedIn(numberAccount, dateExpirationAccount, cvvAccount);
     }
 

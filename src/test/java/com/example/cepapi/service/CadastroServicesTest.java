@@ -1,9 +1,12 @@
 package com.example.cepapi.service;
 
+import com.example.cepapi.cep.service.CepService;
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
-import com.example.cepapi.model.pessoa.Pessoa;
-import com.example.cepapi.model.pessoa.response.PessoaResponse;
-import com.example.cepapi.repository.CadastroRepository;
+import com.example.cepapi.registrationPeople.model.pessoa.Pessoa;
+import com.example.cepapi.registrationPeople.model.pessoa.response.PessoaResponse;
+import com.example.cepapi.registrationPeople.repository.CadastroRepository;
+import com.example.cepapi.registrationPeople.service.CadastroServices;
+import com.example.cepapi.registrationPeople.service.WeatherService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +21,7 @@ import java.util.*;
 
 import static com.example.cepapi.controller.stub.PessoaControllerStub.createAEntity;
 import static com.example.cepapi.controller.stub.PessoaControllerStub.createAResponse;
-import static com.example.cepapi.model.pessoa.mapper.PessoaMapper.optionalToEntity;
+import static com.example.cepapi.registrationPeople.model.pessoa.mapper.PessoaMapper.optionalToEntity;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -115,7 +118,7 @@ class CadastroServicesTest {
         String id = "1";
         Pessoa atualizada = createAEntity();
 
-        when(cadastroRepository.findById(any())).thenReturn(optionalToEntity(atualizada));
+        when(cadastroRepository.findById(id)).thenReturn(optionalToEntity(atualizada));
         when(cadastroRepository.save(any())).thenReturn(atualizada);
 
         var actual = cadastroServices.update(id, atualizada);

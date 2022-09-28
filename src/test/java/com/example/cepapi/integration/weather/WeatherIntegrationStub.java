@@ -1,6 +1,6 @@
 package com.example.cepapi.integration.weather;
 
-import com.example.cepapi.model.weather.response.WeatherResponse;
+import com.example.cepapi.registrationPeople.model.weather.response.WeatherResponse;
 
 public class WeatherIntegrationStub {
 

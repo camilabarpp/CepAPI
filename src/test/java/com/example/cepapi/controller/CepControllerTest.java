@@ -1,8 +1,9 @@
 package com.example.cepapi.controller;
 
+import com.example.cepapi.cep.controller.CepController;
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
-import com.example.cepapi.model.cep.CepEntity;
-import com.example.cepapi.service.CepService;
+import com.example.cepapi.cep.model.CepEntity;
+import com.example.cepapi.cep.service.CepService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static com.example.cepapi.controller.stub.PessoaControllerStub.createAEntityCep;
-import static com.example.cepapi.model.cep.CepMapper.responseToEntity;
+import static com.example.cepapi.cep.model.CepMapper.responseToEntity;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;

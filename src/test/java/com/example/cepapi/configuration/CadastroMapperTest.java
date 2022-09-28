@@ -1,8 +1,8 @@
 package com.example.cepapi.configuration;
 
-import com.example.cepapi.model.cep.CepMapper;
-import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
-import com.example.cepapi.model.weather.mapper.WeatherMapper;
+import com.example.cepapi.cep.model.CepMapper;
+import com.example.cepapi.registrationPeople.model.pessoa.mapper.PessoaMapper;
+import com.example.cepapi.registrationPeople.model.weather.mapper.WeatherMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

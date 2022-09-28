@@ -2,8 +2,8 @@ package com.example.cepapi.integration.weather;
 
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
 import com.example.cepapi.configuration.exception.ErroHandler;
-import com.example.cepapi.integration.resttemplate.weather.IntegrationWeather;
-import com.example.cepapi.model.weather.response.WeatherResponse;
+import com.example.cepapi.configuration.resttemplate.weather.IntegrationWeather;
+import com.example.cepapi.registrationPeople.model.weather.response.WeatherResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;

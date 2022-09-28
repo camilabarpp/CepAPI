@@ -1,29 +1,34 @@
 package com.example.cepapi.patterns.strategy;
 
-import com.example.cepapi.model.payment.PayPal;
-import com.example.cepapi.service.ShoppingCartService;
+import com.example.cepapi.cafe.model.payment.PayPal;
+import com.example.cepapi.cafe.service.ShoppingCartService;
+import com.example.cepapi.registrationPeople.service.CadastroServices;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PayByPayPal implements PayStrategy {
-
+/*
     private final PayPal card = new PayPal
             .builder("camila@gmail.com","123456")
-            .nometitular("Camila")
             .build();
+*/
 
     private boolean signedIn;
     private boolean signedIn2;
     private final ShoppingCartService shoppingCartService;
+    private final CadastroServices cadastroServices;
 
-    public PayByPayPal(ShoppingCartService shoppingCartService) {
+    public PayByPayPal(ShoppingCartService shoppingCartService, CadastroServices cadastroServices) {
         this.shoppingCartService = shoppingCartService;
+        this.cadastroServices = cadastroServices;
     }
 
-
-    public void verify(PayPal payPal) {
-        var equals = payPal.getEmail().equals(card.getEmail());
-        var equals2 = payPal.getPassword().equals(card.getPassword());
+    public void verify(String id,PayPal payPal) {
+        var found = cadastroServices.findById(id);
+        var equals = payPal.getEmail().equals(
+                found.getPaypal().getEmail());
+        var equals2 = payPal.getPassword().equals(
+                found.getPaypal().getPassword());
         setSignedIn(equals, equals2);
     }
     @Override

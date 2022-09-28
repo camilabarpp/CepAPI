@@ -1,8 +1,8 @@
 package com.example.cepapi.integration.cep;
 
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
-import com.example.cepapi.integration.resttemplate.cep.IntegrationCep;
-import com.example.cepapi.model.cep.response.CepResponse;
+import com.example.cepapi.configuration.resttemplate.cep.IntegrationCep;
+import com.example.cepapi.cep.model.response.CepResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;

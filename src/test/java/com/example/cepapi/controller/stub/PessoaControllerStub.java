@@ -1,11 +1,11 @@
 package com.example.cepapi.controller.stub;
 
-import com.example.cepapi.model.cep.CepEntity;
-import com.example.cepapi.model.pessoa.Pessoa;
-import com.example.cepapi.model.pessoa.request.PessoaRequest;
-import com.example.cepapi.model.pessoa.response.PessoaResponse;
-import com.example.cepapi.model.weather.WeatherEntity;
-import com.example.cepapi.model.weather.response.WeatherResponse;
+import com.example.cepapi.cep.model.CepEntity;
+import com.example.cepapi.registrationPeople.model.pessoa.Pessoa;
+import com.example.cepapi.registrationPeople.model.pessoa.request.PessoaRequest;
+import com.example.cepapi.registrationPeople.model.pessoa.response.PessoaResponse;
+import com.example.cepapi.registrationPeople.model.weather.WeatherEntity;
+import com.example.cepapi.registrationPeople.model.weather.response.WeatherResponse;
 
 public class PessoaControllerStub {
 

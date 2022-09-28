@@ -1,6 +1,6 @@
 package com.example.cepapi.integration.cep;
 
-import com.example.cepapi.model.cep.response.CepResponse;
+import com.example.cepapi.cep.model.response.CepResponse;
 
 public class CepIntegrationStub {
 

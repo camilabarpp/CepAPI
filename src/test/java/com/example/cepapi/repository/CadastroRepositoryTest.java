@@ -1,6 +1,7 @@
 package com.example.cepapi.repository;
 
-import com.example.cepapi.model.pessoa.Pessoa;
+import com.example.cepapi.registrationPeople.model.pessoa.Pessoa;
+import com.example.cepapi.registrationPeople.repository.CadastroRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
