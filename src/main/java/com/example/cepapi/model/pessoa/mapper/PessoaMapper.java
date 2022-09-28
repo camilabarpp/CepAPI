@@ -17,6 +17,9 @@ public class PessoaMapper{
                 .dataDeNascimento(pessoaRequest.getDataDeNascimento())
                 .endereco(pessoaRequest.getEndereco())
                 .temperatura(pessoaRequest.getTemperatura())
+                .debitCard(pessoaRequest.getDebitCard())
+                .creditCard(pessoaRequest.getCreditCard())
+                .paypal(pessoaRequest.getPaypal())
                 .build();
     }
 
@@ -46,6 +49,9 @@ public class PessoaMapper{
                 .dataDeNascimento(pessoa.getDataDeNascimento())
                 .endereco(pessoa.getEndereco())
                 .temperatura(pessoa.getTemperatura())
+                .debitCard(pessoa.getDebitCard())
+                .creditCard(pessoa.getCreditCard())
+                .paypal(pessoa.getPaypal())
                 .build());
     }
 }

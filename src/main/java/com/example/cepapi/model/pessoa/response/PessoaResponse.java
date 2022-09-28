@@ -1,6 +1,9 @@
 package com.example.cepapi.model.pessoa.response;
 
 import com.example.cepapi.model.cep.CepEntity;
+import com.example.cepapi.model.payment.CreditCard;
+import com.example.cepapi.model.payment.DebitCard;
+import com.example.cepapi.model.payment.PayPal;
 import com.example.cepapi.model.weather.WeatherEntity;
 import lombok.*;
 
@@ -21,4 +24,6 @@ public class PessoaResponse {
     public WeatherEntity getTemperatura() {
         return temperatura;
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.example.cepapi.repository;
 
+import com.example.cepapi.model.payment.DebitCard;
 import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
 import org.springframework.data.mongodb.repository.MongoRepository;

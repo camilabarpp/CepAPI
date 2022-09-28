@@ -1,6 +1,9 @@
 package com.example.cepapi.model.pessoa.request;
 
 import com.example.cepapi.model.cep.CepEntity;
+import com.example.cepapi.model.payment.CreditCard;
+import com.example.cepapi.model.payment.DebitCard;
+import com.example.cepapi.model.payment.PayPal;
 import com.example.cepapi.model.weather.WeatherEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -23,10 +26,16 @@ public class PessoaRequest {
     private String dataDeNascimento;
     private CepEntity endereco;
     private WeatherEntity temperatura;
+    private DebitCard.Builder debitCard;
+    private CreditCard.Builder creditCard;
+    private PayPal.builder paypal;
 
     public CepEntity getEndereco() {
         return endereco;
     }
 
+    public DebitCard.Builder getDebitCard() {
+        return debitCard;
+    }
 }
 

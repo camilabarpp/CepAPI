@@ -1,6 +1,7 @@
 package com.example.cepapi.service;
 
 import com.example.cepapi.configuration.exception.ApiNotFoundException;
+import com.example.cepapi.model.payment.DebitCard;
 import com.example.cepapi.model.pessoa.Pessoa;
 import com.example.cepapi.model.pessoa.mapper.PessoaMapper;
 import com.example.cepapi.model.pessoa.response.PessoaResponse;
